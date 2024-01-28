@@ -1,4 +1,4 @@
-# The Beast (Name subject to change) Web Application
+# (Name subject to change) Web Application
 "The Beast" is a web application used by the Department of Psychiatry at UNC-Chapel Hill to collect and examine data from various mental health agencies across North Carolina to help find employment for those who are struggling with mental health and/or substance use disorders.
 
 The intended goal of "The Beast" is to make the data collection more streamline for our client.
@@ -70,4 +70,3 @@ ng serve
 > And open it in your `localhost` browser
 
 **More detailed breakdown of the application was provided to the client.**  
-**For more questions, contact us [here](https://tarheels.live/comp523teamb2022/team/).**
