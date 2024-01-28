@@ -1,0 +1,10 @@
+
+app-container, main, :host {
+    height: -webkit-fill-available;
+    display: block;
+    text-align: center;
+    font-family: "Manrope", serif;
+}
+.sign-out-button {
+    margin-left: 270px; 
+}

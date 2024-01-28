@@ -1,0 +1,19 @@
+uid,vr_id,county_id,employer_name,job_title,school_name,is_edit
+1,1,1,UNC,Associate,UNC,TRUE
+2,2,2,Duke,Associate,Duke,TRUE
+3,3,3,UVA,Senior Associate,UVA,TRUE
+4,4,4,UNC,Senior Associate,UNC,TRUE
+5,5,5,Duke,Senior Associate,Duke,TRUE
+6,6,6,UVA,Intern,UVA,TRUE
+7,7,7,Vtech,Associate,Vtech,TRUE
+8,8,8,NCSU,Research Intern,NCSU,TRUE
+9,9,9,NCSU,Associate,NCSU,TRUE
+10,10,10,Duke,Research Associate,Duke,TRUE
+11,11,11,UNC,Intern,UNC,TRUE
+12,12,12,Wake,Intern,Wake,TRUE
+13,13,13,Wake,Associate,Wake,TRUE
+14,14,14,NCSU,Senior Associate,NCSU,TRUE
+15,15,15,ECU,Senior Associate,ECU,TRUE
+16,16,16,ECU,Associate,ECU,TRUE
+17,17,17,UNC,Intern,UNC,TRUE
+18,18,18,UNC,Associate,UNC,TRUE
