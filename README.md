@@ -1,4 +1,5 @@
 # (Name subject to change) Web Application
+
 "The Beast" is a web application used by the Department of Psychiatry at UNC-Chapel Hill to collect and examine data from various mental health agencies across North Carolina to help find employment for those who are struggling with mental health and/or substance use disorders.
 
 The intended goal of "The Beast" is to make the data collection more streamline for our client.
@@ -19,9 +20,9 @@ The database is MongoDB.
 Frontend: HTML/CSS, Typescript  
 Backend: Javascript  
 
-![Architecture Diagram](https://github.com/frachen/thebeast/blob/backend/my-app/imgs/architecture_diagram.png)
+![Architecture Diagram](my-app/imgs/architecture_diagram.png)
 
-# Frontend Structure
+## Frontend Structure
 
 The frontend has component folders for each required survey. Within those folders there are more specific components that relate to adding data and displaying group or individual data. More details in code comments.
 
@@ -31,9 +32,9 @@ Resources used for the frontend:
 > [Connecting Angular to a Node.js application](https://www.bezkoder.com/mean-stack-crud-example-angular-14/)  
 > [Creating a dynamic Angular Mat Table](https://muhimasri.com/blogs/create-an-editable-dynamic-table-using-angular-material/)  
 
-# Backend Structure
+## Backend Structure
 
-The backend follows a RESTful API structure. 
+The backend follows a RESTful API structure.
 
 Resources used for the backend:
 > [RESTful API structure](https://www.coreycleary.me/project-structure-for-an-express-rest-api-when-there-is-no-standard-way)  
@@ -49,24 +50,30 @@ In it's current state, the application is not running on a server so it must be 
 
 We recommend cloning and accessing the repo through [GitHub Desktop](https://desktop.github.com/).
 
-Once you have the repo... 
+Once you have the repo...
 > Open the repo in whatever IDE you choose to use
 > Then open the terminal and run...
-```
+
+```shell
 npm install
 ```
-> To download all dependancies needed
+
+> To download all dependencies needed
 > Upon completion, open another terminal and in one terminal run...
-```
+
+```shell
 cd api
 node app.js
 ```
+
 > To start up the API. Make sure you have you MongoDB server running
 > In the other terminal run...
-```
+
+```shell
 cd my-app
 ng serve
 ```
+
 > And open it in your `localhost` browser
 
 **More detailed breakdown of the application was provided to the client.**  
