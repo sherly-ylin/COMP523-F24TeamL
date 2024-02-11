@@ -1,9 +1,5 @@
-import dotenv from 'dotenv'
 import nodemailer from 'nodemailer'
-
-dotenv.config()
-const username = process.env.EMAIL_USERNAME
-const password = process.env.EMAIL_PASSWORD
+import config from '../config'
 
 export const randString = () => {
   const len = 8
@@ -18,15 +14,13 @@ export const randString = () => {
 
 export const sendEmail = (email: any, uniqueString: string) => {
   console.log(email)
-  console.log(process.env.EMAIL_PASSWORD)
-  console.log(process.env.EMAIL_USERNAME)
   let Transport = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
-      user: username, // your Gmail address
-      pass: password, // your App Password
+      user: config.email_username, // your Gmail address
+      pass: config.email_password, // your App Password
     },
   })
   //   var mailOptions;

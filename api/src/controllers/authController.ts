@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { Document, Error } from 'mongoose'
 
-import config from '../auth.config'
+import config from '../config'
 import { Role } from '../models/roleSchema'
 import { User } from '../models/userSchema'
 import * as verify from './emailVerifyController'

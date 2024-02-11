@@ -2,7 +2,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsc -p tsconfig.json",
-    "start": "node bin/app.js",
+    "start": "ts-node src/app.ts",
     "prettier": "prettier --config .prettierrc --write 'src/**/*.{ts,js}'",
     "prettier:check": "prettier --config .prettierrc --check 'src/**/*.{ts,js}'"
   },

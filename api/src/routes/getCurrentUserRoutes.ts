@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { Error } from 'mongoose'
-import config from '../auth.config'
+import config from '../config'
 import { IUser, User } from '../models/userSchema'
 
 export const getCurrentUser = (req: Request, res: Response) => {
