@@ -52,18 +52,14 @@ We recommend cloning and accessing the repo through [GitHub Desktop](https://des
 
 Once you have the repo...
 > Open the repo in whatever IDE you choose to use
-> Then open the terminal and run...
-
-```shell
-npm install
-```
-
 > To download all dependencies needed
 > Upon completion, open another terminal and in one terminal run...
 
 ```shell
 cd api
-node app.js
+npm ci
+npm run build
+npm start
 ```
 
 > To start up the API. Make sure you have you MongoDB server running

@@ -1,0 +1,9 @@
+{
+  "extends": "@tsconfig/node-lts/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "bin",
+    "allowJs": true
+  },
+  "include": ["src", "__tests__"],
+  "exclude": ["node_modules"]
+}
