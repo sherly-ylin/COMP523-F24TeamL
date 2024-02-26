@@ -57,9 +57,7 @@ Once you have the repo...
 
 ```shell
 cd api
-npm ci
-npm run build
-npm start
+node app.js
 ```
 
 > To start up the API. Make sure you have you MongoDB server running
