@@ -1,5 +1,5 @@
 import { Document, Error } from 'mongoose'
-import { jobDevModel } from '../models/jobDevSchema'
+import { jobDevModel } from '../models/jobDevSchema.js'
 
 /* Runs mongoose function to get all records from the database */
 export async function getAllRecordsFromDB() {

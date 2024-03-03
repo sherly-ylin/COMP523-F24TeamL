@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express'
 import { Document, Error } from 'mongoose'
-import { Role } from '../models/roleSchema'
-import { User } from '../models/userSchema'
+import { Role } from '../models/roleSchema.js'
+import { User } from '../models/userSchema.js'
 
 export const checkDuplicateUsernameOrEmail = (
   req: Request,

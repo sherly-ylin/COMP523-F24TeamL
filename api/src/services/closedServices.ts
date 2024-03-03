@@ -1,5 +1,5 @@
 import { Document, Error } from 'mongoose'
-import { closedModel } from '../models/closedSchema'
+import { closedModel } from '../models/closedSchema.js'
 
 /* Runs mongoose function to get all records from the database */
 export async function getAllRecordsFromDB() {

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import * as personLevelServices from '../services/personLevelServices'
+import * as personLevelServices from '../services/personLevelServices.js'
 
 /* Get all controller to retrieve all records. Result variable checks for success. */
 export async function getAllRecords(req: Request, res: Response) {

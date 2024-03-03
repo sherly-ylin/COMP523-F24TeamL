@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import * as IPSLogServices from '../services/IPSLogServices'
+import * as IPSLogServices from '../services/IPSLogServices.js'
 
 /* Get all controller to retrieve all records. Result variable checks for success. */
 export async function getAllRecords(_: Request, res: Response) {

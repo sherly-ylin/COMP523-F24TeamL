@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import * as staffingServices from '../services/staffingServices'
+import * as staffingServices from '../services/staffingServices.js'
 
 /* Get all controller to retrieve all records. Result variable checks for success. */
 export async function getAllRecords(req: Request, res: Response) {

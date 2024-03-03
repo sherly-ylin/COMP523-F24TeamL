@@ -3,10 +3,10 @@ import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { Document, Error } from 'mongoose'
 
-import config from '../config'
-import { Role } from '../models/roleSchema'
-import { User } from '../models/userSchema'
-import * as verify from './emailVerifyController'
+import config from '../config.js'
+import { Role } from '../models/roleSchema.js'
+import { User } from '../models/userSchema.js'
+import * as verify from './emailVerifyController.js'
 
 export const signup = (req: Request, res: Response) => {
   const user = new User({

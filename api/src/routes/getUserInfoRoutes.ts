@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { Error } from 'mongoose'
-import { IUser, User } from '../models/userSchema'
+import { IUser, User } from '../models/userSchema.js'
 
 export const getUserInfo = (req: Request, res: Response) => {
   const email = req.query.email

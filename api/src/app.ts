@@ -1,10 +1,10 @@
 import cors from 'cors'
 import express from 'express'
 import mongoose from 'mongoose'
-import config from './config'
+import config from './config.js'
 
-import { Role } from './models/roleSchema'
-import routes from './routes/index'
+import { Role } from './models/roleSchema.js'
+import routes from './routes/index.js'
 
 await mongoose
   .connect(config.mongodbUri)

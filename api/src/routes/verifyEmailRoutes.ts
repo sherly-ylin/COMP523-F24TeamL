@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { User } from '../models/userSchema'
+import { User } from '../models/userSchema.js'
 
 export const verifyMiddleware = (
   req: Request,

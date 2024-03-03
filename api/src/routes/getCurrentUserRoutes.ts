@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import { Error } from 'mongoose'
-import config from '../config'
-import { IUser, User } from '../models/userSchema'
+import config from '../config.js'
+import { IUser, User } from '../models/userSchema.js'
 
 export const getCurrentUser = (req: Request, res: Response) => {
   const userToken = req.headers.authorization ?? ''

@@ -1,9 +1,9 @@
 // Import all the required services at the top of your controller file
 import { Request, Response } from 'express'
-import * as IPSLogServices from '../services/IPSLogServices'
-import * as jobDevServices from '../services/jobDevServices'
-import * as personLevelServices from '../services/personLevelServices'
-import * as staffingServices from '../services/staffingServices'
+import * as IPSLogServices from '../services/IPSLogServices.js'
+import * as jobDevServices from '../services/jobDevServices.js'
+import * as personLevelServices from '../services/personLevelServices.js'
+import * as staffingServices from '../services/staffingServices.js'
 
 // New controller function to aggregate all records
 export async function getAllRecordsFromAllServices(

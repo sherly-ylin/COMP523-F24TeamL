@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { User } from '../models/userSchema'
+import { User } from '../models/userSchema.js'
 
 export const setUserInfo = async (req: Request, res: Response) => {
   const email = req.body.email

@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
-import config from '../config'
-import { Role } from '../models/roleSchema'
-import { User } from '../models/userSchema'
+import config from '../config.js'
+import { Role } from '../models/roleSchema.js'
+import { User } from '../models/userSchema.js'
 
 export const verifyToken = (
   req: Request,

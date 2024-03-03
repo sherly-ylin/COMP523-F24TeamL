@@ -1,21 +1,25 @@
 import express from 'express'
-import * as authController from '../controllers/authController'
-import * as verifySignUp from '../middlewares/verifySignUp'
+import * as authController from '../controllers/authController.js'
+import * as verifySignUp from '../middlewares/verifySignUp.js'
 
 /* Controllers */
-import * as IPSLogController from '../controllers/IPSLogController'
-import * as allLogsController from '../controllers/allRecordsController'
-import * as closedController from '../controllers/closedController'
-import * as jobDevController from '../controllers/jobDevController'
-import * as personLevelController from '../controllers/personLevelController'
-import * as staffingController from '../controllers/staffingController'
-import { adminBoard, allAccess, userBoard } from '../controllers/userController'
+import * as IPSLogController from '../controllers/IPSLogController.js'
+import * as allLogsController from '../controllers/allRecordsController.js'
+import * as closedController from '../controllers/closedController.js'
+import * as jobDevController from '../controllers/jobDevController.js'
+import * as personLevelController from '../controllers/personLevelController.js'
+import * as staffingController from '../controllers/staffingController.js'
+import {
+  adminBoard,
+  allAccess,
+  userBoard,
+} from '../controllers/userController.js'
 
-import * as authJwt from '../middlewares/authJwt'
-import { getCurrentUser } from './getCurrentUserRoutes'
-import { getUserInfo } from './getUserInfoRoutes'
-import { setUserInfo } from './setUserInfoRoutes'
-import { getUniqueString, verifyMiddleware } from './verifyEmailRoutes'
+import * as authJwt from '../middlewares/authJwt.js'
+import { getCurrentUser } from './getCurrentUserRoutes.js'
+import { getUserInfo } from './getUserInfoRoutes.js'
+import { setUserInfo } from './setUserInfoRoutes.js'
+import { getUniqueString, verifyMiddleware } from './verifyEmailRoutes.js'
 
 const router = express.Router()
 

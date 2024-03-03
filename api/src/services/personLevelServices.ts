@@ -1,6 +1,6 @@
 import csvtojson from 'csvtojson'
 import { Document, Error } from 'mongoose'
-import { personLevelModel } from '../models/personLevelSchema'
+import { personLevelModel } from '../models/personLevelSchema.js'
 
 /* Runs mongoose function to get all records from the database */
 export async function getAllRecordsFromDB() {

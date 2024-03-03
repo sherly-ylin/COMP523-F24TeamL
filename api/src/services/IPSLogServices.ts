@@ -1,6 +1,6 @@
 import { Document } from 'mongodb'
 import { Error } from 'mongoose'
-import { IPSLogModel } from '../models/IPSLogSchema'
+import { IPSLogModel } from '../models/IPSLogSchema.js'
 
 /* Runs mongoose function to get all records from the database */
 export async function getAllRecordsFromDB() {

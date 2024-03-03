@@ -1,5 +1,5 @@
 import { Document, Error } from 'mongoose'
-import { staffingModel } from '../models/staffingSchema'
+import { staffingModel } from '../models/staffingSchema.js'
 
 /* Runs mongoose function to get all records from the database */
 export async function getAllRecordsFromDB() {
