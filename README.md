@@ -18,9 +18,9 @@ The database is MongoDB.
 
 **Programming Languages**  
 Frontend: HTML/CSS, Typescript  
-Backend: Javascript  
+Backend: Javascript
 
-![Architecture Diagram](my-app/imgs/architecture_diagram.png)
+![IMG_0156](https://github.com/QianqianHong/COMP523-TeamC/assets/77793476/dc771ff6-b763-4511-b8c4-2ae760c6ceed)
 
 ## Frontend Structure
 
