@@ -18,7 +18,7 @@ The database is MongoDB.
 
 **Programming Languages**  
 Frontend: HTML/CSS, Typescript  
-Backend: Javascript
+Backend: TypeScript
 
 ![IMG_0156](https://github.com/QianqianHong/COMP523-TeamC/assets/77793476/dc771ff6-b763-4511-b8c4-2ae760c6ceed)
 
@@ -57,7 +57,8 @@ Once you have the repo...
 
 ```shell
 cd api
-node app.js
+npm run build
+npm start
 ```
 
 > To start up the API. Make sure you have you MongoDB server running
