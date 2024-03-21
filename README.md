@@ -1,4 +1,4 @@
-# (Name subject to change) Web Application
+# eIPS Fidelity Web Application
 
 "The Beast" is a web application used by the Department of Psychiatry at UNC-Chapel Hill to collect and examine data from various mental health agencies across North Carolina to help find employment for those who are struggling with mental health and/or substance use disorders.
 
