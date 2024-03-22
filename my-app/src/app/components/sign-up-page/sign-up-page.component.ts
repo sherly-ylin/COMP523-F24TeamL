@@ -13,6 +13,7 @@ export class SignUpPageComponent {
   password2: string;
   submitted: boolean = false;
   match: boolean = true;
+  isProvider: boolean = false;
 
   constructor(private router: Router, private http: HttpClient){
     this.email = "";
@@ -29,11 +30,16 @@ export class SignUpPageComponent {
       }
       if(this.match == true && this.email && this.password) {
         //api post sign up
+        let role = 'admin'
+        if (this.isProvider) {
+          role = 'provider'
+        }
         this.http.post('http://localhost:3000/api/auth/signup', {
           username: username,
           roles: ['user'],
           email: this.email,
-          password: this.password
+          password: this.password,
+          role: role
         }).subscribe(response => {
           console.log(response);
           alert("Email sent. Please check your inbox")
