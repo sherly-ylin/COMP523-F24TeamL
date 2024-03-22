@@ -10,6 +10,7 @@ export class Staffing {
     end_date?: String;
     hours_worked?: Number;
     IPS_training?: [String];
+    user_email?: String;
 }
 
 export const StaffingColumns = [

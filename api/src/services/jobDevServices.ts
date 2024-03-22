@@ -1,23 +1,66 @@
 import { Document, Error } from 'mongoose'
+import { environment } from '../../environment.js'
 import { jobDevModel } from '../models/jobDevSchema.js'
+import { User } from '../models/userSchema.js'
 
 /* Runs mongoose function to get all records from the database */
 export async function getAllRecordsFromDB() {
-  var records = await jobDevModel
-    .find(function (err, docs) {
+  var signed_in_user = await User.findOne(
+    { user_email: environment.user_email },
+    (err: Error, doc: Document) => {
       if (err) {
         throw err
       } else {
-        if (docs) {
-          console.log('Found all records.')
+        if (doc) {
+          console.log('Found ' + doc)
         } else {
-          console.log('No records found.')
+          console.log(
+            'Could not find user with email: ' + environment.user_email,
+          )
         }
       }
-    })
-    .clone()
+    },
+  ).clone()
 
-  return records
+  if (signed_in_user != null && signed_in_user.role == 'admin') {
+    console.log('🍎 I am admin')
+    var records = await jobDevModel
+      .find(function (err, docs) {
+        if (err) {
+          throw err
+        } else {
+          if (docs) {
+            console.log('Found all records.')
+          } else {
+            console.log('No records found.')
+          }
+        }
+      })
+      .clone()
+    return records
+  } else if (signed_in_user != null && signed_in_user.role == 'provider') {
+    console.log('🍎 I am provider')
+    var my_records = await jobDevModel
+      .find(
+        { user_email: environment.user_email },
+        (err: Error, doc: Document) => {
+          if (err) {
+            throw err
+          } else {
+            if (doc) {
+              console.log('Found ' + doc)
+            } else {
+              console.log(
+                'Could not find records with user email: ' +
+                  environment.user_email,
+              )
+            }
+          }
+        },
+      )
+      .clone()
+    return my_records
+  }
 }
 
 /* Runs mongoose function to find a specific record */
@@ -42,13 +85,15 @@ export async function getRecordFromDB(id: string) {
 /* Runs mongoose function to add an entire record to the database */
 export async function addRecordToDB(body: object) {
   var record = new jobDevModel(body)
+  record.user_email = environment.user_email
+  console.log('🍎' + environment.user_email)
   var status = await jobDevModel
     .findOne(body, (err: Error, doc: Document) => {
       if (err) {
         throw err
       } else {
         if (doc) {
-          console.log('Record already exists.')
+          console.log('Record already exists')
         } else {
           record.save(function (err, doc) {
             if (err) {
@@ -94,7 +139,7 @@ export async function deleteRecordFromDB(id: string) {
         throw err
       } else {
         if (doc) {
-          console.log('Successfully deleted record :' + doc)
+          console.log('Successfully deleted record: ' + doc)
         } else {
           console.log('No record found to delete.')
         }

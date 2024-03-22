@@ -7,10 +7,10 @@ The intended goal of "The Beast" is to make the data collection more streamline 
 ## Project Structure
 
 "The Beast" utilizes the MEAN stack.  
-    - MongoDB  
-    - Express.js  
-    - Angular  
-    - Node.js  
+ - MongoDB  
+ - Express.js  
+ - Angular  
+ - Node.js
 
 The frontend web application is built up using Angular and Survey.js.  
 The backend API is built up using Node.js, Express.js, and mongoose for database connection.  
@@ -29,18 +29,20 @@ The frontend has component folders for each required survey. Within those folder
 There is also a model folder, with instances that relate to each survey for data interfacing/modeling purposes, and a service folder that has components for HTTP to the backend API connections.
 
 Resources used for the frontend:
+
 > [Connecting Angular to a Node.js application](https://www.bezkoder.com/mean-stack-crud-example-angular-14/)  
-> [Creating a dynamic Angular Mat Table](https://muhimasri.com/blogs/create-an-editable-dynamic-table-using-angular-material/)  
+> [Creating a dynamic Angular Mat Table](https://muhimasri.com/blogs/create-an-editable-dynamic-table-using-angular-material/)
 
 ## Backend Structure
 
 The backend follows a RESTful API structure.
 
 Resources used for the backend:
+
 > [RESTful API structure](https://www.coreycleary.me/project-structure-for-an-express-rest-api-when-there-is-no-standard-way)  
 > [Express Routing](https://expressjs.com/en/guide/routing.html#express-router)
 
-Note: Please include a .env file in the root folder containing your gmail address and app password in the following format:
+Note: Please include your gmail address and app password in .env file in the root folder:
 EMAIL_PASSWORD=#####
 EMAIL_USERNAME=#####
 
@@ -51,14 +53,14 @@ In it's current state, the application is not running on a server so it must be 
 We recommend cloning and accessing the repo through [GitHub Desktop](https://desktop.github.com/).
 
 Once you have the repo...
+
 > Open the repo in whatever IDE you choose to use
 > To download all dependencies needed
 > Upon completion, open another terminal and in one terminal run...
 
 ```shell
 cd api
-npm run build
-npm start
+npx tsx src/app.ts
 ```
 
 > To start up the API. Make sure you have you MongoDB server running
@@ -71,4 +73,4 @@ ng serve
 
 > And open it in your `localhost` browser
 
-**More detailed breakdown of the application was provided to the client.**  
+**More detailed breakdown of the application was provided to the client.**

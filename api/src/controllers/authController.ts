@@ -7,6 +7,7 @@ import config from '../config.js'
 import { Role } from '../models/roleSchema.js'
 import { User } from '../models/userSchema.js'
 import * as verify from './emailVerifyController.js'
+import { environment } from '../../environment.js'
 
 export const signup = (req: Request, res: Response) => {
   const user = new User({
@@ -68,6 +69,8 @@ export const signup = (req: Request, res: Response) => {
 }
 
 export const signIn = (req: Request, res: Response) => {
+  environment.user_email = req.body.email
+
   User.findOne({
     user_email: req.body.email,
   })

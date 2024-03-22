@@ -1,22 +1,67 @@
 import { Document } from 'mongodb'
 import { Error } from 'mongoose'
 import { IPSLogModel } from '../models/IPSLogSchema.js'
+import { environment } from '../../environment.js'
+import { User } from '../models/userSchema.js'
 
 /* Runs mongoose function to get all records from the database */
 export async function getAllRecordsFromDB() {
-  var records = await IPSLogModel.find(function (err, docs) {
-    if (err) {
-      throw err
-    } else {
-      if (docs) {
-        console.log('Found all records.')
+  var signed_in_user = await User.findOne(
+    { user_email: environment.user_email },
+    (err: Error, doc: Document) => {
+      if (err) {
+        throw err
       } else {
-        console.log('No records found.')
+        if (doc) {
+          console.log('Found ' + doc)
+        } else {
+          console.log(
+            'Could not find user with email: ' + environment.user_email,
+          )
+        }
       }
-    }
-  }).clone()
+    },
+  ).clone()
 
-  return records
+  if (signed_in_user != null && signed_in_user.role == 'admin') {
+    console.log('🍎 I am admin')
+    var records = await IPSLogModel
+      .find(function (err, docs) {
+        if (err) {
+          throw err
+        } else {
+          if (docs) {
+            console.log('Found all records.')
+          } else {
+            console.log('No records found.')
+          }
+        }
+      })
+      .clone()
+    return records
+  } else if (signed_in_user != null && signed_in_user.role == 'provider') {
+    console.log('🍎 I am provider')
+    var my_records = await IPSLogModel
+      .find(
+        { user_email: environment.user_email },
+        (err: Error, doc: Document) => {
+          if (err) {
+            throw err
+          } else {
+            if (doc) {
+              console.log('Found ' + doc)
+            } else {
+              console.log(
+                'Could not find records with user email: ' +
+                  environment.user_email,
+              )
+            }
+          }
+        },
+      )
+      .clone()
+    return my_records
+  }
 }
 
 /* Runs mongoose function to find a specific record */
@@ -42,6 +87,7 @@ export async function getRecordFromDB(id: string) {
 /* Runs mongoose function to add an entire record to the database */
 export async function addRecordToDB(body: object) {
   var record = new IPSLogModel(body)
+  record.user_email = environment.user_email
   var status = await IPSLogModel.findOne(body, (err: Error, doc: Document) => {
     if (err) {
       throw err

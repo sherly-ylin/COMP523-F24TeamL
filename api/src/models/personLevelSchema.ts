@@ -25,6 +25,7 @@ const personLevelSchema = new mongoose.Schema({
   cert_degree: String,
   full_or_part: String,
   hours: Number,
+  user_email: String,
 })
 
 export const personLevelModel = mongoose.model(

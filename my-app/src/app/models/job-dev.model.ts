@@ -8,6 +8,7 @@ export class JobDev {
     date_of_contact?: String;
     nature_of_visit?: String;
     visit_desc?: String;
+    user_email?: String;
 }
 
 export const JobColumns = [

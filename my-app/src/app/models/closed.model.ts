@@ -5,6 +5,7 @@ export class Closed {
     employment_status?: String;
     engagement_activities?: [String];
     closure_reason?: [String];
+    user_email?: String
 }
 
 export const ClosedColumns = [

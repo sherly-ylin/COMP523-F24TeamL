@@ -13,6 +13,7 @@ const staffingSchema = new mongoose.Schema({
   end_date: String,
   hours_worked: Number,
   IPS_training: [String],
+  user_email: String,
 })
 
 export const staffingModel = mongoose.model('staffing_level', staffingSchema)

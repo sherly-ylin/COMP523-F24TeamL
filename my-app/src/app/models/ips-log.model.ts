@@ -6,6 +6,7 @@ export class IpsLog {
     team_hours_spent?: Number;
     community_hours_spent?: Number;
     train_PTO_hours_spent?: Number;
+    user_email?: String;
 }
 
 export const IPSColumns = [

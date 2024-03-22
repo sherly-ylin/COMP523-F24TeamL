@@ -4,9 +4,11 @@ import { Observable } from 'rxjs';
 
 
 export interface User {
+  username: string;
   id: number | null;
   email: string;
   password: string;
+  role: string;
 }
 
 @Injectable({

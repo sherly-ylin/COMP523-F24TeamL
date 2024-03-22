@@ -1,6 +1,7 @@
 import { APP_ID, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from 'src/app/auth.service';
 
 @Component({
   selector: 'app-sign-up-page',
@@ -15,7 +16,7 @@ export class SignUpPageComponent {
   match: boolean = true;
   isProvider: boolean = false;
 
-  constructor(private router: Router, private http: HttpClient){
+  constructor(private router: Router, private http: HttpClient, private authService: AuthService){
     this.email = "";
     this.password = "";
     this.password2 = "";

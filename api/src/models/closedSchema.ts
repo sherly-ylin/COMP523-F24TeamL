@@ -8,6 +8,7 @@ const closedSchema = new mongoose.Schema({
   employment_status: String,
   engagement_activities: [String],
   closure_reason: [String],
+  user_email: String,
 })
 
 // Create a model

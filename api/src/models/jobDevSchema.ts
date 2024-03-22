@@ -11,6 +11,7 @@ const jobDevSchema = new mongoose.Schema({
   date_of_contact: String,
   nature_of_visit: String,
   visit_desc: String,
+  user_email: String,
 })
 
 // Create a model

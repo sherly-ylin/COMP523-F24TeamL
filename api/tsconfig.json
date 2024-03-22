@@ -6,6 +6,6 @@
     "module": "ES2022",
     "moduleResolution": "bundler"
   },
-  "include": ["src", "__tests__"],
+  "include": ["src", "__tests__", "environment.ts"],
   "exclude": ["node_modules"]
 }
