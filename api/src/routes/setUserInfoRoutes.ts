@@ -8,7 +8,7 @@ export const setUserInfo = async (req: Request, res: Response) => {
     const filter = { user_email: email }
     const replacementDocument = {
       $set: {
-        user_fame: req.body.firstName,
+        user_fname: req.body.firstName,
         user_lname: req.body.lastName,
       },
     }

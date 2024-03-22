@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 
 const staffingSchema = new mongoose.Schema({
+  uid: String,
   agency_name: String,
   eval_dates: [String],
   date_completed: String,

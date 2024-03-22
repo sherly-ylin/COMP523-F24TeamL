@@ -51,7 +51,7 @@ router.delete('/closed', closedController.deleteAllRecords)
 
 /* Staffing Routes */
 router.get('/staffing', staffingController.getAllRecords)
-router.get('/staffing/:id', staffingController.getRecord)
+router.get('/staffing/:id', staffingController.getMyRecords)
 router.post('/staffing', staffingController.addRecord)
 router.patch('/staffing/:id', staffingController.updateRecord)
 router.delete('/staffing/:id', staffingController.deleteRecord)

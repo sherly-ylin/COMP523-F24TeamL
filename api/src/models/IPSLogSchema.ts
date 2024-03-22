@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 
 const IPSSchema = new mongoose.Schema({
+  uid: String,
   staff_name: String,
   time_period: String,
   work_week: String,

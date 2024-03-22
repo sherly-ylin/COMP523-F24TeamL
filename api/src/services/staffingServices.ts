@@ -39,6 +39,25 @@ export async function getRecordFromDB(id: string) {
   return record
 }
 
+/* Runs mongoose function to find records provided by this provide */
+export async function getMyRecordsFromDB(id: string) {
+  var record = await staffingModel
+    .findOne({ uid: id }, (err: Error, doc: Document) => {
+      if (err) {
+        throw err
+      } else {
+        if (doc) {
+          console.log('Found ' + doc)
+        } else {
+          console.log('Could not find record with uid: ' + id)
+        }
+      }
+    })
+    .clone()
+
+  return record
+}
+
 /* Runs mongoose function to add an entire record to the database */
 export async function addRecordToDB(body: any) {
   var record = new staffingModel(body)
@@ -95,7 +114,8 @@ export async function deleteRecordFromDB(id: string) {
       } else {
         if (doc) {
           console.log('Successfully deleted record :' + doc)
-        } else {
+        } else { 
+          console.log('id is ' + id)
           console.log('No record found to delete.')
         }
       }

@@ -10,6 +10,7 @@ export interface IUser {
   verified: boolean
   uniqueString: string
   roles: Array<string>
+  role: string
 }
 
 export const UserSchema = new Schema<IUser>({
@@ -27,6 +28,7 @@ export const UserSchema = new Schema<IUser>({
       ref: 'Role',
     },
   ],
+  role: String
 })
 
 export const User = model('User', UserSchema)

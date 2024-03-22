@@ -29,7 +29,7 @@ export const sendEmail = (email: any, uniqueString: string) => {
     from: '"UNC Department of Psychiatry" <hello@psychiatry.unc.edu>',
     to: email,
     subject: 'Verify your email address',
-    html: `Press <a href=http://localhost:3000/verify/${uniqueString}> here </a> to verify your email. Thanks`,
+    html: `Press <a href=http://localhost:3000/verify/${uniqueString}> here </a> to verify your email. Thanks.`,
   }
 
   Transport.sendMail(mailOptions, function (error, response) {

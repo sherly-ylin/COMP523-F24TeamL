@@ -17,6 +17,7 @@ export const signup = (req: Request, res: Response) => {
     user_fname: '',
     user_lname: '',
     uniqueString: verify.randString(),
+    role: req.body.role,
   })
 
   user.save((err, user) => {
@@ -116,6 +117,6 @@ export const signIn = (req: Request, res: Response) => {
         roles: authorities,
         accessToken: token,
       })
-      console.log(user.username)
+      console.log('username')
     })
 }

@@ -18,6 +18,23 @@ export async function getAllRecords(req: Request, res: Response) {
 }
 
 /* Get specific record controller to retrieve a record. Result variable checks for success. */
+export async function getMyRecords(req: Request, res: Response) {
+  var id = req.params.id
+  try {
+    var result = await staffingServices.getRecordFromDB(id)
+    if (result) {
+      res.status(200).jsonp(result)
+    } else {
+      res.status(200).json({ success: true, msg: 'Record not found.' })
+    }
+  } catch (e) {
+    const err = e as Error
+    console.error(err.message)
+    res.status(500).json({ success: false, msg: 'Failed to retrieve record.' })
+  }
+}
+
+/* Get specific record controller to retrieve a record. Result variable checks for success. */
 export async function getRecord(req: Request, res: Response) {
   var id = req.params.id
   try {
