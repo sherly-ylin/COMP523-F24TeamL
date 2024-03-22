@@ -110,7 +110,7 @@ export async function uploadCSVFile(req: Request, res: Response) {
   var csv = req.body
   console.log('This is the csv: ' + csv)
   try {
-    var result = await personLevelServices.uploadCSVtoDB(csv)
+    var result = await personLevelServices.uploadCSVtoDB()
     if (result) {
       res.status(200).jsonp(result)
     } else {

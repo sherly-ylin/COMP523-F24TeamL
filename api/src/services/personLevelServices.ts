@@ -4,7 +4,7 @@ import { personLevelModel } from '../models/personLevelSchema.js'
 
 /* Runs mongoose function to get all records from the database */
 export async function getAllRecordsFromDB() {
-  // uploadCSVtoDB()
+  uploadCSVtoDB()
   var records = await personLevelModel
     .find(function (err, docs) {
       if (err) {
@@ -127,9 +127,9 @@ export async function deleteAllRecordsFromDB() {
 }
 
 /* Utilizes Add Record to DB Method to upload CSV File */
-export async function uploadCSVtoDB(csvFileName: string) {
+export async function uploadCSVtoDB() {
   csvtojson()
-    .fromFile('mockDataPersonColumns.csv')
+    .fromFile('/Users/hongqianqian/Desktop/COMP 523/COMP523-TeamC/api/src/mockDataPersonColumns.csv')
     .then((csvData) => {
       for (let i: number = 0; i < csvData.length; i++) {
         addRecordToDB(csvData[i])
