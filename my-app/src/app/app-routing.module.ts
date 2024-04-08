@@ -46,6 +46,7 @@ const routes: Routes = [
   { path: 'education', component: EducationComponent },
   { path: 'employment', component: EmploymentComponent },
   { path: 'vr', component: VrComponent }, 
+  { path: 'about-us', component: AboutUsComponent },
   { path: 'inviteUser', component: InviteUserComponent },
   { path: 'zmY4KHGcqMKPjEsewQTE2QbazONxITTjSHGP2sA', component: SignUpSuperadminPageComponent },
   { path: 'dmfde3YDsBZKsNEnzLo9Q', component: SignUpAdminPageComponent },
