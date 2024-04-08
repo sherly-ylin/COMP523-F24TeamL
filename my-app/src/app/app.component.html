@@ -1,32 +1,45 @@
-
-<div class = "app-container" style = "height:100%">
-    <nav class="navbar navbar-expand navbar-dark bg-dark">
-        <div class="navbar-nav">
-            <a class="nav-item nav-link" routerLink="/"><button mat-raised-button color="primary"><img
-                        src="https://cdn-icons-png.flaticon.com/512/60/60817.png" width="30px"
-                        height="30px"></button></a>
-            <a class="nav-item nav-link" routerLink="/person"><button mat-raised-button color="primary"
-                    style="margin-left:50px;">Person Level Survey</button></a>
-            <a class="nav-item nav-link" routerLink="/closed"><button mat-raised-button color="primary"
-                    style="margin-left:50px;">Closed Survey</button></a>
-            <a class="nav-item nav-link" routerLink="/staffing"><button mat-raised-button color="primary"
-                    style="margin-left:50px;">Staffing Level Survey</button></a>
-            <a class="nav-item nav-link" routerLink="/ipslog"><button mat-raised-button color="primary"
-                    style="margin-left:50px;">IPS Log Survey</button></a>
-            <a class="nav-item nav-link" routerLink="/jobDev"><button mat-raised-button color="primary"
-                    style="margin-left:50px;">Job Development Log</button></a>
-            <a class="nav-item nav-link" routerLink="/inviteUser"><button mat-raised-button color="primary"
-                    style="margin-left:50px;">Invite User</button></a>
-            <a *ngIf="isLoggedIn()" class="nav-item nav-link" (click)="signOut()">
-                    <button class="sign-out-button" mat-raised-button color="warn">Sign Out</button>
-            </a>
-        </div>
-    </nav>
-
-
-    <!-- Main Content Container -->
-    <main>
-        <router-outlet></router-outlet>
-    </main>
-
+<div class="app-container">
+        <mat-sidenav-container class="sidenav-container">
+                <mat-sidenav #sidenav mode="side" opened="true" class="sidenav">
+                        <div class="logo">
+                                <!-- Your logo or app name here -->
+                                <h1>App Name</h1>
+                        </div>
+                        <mat-nav-list class="navigation-list">
+                                <a mat-list-item routerLink="/">
+                                        <mat-icon>home</mat-icon> Home
+                                </a>
+                                <a mat-list-item routerLink="/person">
+                                        <mat-icon>person</mat-icon> Person Level Survey
+                                </a>
+                                <a mat-list-item routerLink="/closed">
+                                        <mat-icon>lock</mat-icon> Closed Survey
+                                </a>
+                                <a mat-list-item routerLink="/staffing">
+                                        <mat-icon>people</mat-icon> Staffing Level Survey
+                                </a>
+                                <a mat-list-item routerLink="/ipslog">
+                                        <mat-icon>assignment</mat-icon> IPS Log Survey
+                                </a>
+                                <a mat-list-item routerLink="/jobDev">
+                                        <mat-icon>work</mat-icon> Job Development Log
+                                </a>
+                                <!-- Show sign out if logged in -->
+                                <a mat-list-item *ngIf="isLoggedIn()" (click)="signOut()">
+                                        <mat-icon>exit_to_app</mat-icon> Sign Out
+                                </a>
+                        </mat-nav-list>
+                        <mat-divider></mat-divider>
+                        <!-- Fixed bottom section for About Us -->
+                        <div class="bottom-section">
+                                <a mat-list-item routerLink="/about-us">
+                                        <mat-icon>info</mat-icon> About Us
+                                </a>
+                        </div>
+                </mat-sidenav>
+                <mat-sidenav-content class="sidenav-content">
+                        <!-- Main Content Here -->
+                        <router-outlet></router-outlet>
+                </mat-sidenav-content>
+        </mat-sidenav-container>
 </div>

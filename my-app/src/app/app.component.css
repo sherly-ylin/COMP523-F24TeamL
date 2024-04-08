@@ -1,10 +1,91 @@
+.app-container {
+    display: flex;
+    height: 100vh; /* Full viewport height */
+  }
+  
+  .sidenav-container {
+    display: flex;
+    flex-grow: 1; /* Allow sidenav container to fill the space */
+    height: 100%; /* Full height to match the app container */
+  }
+  
+  .sidenav {
+    width: 300px; /* Increased width of the sidenav */
+    box-shadow: 3px 0 6px rgba(0,0,0,.24);
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Needed for absolute positioning inside */
+    height: 100%;
+  }
+  
+  .mat-nav-list {
+    padding-bottom: 70px; /* Give enough space for the bottom section */
+  }
+  
+  .mat-nav-list a {
+    color: rgba(0,0,0,.87);
+    text-decoration: none;
+    padding: 15px 20px; /* Added padding around each option */
+  }
 
-app-container, main, :host {
-    height: -webkit-fill-available;
-    display: block;
+  .navigation-list .mat-list-item a {
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for background and text color */
+    color: rgba(0,0,0,.87); /* Default text color */
+    /* ... other styles ... */
+  }  
+  
+  .navigation-list a.mat-list-item:hover {
+    background: #E0E0E0; /* Background color on hover, if you want to keep it */
+    color: #56A0D3; /* Carolina blue for text color on hover */
+  }
+
+  .navigation-list a.mat-list-item:hover .mat-icon {
+    color: #56A0D3; /* Ensure icons also change color on hover */
+  }
+  
+  .mat-icon {
+    margin-right: 15px; /* Space between icon and text */
+    color: inherit; /* Icon color inherits from the text color */
+  }
+  
+  .logo h1 {
+    margin: 20px 0; /* Adjusted top and bottom margin */
+    font-size: 1.5em;
     text-align: center;
-    font-family: "Manrope", serif;
-}
-.sign-out-button {
-    margin-left: 270px; 
-}
+    padding-left: 20px; /* Align text with nav items */
+  }
+  
+  .sidenav-content {
+    flex-grow: 1; /* Take up all available space not used by the sidenav */
+    padding: 20px; /* Adjust padding as needed */
+    overflow-y: auto; /* Allows scrolling for overflow content */
+    width: calc(100% - 300px); /* Adjust the width to take the sidenav width into account */
+  }
+  
+  .bottom-section {
+    position: absolute; /* Positioned absolutely inside .sidenav */
+    bottom: 0; /* Sticks to the bottom */
+    width: 100%;
+    border-top: 1px solid rgba(255, 255, 255, 0.12); /* Optional divider line */
+  }
+  
+  .bottom-section a {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px; /* Same padding as other list items for alignment */
+  }
+  
+  /* Additional style for the sidenav to align with the provided image */
+  .mat-nav-list a {
+    border-radius: 4px; /* Optional: add rounded corners to nav items */
+  }
+  
+  /* You may want to add a transition for smooth color change */
+  .mat-nav-list a.mat-list-item {
+    transition: color 0.3s;
+  }
+  
+  .main-content {
+    height: 100%;
+    /* Add any other styles you need for your main content */
+  }

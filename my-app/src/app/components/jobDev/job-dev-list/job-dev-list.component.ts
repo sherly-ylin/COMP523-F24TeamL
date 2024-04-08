@@ -20,6 +20,10 @@ export class JobDevListComponent implements OnInit {
     this.retrieveLogs();
   }
 
+  toggleEdit(element: any): void {
+    element.isEdit = !element.isEdit;
+  }
+
   retrieveLogs(): void {
     this.JobDevService.getAll()
       .subscribe({

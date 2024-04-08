@@ -4,12 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// Import additional Angular Material modules
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
+import { MatSidenavModule } from '@angular/material/sidenav'; // Imported MatSidenavModule
+import { MatListModule } from '@angular/material/list'; // Import MatListModule for nav list
 import { SurveyModule } from "survey-angular-ui";
 
 import { AppRoutingModule } from './app-routing.module';
@@ -71,13 +74,15 @@ import { SignUpProviderPageComponent } from './components/sign-up-provider-page/
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatButtonModule,
-    SurveyModule,
     MatTableModule,
+    MatButtonModule,
     MatInputModule,
     MatIconModule,
     MatCheckboxModule,
-    MatOptionModule
+    MatOptionModule,
+    MatSidenavModule, // Added to imports
+    MatListModule, // Added to imports
+    SurveyModule
   ],
   providers: [],
   bootstrap: [AppComponent]
