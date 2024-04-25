@@ -27,9 +27,9 @@ export class AuthService {
    * @returns Event object.
    */
   
-  addUser(e: User): Observable<User> {
-    return this.http.post<User>("/api/auth/signup", e);
-  }
+  // addUser(e: User): Observable<User> {
+  //   return this.http.post<User>("/api/auth/signup", e);
+  // }
 
 
   isAdmin(): Observable<any> {

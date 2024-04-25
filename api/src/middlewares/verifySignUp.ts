@@ -30,7 +30,7 @@ export const checkDuplicateUsernameOrEmail = (
       }
 
       if (user) {
-        res.status(400).send({ message: 'Failed! Email is already in use!' })
+        res.status(400).send({ message: 'Failed! This email is already in use!' })
         return
       }
 
