@@ -13,7 +13,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSidenavModule } from '@angular/material/sidenav'; // Imported MatSidenavModule
 import { MatListModule } from '@angular/material/list'; // Import MatListModule for nav list
-import { SurveyModule } from "survey-angular-ui";
+import { SurveyModule } from 'survey-angular-ui';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -39,8 +39,6 @@ import { InviteUserComponent } from './components/invite-user/invite-user.compon
 import { SignUpSuperadminPageComponent } from './components/sign-up-superadmin-page/sign-up-superadmin-page.component';
 import { SignUpAdminPageComponent } from './components/sign-up-admin-page/sign-up-admin-page.component';
 import { SignUpProviderPageComponent } from './components/sign-up-provider-page/sign-up-provider-page.component';
-
-
 
 @NgModule({
   declarations: [
@@ -82,9 +80,9 @@ import { SignUpProviderPageComponent } from './components/sign-up-provider-page/
     MatOptionModule,
     MatSidenavModule, // Added to imports
     MatListModule, // Added to imports
-    SurveyModule
+    SurveyModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

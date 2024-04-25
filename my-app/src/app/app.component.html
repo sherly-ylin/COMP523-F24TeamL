@@ -24,7 +24,11 @@
                                 <a mat-list-item routerLink="/jobDev">
                                         <mat-icon>work</mat-icon> Job Development Log
                                 </a>
-                                <!-- Show sign out if logged in -->
+                                <!-- Show Invite User if logged in -->
+                                <a mat-list-item *ngIf="isLoggedIn()" routerLink="/inviteUser">
+                                        <mat-icon>email</mat-icon> Invite User
+                                </a>
+                                <!-- Show Sign Out if logged in -->
                                 <a mat-list-item *ngIf="isLoggedIn()" (click)="signOut()">
                                         <mat-icon>exit_to_app</mat-icon> Sign Out
                                 </a>
