@@ -1,14 +1,14 @@
-import { APP_ID, Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth.service';
 
 @Component({
-  selector: 'app-sign-up-page',
-  templateUrl: './sign-up-page.component.html',
-  styleUrls: ['./sign-up-page.component.css']
+  selector: 'app-sign-up-admin-page',
+  templateUrl: './sign-up-admin-page.component.html',
+  styleUrls: ['./sign-up-admin-page.component.css']
 })
-export class SignUpPageComponent {
+export class SignUpAdminPageComponent {
   email: string;
   password: string;
   password2: string;
@@ -36,7 +36,7 @@ export class SignUpPageComponent {
         if (this.isProvider) {
           role = 'provider'
         }
-        this.http.post('http://localhost:3000/api/auth/signup', {
+        this.http.post('http://localhost:3000/api/auth/signupAdmin', {
           username: username,
           roles: ['user'],
           email: this.email,
