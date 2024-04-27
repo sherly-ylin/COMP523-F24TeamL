@@ -24,7 +24,7 @@ export class PersonListComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.dataSource = data;
-          console.log(data)
+          console.log(data);
         },
         error: (e) => console.error(e)
       });
