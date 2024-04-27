@@ -3,7 +3,7 @@
                 <mat-sidenav #sidenav mode="side" opened="true" class="sidenav">
                         <div class="logo">
                                 <!-- Your logo or app name here -->
-                                <h1>App Name</h1>
+                                <h1>eIPS Fidelity</h1>
                         </div>
                         <mat-nav-list class="navigation-list">
                                 <a mat-list-item routerLink="/">
@@ -28,6 +28,11 @@
                                 <a mat-list-item *ngIf="isLoggedIn()" routerLink="/inviteUser">
                                         <mat-icon>email</mat-icon> Invite User
                                 </a>
+                                <!-- Show Sign Out if logged in -->
+                                <!-- Show Invite User if logged in -->
+                                <a mat-list-item *ngIf="isLoggedIn()" routerLink="inviteUser">
+                                        <mat-icon>email</mat-icon> Invite User
+                                </a>        
                                 <!-- Show Sign Out if logged in -->
                                 <a mat-list-item *ngIf="isLoggedIn()" (click)="signOut()">
                                         <mat-icon>exit_to_app</mat-icon> Sign Out

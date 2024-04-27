@@ -7,14 +7,6 @@
     <h2 style="margin-bottom: 15px">Sign up</h2>
 
     <div class="form-content">
-      <!-- <div class="field">
-                <h3>Name:</h3>
-                <input type="text" [(ngModel)]="email" name="email">
-                <div *ngIf="submitted && !email" class="error">
-                    A valid email address is required!
-                </div>
-            </div> -->
-
       <div class="field">
         <h3>Email:</h3>
         <input type="text" [(ngModel)]="email" name="email" />
@@ -38,10 +30,6 @@
           Passwords do not match!
         </div>
       </div>
-
-      <!-- <div class="field">
-        <input type="checkbox" [checked]="isProvider" (change)="isProvider = !isProvider" /> Sign Up as Provider
-      </div> -->
 
       <div class="field">
         <button type="submit">Sign Up</button>

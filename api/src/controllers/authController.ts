@@ -143,7 +143,7 @@ export const invite = async (req: Request, res: Response) => {
   ).clone()
 
   if (signed_in_user != null && (signed_in_user.role != 'superadmin')) {
-    res.status(500).send({ message: `You are a ${signed_in_user.role}, not a superadmin, so you can't invite other users` })
+    res.status(500).send({ message: `You are a ${signed_in_user.role}, not a superadmin, so you can't invite other users.` })
     return;
   }
 

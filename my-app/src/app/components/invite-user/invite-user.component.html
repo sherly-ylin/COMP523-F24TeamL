@@ -1,23 +1,25 @@
-<form (ngSubmit)="onSubmit()">
-    <h2 style="margin-bottom: 15px">Invite User</h2>
-
-    <div class="form-content">
-        <div class="field">
-            <h3>Email:</h3>
-            <input type="text" [(ngModel)]="email" name="email"/>
-            <div *ngIf="submitted && !email" class="error">
-                A valid email address is required!
+<div class="invite-user-page">
+    <form (ngSubmit)="onSubmit()">
+        <h2 style="margin-bottom: 15px">Invite User</h2>
+    
+        <div class="form-content">
+            <div class="field">
+                <h3>Email:</h3>
+                <input type="text" [(ngModel)]="email" name="email"/>
+                <div *ngIf="submitted && !email" class="error">
+                    A valid email address is required!
+                </div>
+            </div>
+    
+            <div class="field">
+                <mat-checkbox [checked]="isSuperadmin" (change)="isSuperadmin = !isSuperadmin">Invite Superadmin</mat-checkbox>
+                <mat-checkbox [checked]="isAdmin" (change)="isAdmin = !isAdmin">Invite Admin</mat-checkbox>
+                <mat-checkbox [checked]="isProvider" (change)="isProvider = !isProvider">Invite Provider</mat-checkbox>
+            </div>
+    
+            <div class="invite-button">
+                <button type="submit">Send Invite Email</button>
             </div>
         </div>
-
-        <div class="field">
-            <input type="checkbox" [checked]="isSuperadmin" (change)="isSuperadmin = !isSuperadmin" /> Invite Superadmin
-            <input type="checkbox" [checked]="isAdmin" (change)="isAdmin = !isAdmin" /> Invite Admin
-            <input type="checkbox" [checked]="isProvider" (change)="isProvider = !isProvider" /> Invite Provider
-        </div>
-
-        <div class="field">
-            <button type="submit">Send Invite Email</button>
-        </div>
-    </div>
-</form>
+    </form>
+</div>
