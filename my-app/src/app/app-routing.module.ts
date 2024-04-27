@@ -20,7 +20,6 @@ import { LoginPageComponent } from './components/login-page/login-page.component
 import { SignUpPageComponent } from './components/sign-up-page/sign-up-page.component';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { AuthGuard } from './auth.guard';
-import { AppComponent } from './app.component';
 import { AuthGuard2 } from './auth.guard.2';
 import { SignUpSuperadminPageComponent } from './components/sign-up-superadmin-page/sign-up-superadmin-page.component';
 import { SignUpAdminPageComponent } from './components/sign-up-admin-page/sign-up-admin-page.component';
@@ -31,30 +30,53 @@ const routes: Routes = [
   { path: '', canActivate: [AuthGuard], component: LoginPageComponent },
   { path: 'home', component: HomepageComponent },
   { path: 'signup', component: SignUpPageComponent },
-  { path: 'closed', canActivate: [AuthGuard2],component: ClosedListComponent },
-  { path: 'addClosed', canActivate: [AuthGuard2], component: AddClosedComponent },
+  { path: 'closed', canActivate: [AuthGuard2], component: ClosedListComponent },
+  {
+    path: 'addClosed',
+    canActivate: [AuthGuard2],
+    component: AddClosedComponent,
+  },
   { path: 'jobDev', canActivate: [AuthGuard2], component: JobDevListComponent },
-  { path: 'addjobDev', canActivate: [AuthGuard2], component: AddJobDevComponent },
+  {
+    path: 'addjobDev',
+    canActivate: [AuthGuard2],
+    component: AddJobDevComponent,
+  },
   { path: 'person', canActivate: [AuthGuard2], component: PersonListComponent },
-  { path: 'addPerson', canActivate: [AuthGuard2], component: AddPersonComponent },
+  {
+    path: 'addPerson',
+    canActivate: [AuthGuard2],
+    component: AddPersonComponent,
+  },
   { path: 'ipslog', canActivate: [AuthGuard2], component: IpslogListComponent },
   { path: 'addIPS', canActivate: [AuthGuard2], component: AddIpslogComponent },
-  { path: 'staffing',canActivate: [AuthGuard2], component: StaffingListComponent },
-  { path: 'addStaffing', canActivate: [AuthGuard2], component: AddStaffingComponent },
+  {
+    path: 'staffing',
+    canActivate: [AuthGuard2],
+    component: StaffingListComponent,
+  },
+  {
+    path: 'addStaffing',
+    canActivate: [AuthGuard2],
+    component: AddStaffingComponent,
+  },
   { path: 'demographics', component: DemographicsComponent },
   { path: 'clinical', component: ClinicalComponent },
   { path: 'education', component: EducationComponent },
   { path: 'employment', component: EmploymentComponent },
-  { path: 'vr', component: VrComponent }, 
+  { path: 'vr', component: VrComponent },
   { path: 'about-us', component: AboutUsComponent },
   { path: 'inviteUser', component: InviteUserComponent },
-  { path: 'zmY4KHGcqMKPjEsewQTE2QbazONxITTjSHGP2sA', component: SignUpSuperadminPageComponent },
+  {
+    path: 'zmY4KHGcqMKPjEsewQTE2QbazONxITTjSHGP2sA',
+    component: SignUpSuperadminPageComponent,
+  },
   { path: 'dmfde3YDsBZKsNEnzLo9Q', component: SignUpAdminPageComponent },
-  { path: '9be6A5Vv7HVV0ojFI4Izfw', component: SignUpProviderPageComponent }
+  { path: '9be6A5Vv7HVV0ojFI4Izfw', component: SignUpProviderPageComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

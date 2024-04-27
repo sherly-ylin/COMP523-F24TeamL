@@ -45,7 +45,7 @@ export class SignUpPageComponent {
         }).subscribe(response => {
           console.log(response);
           alert("Verification email sent. Please check your inbox.")
-          this.router.navigate(['./']);
+          this.router.navigate(['']);
         }, error => {
           alert(error.error.message);
           console.error(error);
