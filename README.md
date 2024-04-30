@@ -55,22 +55,31 @@ We recommend cloning and accessing the repo through [GitHub Desktop](https://des
 Once you have the repo...
 
 > Open the repo in whatever IDE you choose to use
-> To download all dependencies needed
-> Upon completion, open another terminal and in one terminal run...
+> To download all dependencies needed for frontend, open a terminal and run...
+```shell
+cd my-app
+npm install
+```
+> To download all dependencies needed for backend, open a terminal and run...
+```shell
+cd api
+npm install
+```
+> Upon completion, open a terminal and run
 
 ```shell
 cd api
 npx tsx src/app.ts
 ```
 
-> To start up the API. Make sure you have you MongoDB server running
-> In the other terminal run...
+> To start the backend server. Make sure you have you MongoDB server running.
+> In another terminal, run...
 
 ```shell
 cd my-app
 ng serve
 ```
 
-> And open it in your `localhost` browser
+> And open it in your `localhost` browser.
 
 **More detailed breakdown of the application was provided to the client.**
