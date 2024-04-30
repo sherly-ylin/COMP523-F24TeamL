@@ -84,7 +84,6 @@ brew services start mongodb-community@7.0
 ```
 > Now you can open the web page in your `localhost` browser.
 
-
 > To stop the MongoDB server:
 ```shell
 brew services stop mongodb-community@7.0
