@@ -72,22 +72,24 @@ npm install
 cd api
 npx tsx src/app.ts
 ```
-> In another terminal, run:
+> In another terminal, run the following to start the frontend server:
 
 ```shell
 cd my-app
 ng serve
 ```
-> Make sure you have you MongoDB server running.
+> Make sure you have you MongoDB server running as well:
 ```shell
 brew services start mongodb-community@7.0
 ```
+> And open the web page in your `localhost` browser.
+
 > To stop the MongoDB server:
 ```shell
 brew services stop mongodb-community@7.0
 ```
 
 
-> And open it in your `localhost` browser.
+
 
 **More detailed breakdown of the application was provided to the client.**
