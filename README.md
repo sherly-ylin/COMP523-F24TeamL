@@ -56,30 +56,37 @@ Once you have the repo...
 
 > Open the repo in whatever IDE you choose to use
 
-> To download all dependencies needed for frontend, open a terminal and run...
+> To download all dependencies needed for frontend, open a terminal and run:
 ```shell
 cd my-app
 npm install
 ```
-> To download all dependencies needed for backend, open a terminal and run...
+> To download all dependencies needed for backend, open a terminal and run:
 ```shell
 cd api
 npm install
 ```
-> Upon completion, open a terminal and run
+> Upon completion, open a terminal and run the following to start the backend server:
 
 ```shell
 cd api
 npx tsx src/app.ts
 ```
-
-> To start the backend server. Make sure you have you MongoDB server running.
-> In another terminal, run...
+> In another terminal, run:
 
 ```shell
 cd my-app
 ng serve
 ```
+> Make sure you have you MongoDB server running.
+```shell
+brew services start mongodb-community@7.0
+```
+> To stop the MongoDB server:
+```shell
+brew services stop mongodb-community@7.0
+```
+
 
 > And open it in your `localhost` browser.
 
