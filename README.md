@@ -55,6 +55,7 @@ We recommend cloning and accessing the repo through [GitHub Desktop](https://des
 Once you have the repo...
 
 > Open the repo in whatever IDE you choose to use
+
 > To download all dependencies needed for frontend, open a terminal and run...
 ```shell
 cd my-app
