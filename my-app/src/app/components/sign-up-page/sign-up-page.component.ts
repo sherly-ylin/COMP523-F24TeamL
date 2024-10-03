@@ -14,34 +14,37 @@ export class SignUpPageComponent {
   password2: string;
   submitted: boolean = false;
   match: boolean = true;
-  isProvider: boolean;
+  role: string = "";
 
   constructor(private router: Router, private http: HttpClient, private authService: AuthService){
     this.email = "";
     this.password = "";
     this.password2 = "";
-    this.isProvider = false;
+  }
+  
+  private checkPermission(){
+
   }
 
   public onSubmit(){
       this.submitted = true;
+      // random usernames?
       const username = "Test " + Math.floor(Math.random() * 100);
-      
+
       if(this.password != this.password2) {
         this.match = false;
       }
       if(this.match == true && this.email && this.password) {
         //api post sign up
-        let role = 'admin'
-        if (this.isProvider) {
-          role = 'provider'
-        }
-        this.http.post('http://localhost:3000/api/auth/signup', {
+        //need to check permission string to confirm user identity
+        this.checkPermissionString();
+      
+        this.http.post('http://localhost:3000/api/auth/signup'+ this.role, {
           username: username,
           roles: ['user'],
           email: this.email,
           password: this.password,
-          role: role
+          role: this.role
         }).subscribe(response => {
           console.log(response);
           alert("Verification email sent. Please check your inbox.")
@@ -52,5 +55,23 @@ export class SignUpPageComponent {
         });
         
       }
+  }
+
+  private checkPermissionString(): boolean{
+
+    // Check invite permission string
+
+    if (true){
+      // this.isProvider = true;
+      // this.isEvaluator = true;
+      // this.isAdmin = true;
+      // this.role = "Admin";     // currently 'Superadmin'
+      // this.role = "Evaluator"; //currently 'Admin'
+      // this.role = "Provider";
+
+    }
+    
+
+    return false;
   }
 }
