@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddIpslogComponent } from './components/ips/add-ipslog/add-ipslog.component';
-import { HomepageComponent } from './components/homepage/homepage.component';
+import { HomeComponent } from './components/home/home.component';
 import { IpslogListComponent } from './components/ips/ipslog-list/ipslog-list.component';
 import { ClosedListComponent } from './components/closed/closed-list/closed-list.component';
 import { AddClosedComponent } from './components/closed/add-closed/add-closed.component';
-import { JobDevListComponent } from './components/jobDev/job-dev-list/job-dev-list.component';
-import { AddJobDevComponent } from './components/jobDev/add-job-dev/add-job-dev.component';
+import { JobDevListComponent } from './components/job-dev/job-dev-list/job-dev-list.component';
+import { AddJobDevComponent } from './components/job-dev/add-job-dev/add-job-dev.component';
 import { PersonListComponent } from './components/person/person-list/person-list.component';
 import { DemographicsComponent } from './components/person/person-list/demographics/demographics.component';
 import { ClinicalComponent } from './components/person/person-list/clinical/clinical.component';
@@ -16,7 +16,7 @@ import { VrComponent } from './components/person/person-list/vr/vr.component';
 import { AddPersonComponent } from './components/person/add-person/add-person.component';
 import { StaffingListComponent } from './components/staffing/staffing-list/staffing-list.component';
 import { AddStaffingComponent } from './components/staffing/add-staffing/add-staffing.component';
-import { LoginPageComponent } from './components/login-page/login-page.component';
+import { LoginComponent } from './components/login/login.component';
 import { SignUpPageComponent } from './components/sign-up-page/sign-up-page.component';
 import { AuthGuard } from './auth.guard';
 import { SignUpSuperadminPageComponent } from './components/sign-up-superadmin-page/sign-up-superadmin-page.component';
@@ -27,9 +27,9 @@ import { InviteUserComponent } from './components/invite-user/invite-user.compon
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', 
-    component: LoginPageComponent },
+    component: LoginComponent },
   { path: 'home', 
-    component: HomepageComponent },
+    component: HomeComponent },
   { path: 'signup', component: SignUpPageComponent },
   { path: 'closed', 
     // canActivate: [AuthGuard], 
