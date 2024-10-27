@@ -38,38 +38,27 @@ const routes: Routes = [
         path: 'closed',
         // canActivate: [AuthGuard],
         component: ClosedListComponent,
-        children: [
-          {
-            path: 'addClosed',
-            // canActivate: [AuthGuard],
-            component: AddClosedComponent,
-          },
-        ],
       },
-
+      {
+        path: 'addClosed',
+        // canActivate: [AuthGuard],
+        component: AddClosedComponent,
+      },
       {
         path: 'jobDev',
         // canActivate: [AuthGuard],
         component: JobDevListComponent,
-        children: [
-          {
-            path: 'addjobDev',
-            // canActivate: [AuthGuard],
-            component: AddJobDevComponent,
-          },
-        ],
       },
-
+      {
+        path: 'addjobDev',
+        // canActivate: [AuthGuard],
+        component: AddJobDevComponent,
+      },
       {
         path: 'person',
         // canActivate: [AuthGuard],
         component: PersonListComponent,
         children: [
-          {
-            path: 'addPerson',
-            // canActivate: [AuthGuard],
-            component: AddPersonComponent,
-          },
           { path: 'demographics', component: DemographicsComponent },
           { path: 'clinical', component: ClinicalComponent },
           { path: 'education', component: EducationComponent },
@@ -79,32 +68,33 @@ const routes: Routes = [
         ],
       },
       {
+        path: 'addPerson',
+        // canActivate: [AuthGuard],
+        component: AddPersonComponent,
+      },
+      {
         path: 'ipslog',
         // canActivate: [AuthGuard],
         component: IpslogListComponent,
-        children: [
-          {
-            path: 'addIPS',
-            // canActivate: [AuthGuard],
-            component: AddIpslogComponent,
-          },
-        ],
       },
-
+      {
+        path: 'addIPS',
+        // canActivate: [AuthGuard],
+        component: AddIpslogComponent,
+      },
       {
         path: 'staffing',
         // canActivate: [AuthGuard],
         component: StaffingListComponent,
-        children: [
-          {
-            path: 'addStaffing',
-            // canActivate: [AuthGuard],
-            component: AddStaffingComponent,
-          },
-        ],
+      },
+      {
+        path: 'addStaffing',
+        // canActivate: [AuthGuard],
+        component: AddStaffingComponent,
       },
     ],
   },
+
   {
     path: 'zmY4KHGcqMKPjEsewQTE2QbazONxITTjSHGP2sA',
     component: SignUpSuperadminPageComponent,
