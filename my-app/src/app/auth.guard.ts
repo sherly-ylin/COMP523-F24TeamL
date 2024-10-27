@@ -11,10 +11,10 @@ export class AuthGuard implements CanActivate {
     const token = localStorage.getItem('accessToken');
     if (token) {
       // Token exists, user is logged in
-      this.router.navigate(['/home']);
-      return false;
-    } else {
       return true;
+    } else {
+      this.router.navigate(['/login']);
+      return false;
     }
   }
 }
