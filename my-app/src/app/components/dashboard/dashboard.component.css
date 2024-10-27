@@ -1,0 +1,92 @@
+.logo-item {
+  text-align: center;
+}
+
+.sidenav-container {
+  display: flex;
+  flex-grow: 1;
+  height: 100%;
+  font-size: 14px;
+}
+
+.sidenav {
+  display: flex;
+  height: 100%;
+  width: max-content;
+  box-shadow: 3px 0 6px rgba(0, 0, 0, 0.24);
+  flex-direction: column;
+  position: relative;
+}
+
+.mat-nav-list {
+  padding-bottom: 70px;
+}
+
+.mat-nav-list a {
+  color: rgba(0, 0, 0, 0.87);
+  text-decoration: none;
+  padding: 15px 20px;
+  width: max-content;
+  align-items: center
+  justif;
+}
+
+.logo{
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+#title {
+  text-align: center;
+  font: 2em bold;
+  text-align: center;
+  padding: 20px;
+}
+.navigation-list .mat-list-item a {
+  transition: background-color 0.3s, color 0.3s;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.navigation-list a.mat-list-item:hover {
+  background: #e0e0e0;
+  color: #56a0d3;
+}
+
+.navigation-list a.mat-list-item:hover .mat-icon {
+  color: #56a0d3;
+}
+
+.mat-icon {
+  margin-right: 15px;
+  color: inherit;
+}
+
+
+
+.sidenav-content {
+    margin: 0px !important;
+    width: calc(100% - 300px); 
+    padding: 20px; 
+    overflow-y: auto; 
+  }
+
+.bottom-section {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.bottom-section a {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+}
+
+.mat-nav-list a {
+  border-radius: 4px; /* Optional: add rounded corners to nav items */
+}
+
+.mat-nav-list a.mat-list-item {
+  transition: color 0.3s;
+}

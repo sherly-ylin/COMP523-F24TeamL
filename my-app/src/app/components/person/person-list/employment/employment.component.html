@@ -1,6 +1,6 @@
 <div class="list row">
     <div class="center">
-        <a routerLink="/person"><button mat-raised-button color="primary">Return to person level</button></a>
+        <a routerLink="person"><button mat-raised-button color="primary">Return to person level</button></a>
 
         <h4>Employment Logs</h4>
 
@@ -8,7 +8,7 @@
         <table mat-table [dataSource]="dataSource">
             <ng-container [matColumnDef]="col.key" *ngFor="let col of columnsSchema">
                 <th mat-header-cell *matHeaderCellDef>
-                    <a routerLink="/more">{{ col.label }}</a>
+                    <a routerLink="more">{{ col.label }}</a>
                 </th>
                 <td mat-cell *matCellDef="let element">
                     <div [ngSwitch]="col.type" *ngIf="!element.isEdit">

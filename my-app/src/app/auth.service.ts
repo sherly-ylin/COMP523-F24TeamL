@@ -45,6 +45,9 @@ export class AuthService {
     });
   }
 
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('accessToken');
+  }
 
   /**
    * Adds a user to user array.

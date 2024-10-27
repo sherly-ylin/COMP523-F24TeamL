@@ -1,20 +1,22 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from './auth.service';
+import { AuthService } from 'src/app/auth.service';
 
 @Component({
-  selector: 'app-root',
-  template:'<router-outlet></router-outlet>'
-  // templateUrl: './app.component.html',
-  // styleUrls: ['./app.component.css']
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
-export class AppComponent{
-  title = 'ips';
+export class DashboardComponent {
   authenticated = false;
   constructor(
     private router: Router,
     private authService: AuthService) {
-    this.authenticated = authService.isLoggedIn();
+    this.authenticated = this.isLoggedIn();
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('accessToken');
   }
 
   signOut(): void {
@@ -22,5 +24,4 @@ export class AppComponent{
     this.router.navigate(['']); // Navigate to login after sign out
   }
 
-  
 }

@@ -23,60 +23,88 @@ import { SignUpSuperadminPageComponent } from './components/sign-up-superadmin-p
 import { SignUpAdminPageComponent } from './components/sign-up-admin-page/sign-up-admin-page.component';
 import { SignUpProviderPageComponent } from './components/sign-up-provider-page/sign-up-provider-page.component';
 import { InviteUserComponent } from './components/invite-user/invite-user.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'login', 
-    component: LoginComponent },
-  { path: 'home', 
-    component: HomeComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignUpPageComponent },
-  { path: 'closed', 
-    // canActivate: [AuthGuard], 
-    component: ClosedListComponent },
   {
-    path: 'addClosed',
-    // canActivate: [AuthGuard],
-    component: AddClosedComponent,
+    path: 'dashboard',
+    component: DashboardComponent,
+    children: [
+      { path: 'home', component: HomeComponent },
+      {
+        path: 'closed',
+        // canActivate: [AuthGuard],
+        component: ClosedListComponent,
+        children: [
+          {
+            path: 'addClosed',
+            // canActivate: [AuthGuard],
+            component: AddClosedComponent,
+          },
+        ],
+      },
+
+      {
+        path: 'jobDev',
+        // canActivate: [AuthGuard],
+        component: JobDevListComponent,
+        children: [
+          {
+            path: 'addjobDev',
+            // canActivate: [AuthGuard],
+            component: AddJobDevComponent,
+          },
+        ],
+      },
+
+      {
+        path: 'person',
+        // canActivate: [AuthGuard],
+        component: PersonListComponent,
+        children: [
+          {
+            path: 'addPerson',
+            // canActivate: [AuthGuard],
+            component: AddPersonComponent,
+          },
+          { path: 'demographics', component: DemographicsComponent },
+          { path: 'clinical', component: ClinicalComponent },
+          { path: 'education', component: EducationComponent },
+          { path: 'employment', component: EmploymentComponent },
+          { path: 'vr', component: VrComponent },
+          { path: 'inviteUser', component: InviteUserComponent },
+        ],
+      },
+      {
+        path: 'ipslog',
+        // canActivate: [AuthGuard],
+        component: IpslogListComponent,
+        children: [
+          {
+            path: 'addIPS',
+            // canActivate: [AuthGuard],
+            component: AddIpslogComponent,
+          },
+        ],
+      },
+
+      {
+        path: 'staffing',
+        // canActivate: [AuthGuard],
+        component: StaffingListComponent,
+        children: [
+          {
+            path: 'addStaffing',
+            // canActivate: [AuthGuard],
+            component: AddStaffingComponent,
+          },
+        ],
+      },
+    ],
   },
-  { path: 'jobDev', 
-    // canActivate: [AuthGuard], 
-    component: JobDevListComponent },
-  {
-    path: 'addjobDev',
-    // canActivate: [AuthGuard],
-    component: AddJobDevComponent,
-  },
-  { path: 'person', 
-    // canActivate: [AuthGuard], 
-    component: PersonListComponent },
-  {
-    path: 'addPerson',
-    // canActivate: [AuthGuard],
-    component: AddPersonComponent,
-  },
-  { path: 'ipslog', 
-    // canActivate: [AuthGuard], 
-    component: IpslogListComponent },
-  { path: 'addIPS', 
-    // canActivate: [AuthGuard], 
-    component: AddIpslogComponent },
-  {
-    path: 'staffing',
-    // canActivate: [AuthGuard],
-    component: StaffingListComponent,
-  },
-  {
-    path: 'addStaffing',
-    // canActivate: [AuthGuard],
-    component: AddStaffingComponent,
-  },
-  { path: 'demographics', component: DemographicsComponent },
-  { path: 'clinical', component: ClinicalComponent },
-  { path: 'education', component: EducationComponent },
-  { path: 'employment', component: EmploymentComponent },
-  { path: 'vr', component: VrComponent },
-  { path: 'inviteUser', component: InviteUserComponent },
   {
     path: 'zmY4KHGcqMKPjEsewQTE2QbazONxITTjSHGP2sA',
     component: SignUpSuperadminPageComponent,

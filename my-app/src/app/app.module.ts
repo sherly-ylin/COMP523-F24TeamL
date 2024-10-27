@@ -7,15 +7,14 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Import additional Angular Material modules
-// Import additional Angular Material modules
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatOptionModule } from '@angular/material/core';
-import { MatSidenavModule } from '@angular/material/sidenav'; // Imported MatSidenavModule
-import { MatListModule } from '@angular/material/list'; // Import MatListModule for nav list
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
 import { SurveyModule } from "survey-angular-ui";
 
 import { AppRoutingModule } from './app-routing.module';
@@ -42,6 +41,7 @@ import { InviteUserComponent } from './components/invite-user/invite-user.compon
 import { SignUpSuperadminPageComponent } from './components/sign-up-superadmin-page/sign-up-superadmin-page.component';
 import { SignUpAdminPageComponent } from './components/sign-up-admin-page/sign-up-admin-page.component';
 import { SignUpProviderPageComponent } from './components/sign-up-provider-page/sign-up-provider-page.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +68,7 @@ import { SignUpProviderPageComponent } from './components/sign-up-provider-page/
     SignUpSuperadminPageComponent,
     SignUpAdminPageComponent,
     SignUpProviderPageComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
