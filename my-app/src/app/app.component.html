@@ -1,8 +1,8 @@
 <div class="app-container">
+        <!-- <app-login-page *ngIf="!authenticated"></app-login-page> -->
         <mat-sidenav-container class="sidenav-container">
                 <mat-sidenav #sidenav mode="side" opened="true" class="sidenav">
                         <div class="logo">
-                                <!-- Your logo or app name here -->
                                 <h1>eIPS Fidelity</h1>
                         </div>
                         <mat-nav-list class="navigation-list">
@@ -42,7 +42,6 @@
                         </div>
                 </mat-sidenav>
                 <mat-sidenav-content class="sidenav-content">
-                        <!-- Main Content Here -->
                         <router-outlet></router-outlet>
                 </mat-sidenav-content>
         </mat-sidenav-container>

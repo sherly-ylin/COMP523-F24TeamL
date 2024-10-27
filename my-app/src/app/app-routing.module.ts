@@ -18,46 +18,57 @@ import { StaffingListComponent } from './components/staffing/staffing-list/staff
 import { AddStaffingComponent } from './components/staffing/add-staffing/add-staffing.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { SignUpPageComponent } from './components/sign-up-page/sign-up-page.component';
-import { AboutUsComponent } from './components/about-us/about-us.component';
 import { AuthGuard } from './auth.guard';
-import { AuthGuard2 } from './auth.guard.2';
 import { SignUpSuperadminPageComponent } from './components/sign-up-superadmin-page/sign-up-superadmin-page.component';
 import { SignUpAdminPageComponent } from './components/sign-up-admin-page/sign-up-admin-page.component';
 import { SignUpProviderPageComponent } from './components/sign-up-provider-page/sign-up-provider-page.component';
 import { InviteUserComponent } from './components/invite-user/invite-user.component';
 
 const routes: Routes = [
-  { path: '', canActivate: [AuthGuard], component: LoginPageComponent },
-  { path: 'home', component: HomepageComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'login', 
+    component: LoginPageComponent },
+  { path: 'home', 
+    component: HomepageComponent },
   { path: 'signup', component: SignUpPageComponent },
-  { path: 'closed', canActivate: [AuthGuard2], component: ClosedListComponent },
+  { path: 'closed', 
+    // canActivate: [AuthGuard], 
+    component: ClosedListComponent },
   {
     path: 'addClosed',
-    canActivate: [AuthGuard2],
+    // canActivate: [AuthGuard],
     component: AddClosedComponent,
   },
-  { path: 'jobDev', canActivate: [AuthGuard2], component: JobDevListComponent },
+  { path: 'jobDev', 
+    // canActivate: [AuthGuard], 
+    component: JobDevListComponent },
   {
     path: 'addjobDev',
-    canActivate: [AuthGuard2],
+    // canActivate: [AuthGuard],
     component: AddJobDevComponent,
   },
-  { path: 'person', canActivate: [AuthGuard2], component: PersonListComponent },
+  { path: 'person', 
+    // canActivate: [AuthGuard], 
+    component: PersonListComponent },
   {
     path: 'addPerson',
-    canActivate: [AuthGuard2],
+    // canActivate: [AuthGuard],
     component: AddPersonComponent,
   },
-  { path: 'ipslog', canActivate: [AuthGuard2], component: IpslogListComponent },
-  { path: 'addIPS', canActivate: [AuthGuard2], component: AddIpslogComponent },
+  { path: 'ipslog', 
+    // canActivate: [AuthGuard], 
+    component: IpslogListComponent },
+  { path: 'addIPS', 
+    // canActivate: [AuthGuard], 
+    component: AddIpslogComponent },
   {
     path: 'staffing',
-    canActivate: [AuthGuard2],
+    // canActivate: [AuthGuard],
     component: StaffingListComponent,
   },
   {
     path: 'addStaffing',
-    canActivate: [AuthGuard2],
+    // canActivate: [AuthGuard],
     component: AddStaffingComponent,
   },
   { path: 'demographics', component: DemographicsComponent },
@@ -65,7 +76,6 @@ const routes: Routes = [
   { path: 'education', component: EducationComponent },
   { path: 'employment', component: EmploymentComponent },
   { path: 'vr', component: VrComponent },
-  { path: 'about-us', component: AboutUsComponent },
   { path: 'inviteUser', component: InviteUserComponent },
   {
     path: 'zmY4KHGcqMKPjEsewQTE2QbazONxITTjSHGP2sA',

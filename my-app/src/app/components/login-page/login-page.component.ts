@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from 'src/app/auth.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 interface LoginResponse {
   accessToken: string;
@@ -14,30 +16,28 @@ interface LoginResponse {
 })
 
 export class LoginPageComponent {
-  email = '';
-  password = '';
-  submitted = false;
+  email = new FormControl('', [Validators.required, Validators.email]);
+  password = new FormControl('', [Validators.required]);
+  
+  public signInForm = this.formBuilder.group({
+    email: this.email,
+    password: this.password
+  })
 
-  constructor(private router: Router, private http: HttpClient) { }
+  constructor(
+    public authService: AuthService,
+    private router: Router, 
+    private http: HttpClient,
+    protected formBuilder: FormBuilder) { 
+      this.signInForm.setValue({
+        email: this.email.value,
+        password: this.password.value
+      })
+    }
 
   public onSubmit() {
-    this.submitted = true;
-
-    if (this.email && this.password) {
-      this.http.post<LoginResponse>('http://localhost:3000/api/auth/signin', {
-        email: this.email,
-        password: this.password
-      }).subscribe(response => {
-        console.log(response);
-        localStorage.setItem('accessToken', response.accessToken);
-        const value = localStorage.getItem('accessToken');
-        console.log(value); // Should log 'testValue' if successful
-     
-        this.router.navigate(['./home']);
-      }, error => {
-        alert(error.error.message);
-        console.error(error);
-      });
+    if (this.signInForm.valid) {
+      this.authService.signIn(this.email.value??'', this.password.value??'');
     }
   }
 }

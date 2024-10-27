@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+// import { AuthModule } from '@auth0/auth0-angular';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Import additional Angular Material modules
@@ -82,6 +84,7 @@ import { SignUpProviderPageComponent } from './components/sign-up-provider-page/
     MatSidenavModule, // Added to imports
     MatListModule, // Added to imports
     SurveyModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
