@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Import additional Angular Material modules
@@ -41,49 +41,42 @@ import { SignUpSuperadminPageComponent } from './components/sign-up-superadmin-p
 import { SignUpAdminPageComponent } from './components/sign-up-admin-page/sign-up-admin-page.component';
 import { SignUpProviderPageComponent } from './components/sign-up-provider-page/sign-up-provider-page.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    AddIpslogComponent,
-    IpslogListComponent,
-    HomepageComponent,
-    AddJobDevComponent,
-    JobDevListComponent,
-    PersonListComponent,
-    ClosedListComponent,
-    StaffingListComponent,
-    AddPersonComponent,
-    AddStaffingComponent,
-    AddClosedComponent,
-    DemographicsComponent,
-    VrComponent,
-    ClinicalComponent,
-    EmploymentComponent,
-    EducationComponent,
-    LoginPageComponent,
-    SignUpPageComponent,
-    InviteUserComponent,
-    SignUpSuperadminPageComponent,
-    SignUpAdminPageComponent,
-    SignUpProviderPageComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatTableModule,
-    MatButtonModule,
-    MatInputModule,
-    MatIconModule,
-    MatCheckboxModule,
-    MatOptionModule,
-    MatSidenavModule, // Added to imports
-    MatListModule, // Added to imports
-    SurveyModule,
-  ],
-  providers: [],
-  bootstrap: [AppComponent],
-})
+@NgModule({ declarations: [
+        AppComponent,
+        AddIpslogComponent,
+        IpslogListComponent,
+        HomepageComponent,
+        AddJobDevComponent,
+        JobDevListComponent,
+        PersonListComponent,
+        ClosedListComponent,
+        StaffingListComponent,
+        AddPersonComponent,
+        AddStaffingComponent,
+        AddClosedComponent,
+        DemographicsComponent,
+        VrComponent,
+        ClinicalComponent,
+        EmploymentComponent,
+        EducationComponent,
+        LoginPageComponent,
+        SignUpPageComponent,
+        InviteUserComponent,
+        SignUpSuperadminPageComponent,
+        SignUpAdminPageComponent,
+        SignUpProviderPageComponent,
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        MatTableModule,
+        MatButtonModule,
+        MatInputModule,
+        MatIconModule,
+        MatCheckboxModule,
+        MatOptionModule,
+        MatSidenavModule, // Added to imports
+        MatListModule, // Added to imports
+        SurveyModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {}
