@@ -9,10 +9,8 @@ import { AddJobDevComponent } from './add-job-dev.component';
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AddJobDevComponent
-      ],
-    }).compileComponents();
+    imports: [AddJobDevComponent],
+}).compileComponents();
   });
 
   it('should create the app', () => {

@@ -9,10 +9,8 @@ import { AddStaffingComponent } from './add-staffing.component';
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AddStaffingComponent
-      ],
-    }).compileComponents();
+    imports: [AddStaffingComponent],
+}).compileComponents();
   });
 
   it('should create the app', () => {

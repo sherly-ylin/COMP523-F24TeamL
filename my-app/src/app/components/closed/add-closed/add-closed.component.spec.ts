@@ -9,10 +9,8 @@ import { AddClosedComponent } from './add-closed.component';
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AddClosedComponent
-      ],
-    }).compileComponents();
+    imports: [AddClosedComponent],
+}).compileComponents();
   });
 
   it('should create the app', () => {

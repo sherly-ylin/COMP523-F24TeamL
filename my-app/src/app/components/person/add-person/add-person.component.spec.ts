@@ -9,10 +9,8 @@ import { AddPersonComponent } from './add-person.component';
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AddPersonComponent
-      ],
-    }).compileComponents();
+    imports: [AddPersonComponent],
+}).compileComponents();
   });
 
   it('should create the app', () => {

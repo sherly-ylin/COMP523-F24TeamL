@@ -8,8 +8,8 @@ describe('IpslogListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IpslogListComponent]
-    })
+    imports: [IpslogListComponent]
+})
       .compileComponents();
 
     fixture = TestBed.createComponent(IpslogListComponent);

@@ -22,7 +22,7 @@
     "@angular/router": "^18.2.9",
     "bootstrap": "^4.6.2",
     "hammerjs": "^2.0.8",
-    "jquery": "^3.6.4",
+    "jquery": "^3.7.1",
     "jquery-ui": "^1.13.2",
     "rxjs": "~7.5.0",
     "smart-webcomponents-angular": "^14.4.0",

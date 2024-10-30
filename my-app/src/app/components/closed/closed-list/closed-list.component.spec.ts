@@ -8,8 +8,8 @@ describe('ClosedListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ClosedListComponent ]
-    })
+    imports: [ClosedListComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(ClosedListComponent);

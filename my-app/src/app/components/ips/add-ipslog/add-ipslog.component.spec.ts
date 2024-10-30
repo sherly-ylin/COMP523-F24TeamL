@@ -6,10 +6,8 @@ import { AddIpslogComponent } from './add-ipslog.component';
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        AddIpslogComponent
-      ],
-    }).compileComponents();
+    imports: [AddIpslogComponent],
+}).compileComponents();
   });
 
   it('should create the app', () => {

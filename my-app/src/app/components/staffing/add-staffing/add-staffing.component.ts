@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Model, StylesManager } from "survey-core";
+import { SurveyModule } from 'survey-angular-ui';
 
 
 // const SURVEY_ID = 1;
@@ -199,9 +200,11 @@ const surveyJson = {
 
 
 @Component({
-  selector: 'app-add-staffing',
-  templateUrl: './add-staffing.component.html',
-  styleUrls: ['./add-staffing.component.css']
+    selector: 'app-add-staffing',
+    templateUrl: './add-staffing.component.html',
+    styleUrls: ['./add-staffing.component.css'],
+    standalone: true,
+    imports: [SurveyModule]
 })
 export class AddStaffingComponent implements OnInit {
 

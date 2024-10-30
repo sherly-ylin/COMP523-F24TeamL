@@ -1,11 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { JobDev, JobColumns } from 'src/app/models/job-dev.model'
 import { JobDevService } from 'src/app/services/job-dev.service';
+import { RouterLink } from '@angular/router';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-job-dev-list',
-  templateUrl: './job-dev-list.component.html',
-  styleUrls: ['./job-dev-list.component.css']
+    selector: 'app-job-dev-list',
+    templateUrl: './job-dev-list.component.html',
+    styleUrls: ['./job-dev-list.component.css'],
+    standalone: true,
+    imports: [RouterLink, MatButton, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatIconButton, MatIcon, MatFormField, MatInput, FormsModule, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow]
 })
 export class JobDevListComponent implements OnInit {
 

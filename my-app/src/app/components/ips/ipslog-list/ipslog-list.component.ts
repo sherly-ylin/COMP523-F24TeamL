@@ -1,11 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { IpsLog, IPSColumns } from 'src/app/models/ips-log.model'
 import { IpslogService } from 'src/app/services/ipslog.service';
+import { RouterLink } from '@angular/router';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-ipslog-list',
-  templateUrl: './ipslog-list.component.html',
-  styleUrls: ['./ipslog-list.component.css']
+    selector: 'app-ipslog-list',
+    templateUrl: './ipslog-list.component.html',
+    styleUrls: ['./ipslog-list.component.css'],
+    standalone: true,
+    imports: [RouterLink, MatButton, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatIconButton, MatIcon, MatFormField, MatInput, FormsModule, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow]
 })
 export class IpslogListComponent implements OnInit {
 

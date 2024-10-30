@@ -2,28 +2,36 @@ import { APP_ID, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/auth.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-sign-up-page',
-  templateUrl: './sign-up-page.component.html',
-  styleUrls: ['./sign-up-page.component.css']
+    selector: 'app-sign-up-page',
+    templateUrl: './sign-up-page.component.html',
+    styleUrls: ['./sign-up-page.component.css'],
+    standalone: true,
+    imports: [FormsModule]
 })
 export class SignUpPageComponent {
-  email: string;
-  password: string;
-  password2: string;
+  email = '';
+  inviteCode = '';
+  password = '';
+  password2 = '';
   submitted: boolean = false;
   match: boolean = true;
   role: string = "";
 
   constructor(private router: Router, private http: HttpClient, private authService: AuthService){
-    this.email = "";
-    this.password = "";
-    this.password2 = "";
   }
   
   private checkPermission(){
 
+  }
+
+  public passwordStrength() {
+    if (this.password.length > 3) {
+      return "Strong";
+    }
+    return "Weak";
   }
 
   public onSubmit(){
