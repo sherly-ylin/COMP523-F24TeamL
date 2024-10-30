@@ -4,6 +4,7 @@ import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { Model, StylesManager } from "survey-core";
 import * as $ from 'jquery';
 import 'jquery-ui';
+import { SurveyModule } from 'survey-angular-ui';
 
 
 // const SURVEY_ID = 1;
@@ -284,9 +285,11 @@ const surveyJson = {
 
 
 @Component({
-  selector: 'app-add-person',
-  templateUrl: './add-person.component.html',
-  styleUrls: ['./add-person.component.css']
+    selector: 'app-add-person',
+    templateUrl: './add-person.component.html',
+    styleUrls: ['./add-person.component.css'],
+    standalone: true,
+    imports: [SurveyModule]
 })
 export class AddPersonComponent implements OnInit {
 

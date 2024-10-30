@@ -1,37 +1,45 @@
 <div class="job-dev-page">
-    <div class="page-header">
-        <h4>Person Level Logs</h4>
-        <div>
-            <a routerLink="../addPerson" class="add-log-button"><button mat-raised-button color="primary">Add Log</button></a>
-            <a routerLink="clinical" class="add-log-button"><button mat-raised-button color="primary">Clinical Logs</button></a>
-            <a routerLink="demographics" class="add-log-button"><button mat-raised-button color="primary">Demographic Logs</button></a>
-            <a routerLink="education" class="add-log-button"><button mat-raised-button color="primary">Education Logs</button></a>
-            <a routerLink="employment" class="add-log-button"><button mat-raised-button color="primary">Employment Logs</button></a>
-            <a routerLink="vr" class="add-log-button"><button mat-raised-button color="primary">VR Logs</button></a>
-        </div>
+  <div class="page-header">
+    <h4>Person Level Logs</h4>
+    <div>
+      <a routerLink="../addPerson" class="add-log-button"><button mat-raised-button color="primary">Add Log</button></a>
+      <a routerLink="clinical" class="add-log-button"><button mat-raised-button color="primary">Clinical Logs</button></a>
+      <a routerLink="demographics" class="add-log-button"><button mat-raised-button color="primary">Demographic Logs</button></a>
+      <a routerLink="education" class="add-log-button"><button mat-raised-button color="primary">Education Logs</button></a>
+      <a routerLink="employment" class="add-log-button"><button mat-raised-button color="primary">Employment Logs</button></a>
+      <a routerLink="vr" class="add-log-button"><button mat-raised-button color="primary">VR Logs</button></a>
     </div>
+  </div>
 
-    <div class="table-container">
-        <table mat-table [dataSource]="dataSource" class="job-dev-table">
-            <ng-container [matColumnDef]="col.key" *ngFor="let col of columnsSchema">
-                <th mat-header-cell *matHeaderCellDef>{{ col.label }}</th>
-                <td mat-cell *matCellDef="let element">
-                    <div class="cell-content" [ngSwitch]="col.type">
-                        <span *ngSwitchDefault>{{ element[col.key] }}</span>
-                        <div *ngSwitchCase="'isEdit'" class="edit-icons">
-                            <button mat-icon-button (click)="element.isEdit = !element.isEdit">
-                                <mat-icon>edit</mat-icon>
-                            </button>
-                            <button mat-icon-button color="warn" (click)="deleteOne(element.uid)">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                        </div>
-                    </div>
-                </td>
-            </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        </table>
-    </div>
-    <button mat-raised-button color="warn" (click)="deleteAll()" class="delete-all-button">Delete All Records</button>
+  <div class="table-container">
+    <table mat-table [dataSource]="dataSource" class="job-dev-table">
+      @for (col of columnsSchema; track col) {
+        <ng-container [matColumnDef]="col.key">
+          <th mat-header-cell *matHeaderCellDef>{{ col.label }}</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="cell-content">
+              @switch (col.type) {
+                @default {
+                  <span>{{ element[col.key] }}</span>
+                }
+                @case ('isEdit') {
+                  <div class="edit-icons">
+                    <button mat-icon-button (click)="element.isEdit = !element.isEdit">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="deleteOne(element.uid)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                }
+              }
+            </div>
+          </td>
+        </ng-container>
+      }
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+  <button mat-raised-button color="warn" (click)="deleteAll()" class="delete-all-button">Delete All Records</button>
 </div>

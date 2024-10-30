@@ -1,61 +1,65 @@
-    <mat-sidenav-container class="sidenav-container">
-        <mat-sidenav mode="side" opened="true" class="sidenav">
-        
-            <div class="logo">
-                <div id="title">eIPS Fidelity</div>
-            </div>
-            <mat-nav-list class="navigation-list">
-                <a mat-list-item routerLink="home">
-                    <span class="logo-item">
-                        <mat-icon>home</mat-icon> Home
-                    </span>
-                </a>
-                <a mat-list-item routerLink="closed">
-                    <span class="logo-item">
-                        <mat-icon>lock</mat-icon> Survey 
-                    </span>
-                </a>
-                <a mat-list-item routerLink="person">
-                    <span class="logo-item">
-                        <mat-icon>person</mat-icon> Person Level Survey
-                    </span>
-                </a>
-                <a mat-list-item routerLink="staffing">
-                    <span class="logo-item">
-                        <mat-icon>people</mat-icon> Staffing Level Survey
-                    </span>
-                </a>
-                <a mat-list-item routerLink="ipslog">
-                    <span class="logo-item">
-                        <mat-icon>assignment</mat-icon> IPS Log Survey
-                    </span>
-                </a>
-                <a mat-list-item routerLink="jobDev">
-                    <span class="logo-item">
-                        <mat-icon>work</mat-icon> Job Development Log
-                    </span>
-                </a>
-                <a mat-list-item *ngIf="isLoggedIn()" routerLink="inviteUser">
-                    <span class="logo-item">
-                        <mat-icon>email</mat-icon> Invite User
-                    </span>
-                </a>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav mode="side" opened="true" class="sidenav">
 
-            </mat-nav-list>
-            <mat-divider></mat-divider>
-            <div class="bottom-section">
-                <!-- Show Sign Out if logged in -->
-                <a mat-list-item *ngIf="isLoggedIn()" (click)="signOut()">
-                    <mat-icon>exit_to_app</mat-icon> Sign Out
-                </a>
-                <!-- <a mat-list-item routerLink="about-us">
-                    <mat-icon>info</mat-icon> About Us
-                </a> -->
-            </div>
-        </mat-sidenav>
-        <mat-sidenav-content class="sidenav-content">
-            <!-- <div> -->
-                <router-outlet></router-outlet>
-            <!-- </div> -->
-        </mat-sidenav-content>
-    </mat-sidenav-container>
+    <div class="logo">
+      <div id="title">eIPS Fidelity</div>
+    </div>
+    <mat-nav-list class="navigation-list">
+      <a mat-list-item routerLink="home">
+        <span class="logo-item">
+          <mat-icon>home</mat-icon> Home
+        </span>
+      </a>
+      <a mat-list-item routerLink="closed">
+        <span class="logo-item">
+          <mat-icon>lock</mat-icon> Survey
+        </span>
+      </a>
+      <a mat-list-item routerLink="person">
+        <span class="logo-item">
+          <mat-icon>person</mat-icon> Person Level Survey
+        </span>
+      </a>
+      <a mat-list-item routerLink="staffing">
+        <span class="logo-item">
+          <mat-icon>people</mat-icon> Staffing Level Survey
+        </span>
+      </a>
+      <a mat-list-item routerLink="ipslog">
+        <span class="logo-item">
+          <mat-icon>assignment</mat-icon> IPS Log Survey
+        </span>
+      </a>
+      <a mat-list-item routerLink="jobDev">
+        <span class="logo-item">
+          <mat-icon>work</mat-icon> Job Development Log
+        </span>
+      </a>
+      @if (isLoggedIn()) {
+        <a mat-list-item routerLink="inviteUser">
+          <span class="logo-item">
+            <mat-icon>email</mat-icon> Invite User
+          </span>
+        </a>
+      }
+
+    </mat-nav-list>
+    <mat-divider></mat-divider>
+    <div class="bottom-section">
+      <!-- Show Sign Out if logged in -->
+      @if (isLoggedIn()) {
+        <a mat-list-item (click)="signOut()">
+          <mat-icon>exit_to_app</mat-icon> Sign Out
+        </a>
+      }
+      <!-- <a mat-list-item routerLink="about-us">
+      <mat-icon>info</mat-icon> About Us
+    </a> -->
+  </div>
+</mat-sidenav>
+<mat-sidenav-content class="sidenav-content">
+  <!-- <div> -->
+  <router-outlet></router-outlet>
+<!-- </div> -->
+</mat-sidenav-content>
+</mat-sidenav-container>

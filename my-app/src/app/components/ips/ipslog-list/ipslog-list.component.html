@@ -8,29 +8,41 @@
 
   <div class="table-container">
     <table mat-table [dataSource]="dataSource" class="job-dev-table">
-      <ng-container [matColumnDef]="col.key" *ngFor="let col of columnsSchema">
-        <th mat-header-cell *matHeaderCellDef>{{ col.label }}</th>
-        <td mat-cell *matCellDef="let element">
-          <div class="cell-content" [ngSwitch]="col.type">
-            <div *ngSwitchDefault>
-              <span *ngIf="!element.isEdit">{{ element[col.key] }}</span>
-              <div *ngIf="element.isEdit" class="edit-input">
-                <mat-form-field class="form-input">
-                  <input matInput [required]="col.required" [pattern]="col.pattern" [type]="col.type" [(ngModel)]="element[col.key]" />
-                </mat-form-field>
-              </div>
+      @for (col of columnsSchema; track col) {
+        <ng-container [matColumnDef]="col.key">
+          <th mat-header-cell *matHeaderCellDef>{{ col.label }}</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="cell-content">
+              @switch (col.type) {
+                @default {
+                  <div>
+                    @if (!element.isEdit) {
+                      <span>{{ element[col.key] }}</span>
+                    }
+                    @if (element.isEdit) {
+                      <div class="edit-input">
+                        <mat-form-field class="form-input">
+                          <input matInput [required]="col.required" [pattern]="col.pattern" [type]="col.type" [(ngModel)]="element[col.key]" />
+                        </mat-form-field>
+                      </div>
+                    }
+                  </div>
+                }
+                @case ('isEdit') {
+                  <div class="edit-icons">
+                    <button mat-icon-button (click)="element.isEdit = !element.isEdit">
+                      <mat-icon>{{element.isEdit ? 'done' : 'edit'}}</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="deleteOne(element.staff_name)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                }
+              }
             </div>
-            <div *ngSwitchCase="'isEdit'" class="edit-icons">
-              <button mat-icon-button (click)="element.isEdit = !element.isEdit">
-                <mat-icon>{{element.isEdit ? 'done' : 'edit'}}</mat-icon>
-              </button>
-              <button mat-icon-button color="warn" (click)="deleteOne(element.staff_name)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </div>
-        </td>
-      </ng-container>
+          </td>
+        </ng-container>
+      }
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

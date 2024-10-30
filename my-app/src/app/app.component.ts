@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from './auth.service';
 
 @Component({
-  selector: 'app-root',
-  template:'<router-outlet></router-outlet>'
-  // templateUrl: './app.component.html',
-  // styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    template: '<router-outlet></router-outlet>'
+    // templateUrl: './app.component.html',
+    // styleUrls: ['./app.component.css']
+    ,
+    standalone: true,
+    imports: [RouterOutlet]
 })
 export class AppComponent{
   title = 'ips';

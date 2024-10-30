@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Model, StylesManager } from "survey-core";
+import { SurveyModule } from 'survey-angular-ui';
 
 
 // const SURVEY_ID = 1;
@@ -77,9 +78,11 @@ const surveyJson = {
 
 
 @Component({
-  selector: 'app-add-closed',
-  templateUrl: './add-closed.component.html',
-  styleUrls: ['./add-closed.component.css']
+    selector: 'app-add-closed',
+    templateUrl: './add-closed.component.html',
+    styleUrls: ['./add-closed.component.css'],
+    standalone: true,
+    imports: [SurveyModule]
 })
 export class AddClosedComponent implements OnInit {
 

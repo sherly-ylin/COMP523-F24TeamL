@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Model, StylesManager } from "survey-core";
+import { SurveyModule } from 'survey-angular-ui';
 
 
 // const SURVEY_ID = 1;
@@ -83,9 +84,11 @@ const surveyJson = {
 
 
 @Component({
-  selector: 'app-ips',
-  templateUrl: './add-ipslog.component.html',
-  styleUrls: ['./add-ipslog.component.css']
+    selector: 'app-ips',
+    templateUrl: './add-ipslog.component.html',
+    styleUrls: ['./add-ipslog.component.css'],
+    standalone: true,
+    imports: [SurveyModule]
 })
 
 

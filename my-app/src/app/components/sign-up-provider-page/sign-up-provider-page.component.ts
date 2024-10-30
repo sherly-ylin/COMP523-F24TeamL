@@ -2,11 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-sign-up-provider-page',
-  templateUrl: './sign-up-provider-page.component.html',
-  styleUrls: ['./sign-up-provider-page.component.css']
+    selector: 'app-sign-up-provider-page',
+    templateUrl: './sign-up-provider-page.component.html',
+    styleUrls: ['./sign-up-provider-page.component.css'],
+    standalone: true,
+    imports: [FormsModule]
 })
 export class SignUpProviderPageComponent {
   email: string;

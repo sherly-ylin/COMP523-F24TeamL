@@ -2,11 +2,15 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/auth.service';
+import { FormsModule } from '@angular/forms';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
-  selector: 'app-invite-user',
-  templateUrl: './invite-user.component.html',
-  styleUrls: ['./invite-user.component.css']
+    selector: 'app-invite-user',
+    templateUrl: './invite-user.component.html',
+    styleUrls: ['./invite-user.component.css'],
+    standalone: true,
+    imports: [FormsModule, MatCheckbox]
 })
 export class InviteUserComponent {
   email: string;

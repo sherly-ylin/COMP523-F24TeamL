@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Model, StylesManager } from "survey-core";
+import { SurveyModule } from 'survey-angular-ui';
 
 // const SURVEY_ID = 1;
 StylesManager.applyTheme("defaultV2");
@@ -142,9 +143,11 @@ const surveyJson = {
 
 
 @Component({
-  selector: 'app-add-job-dev',
-  templateUrl: './add-job-dev.component.html',
-  styleUrls: ['./add-job-dev.component.css']
+    selector: 'app-add-job-dev',
+    templateUrl: './add-job-dev.component.html',
+    styleUrls: ['./add-job-dev.component.css'],
+    standalone: true,
+    imports: [SurveyModule]
 })
 export class AddJobDevComponent implements OnInit {
 

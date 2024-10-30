@@ -1,11 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 import { Closed, ClosedColumns } from 'src/app/models/closed.model'
 import { ClosedService } from 'src/app/services/closed.service';
+import { RouterLink } from '@angular/router';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-closed-list',
-  templateUrl: './closed-list.component.html',
-  styleUrls: ['./closed-list.component.css'],
+    selector: 'app-closed-list',
+    templateUrl: './closed-list.component.html',
+    styleUrls: ['./closed-list.component.css'],
+    standalone: true,
+    imports: [
+        RouterLink,
+        MatButton,
+        MatTable,
+        MatColumnDef,
+        MatHeaderCellDef,
+        MatHeaderCell,
+        MatCellDef,
+        MatCell,
+        MatIconButton,
+        MatIcon,
+        MatFormField,
+        MatInput,
+        FormsModule,
+        MatHeaderRowDef,
+        MatHeaderRow,
+        MatRowDef,
+        MatRow,
+    ],
 })
 export class ClosedListComponent implements OnInit {
 
