@@ -20,6 +20,18 @@
         </div>
 
         <div class="field">
+          <label for="inviteCode">
+            Invitation Code:
+            <input type="text" id="inviteCode" [(ngModel)]="inviteCode" name="inviteCode" />
+          </label>
+          <div class="error">
+            @if (submitted && !email) {
+              A valid invitation code is required!
+            }
+          </div>
+        </div>
+
+        <div class="field">
           <label for="password">
             Password:
             <input type="password" id="password" [(ngModel)]="password" name="password" />
@@ -35,13 +47,15 @@
         </div>
 
         <div class="field">
-          <h3>Confirm Password:</h3>
-          <input type="password" [(ngModel)]="password2" name="password2" />
-          @if (this.match == false) {
-            <div class="error">
+          <label for="password">
+            Confirm Password:
+            <input type="password" id="password" [(ngModel)]="password2" name="password2" />
+          </label>
+          <div class="error">
+            @if (this.match == false) {
               Passwords do not match!
-            </div>
-          }
+            }
+          </div>
         </div>
 
         <div class="field">

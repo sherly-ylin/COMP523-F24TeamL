@@ -12,17 +12,15 @@ import { FormsModule } from '@angular/forms';
     imports: [FormsModule]
 })
 export class SignUpPageComponent {
-  email: string;
-  password: string;
-  password2: string;
+  email = '';
+  inviteCode = '';
+  password = '';
+  password2 = '';
   submitted: boolean = false;
   match: boolean = true;
   role: string = "";
 
   constructor(private router: Router, private http: HttpClient, private authService: AuthService){
-    this.email = "";
-    this.password = "";
-    this.password2 = "";
   }
   
   private checkPermission(){
