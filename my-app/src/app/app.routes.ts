@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
+
 import { AddIpslogComponent } from './components/ips/add-ipslog/add-ipslog.component';
 import { HomeComponent } from './components/home/home.component';
 import { IpslogListComponent } from './components/ips/ipslog-list/ipslog-list.component';
@@ -19,13 +19,10 @@ import { AddStaffingComponent } from './components/staffing/add-staffing/add-sta
 import { LoginComponent } from './components/login/login.component';
 import { SignUpPageComponent } from './components/sign-up-page/sign-up-page.component';
 import { AuthGuard } from './auth.guard';
-import { SignUpSuperadminPageComponent } from './components/sign-up-superadmin-page/sign-up-superadmin-page.component';
-import { SignUpAdminPageComponent } from './components/sign-up-admin-page/sign-up-admin-page.component';
-import { SignUpProviderPageComponent } from './components/sign-up-provider-page/sign-up-provider-page.component';
 import { InviteUserComponent } from './components/invite-user/invite-user.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignUpPageComponent },
@@ -94,17 +91,4 @@ const routes: Routes = [
       },
     ],
   },
-
-  {
-    path: 'zmY4KHGcqMKPjEsewQTE2QbazONxITTjSHGP2sA',
-    component: SignUpSuperadminPageComponent,
-  },
-  { path: 'dmfde3YDsBZKsNEnzLo9Q', component: SignUpAdminPageComponent },
-  { path: '9be6A5Vv7HVV0ojFI4Izfw', component: SignUpProviderPageComponent },
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-})
-export class AppRoutingModule {}

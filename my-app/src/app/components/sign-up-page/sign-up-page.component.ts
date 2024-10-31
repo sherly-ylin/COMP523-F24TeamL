@@ -29,6 +29,13 @@ export class SignUpPageComponent {
 
   }
 
+  public passwordStrength() {
+    if (this.password.length > 3) {
+      return "Strong";
+    }
+    return "Weak";
+  }
+
   public onSubmit(){
       this.submitted = true;
       // random usernames?

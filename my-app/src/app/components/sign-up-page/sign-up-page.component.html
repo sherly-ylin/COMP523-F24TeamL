@@ -8,23 +8,30 @@
 
       <div class="form-content">
         <div class="field">
-          <h3>Email:</h3>
-          <input type="text" [(ngModel)]="email" name="email" />
-          @if (submitted && !email) {
-            <div class="error">
+          <label for="email">
+            Email:
+            <input type="text" id="email" [(ngModel)]="email" name="email" />
+          </label>
+          <div class="error">
+            @if (submitted && !email) {
               A valid email address is required!
-            </div>
-          }
+            }
+          </div>
         </div>
 
         <div class="field">
-          <h3>Password:</h3>
-          <input type="password" [(ngModel)]="password" name="password" />
-          @if (submitted && !password) {
-            <div class="error">
+          <label for="password">
+            Password:
+            <input type="password" id="password" [(ngModel)]="password" name="password" />
+          </label>
+          <div class="error">
+            @if (submitted && !password) {
               A valid password is required!
-            </div>
-          }
+            }
+            @if (password) {
+              Password Strength: {{passwordStrength()}}
+            }
+          </div>
         </div>
 
         <div class="field">
