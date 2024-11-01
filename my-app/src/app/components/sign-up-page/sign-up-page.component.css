@@ -65,8 +65,15 @@ button:hover {
   display: block;
 }
 
-.error {
-  color: red; 
+.message {
   text-align: left;
   font-size: 12px;
+}
+
+.error {
+  color: red; 
+}
+
+.correct {
+  color: green;
 }

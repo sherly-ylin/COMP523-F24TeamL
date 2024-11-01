@@ -7,56 +7,70 @@
       <h2 style="margin-bottom: 15px">Sign up</h2>
 
       <div class="form-content">
-        <div class="field">
-          <label for="email">
-            Email:
-            <input type="text" id="email" [(ngModel)]="email" name="email" />
-          </label>
-          <div class="error">
+        <label for="email" class="field">
+          Email:
+          <input type="text" id="email" [(ngModel)]="email" name="email" />
+          <span class="message">
             @if (submitted && !email) {
-              A valid email address is required!
+              <span class="error">
+                A valid email address is required!
+              </span>
             }
-          </div>
-        </div>
+          </span>
+        </label>
 
-        <div class="field">
-          <label for="inviteCode">
-            Invitation Code:
-            <input type="text" id="inviteCode" [(ngModel)]="inviteCode" name="inviteCode" />
-          </label>
-          <div class="error">
-            @if (submitted && !email) {
-              A valid invitation code is required!
+        <label for="inviteCode" class="field">
+          Invitation Code:
+          <input type="text" id="inviteCode" [(ngModel)]="inviteCode" name="inviteCode" />
+          <span class="message">
+            @if (submitted && !inviteCode) {
+              <span class="error">
+                A valid invitation code is required!
+              </span>
             }
-          </div>
-        </div>
+          </span>
+        </label>
 
-        <div class="field">
-          <label for="password">
-            Password:
-            <input type="password" id="password" [(ngModel)]="password" name="password" />
-          </label>
-          <div class="error">
-            @if (submitted && !password) {
-              A valid password is required!
+        <label for="password" class="field">
+          Password:
+          <input type="password" id="password" [(ngModel)]="password" name="password" (focus)="passwordGainFocus()" (blur)="passwordLostFocus()" />
+          <span class="message">
+            @if (password && !passwordRequirementsSatisfied() && !passwordHasFocus || !password && submitted) {
+              <span class="error">
+                A valid password is required!<br>
+              </span>
             }
-            @if (password) {
-              Password Strength: {{passwordStrength()}}
+            @if (passwordHasFocus && password) {
+              <span [class]="passwordIsLongEnough() ? 'correct' : 'error'">
+                @if (passwordIsLongEnough()) { ✓ } Password should include at least {{ PASSWORD_MIN_LENGTH }} characters.<br>
+              </span>
+              <span [class]="passwordHasUpperCase() ? 'correct' : 'error'">
+                @if (passwordHasUpperCase()) { ✓ } Password should include at least {{ PASSWORD_MIN_UPPER }} uppercase letter.<br>
+              </span>
+              <span [class]="passwordHasLowerCase() ? 'correct' : 'error'">
+                @if (passwordHasLowerCase()) { ✓ } Password should include at least {{ PASSWORD_MIN_LOWER }} lowercase letter.<br>
+              </span>
+              <span [class]="passwordHasNumber() ? 'correct' : 'error'">
+                @if (passwordHasNumber()) { ✓ } Password should include at least {{ PASSWORD_MIN_NUMBER }} number.<br>
+              </span>
+              <span [class]="passowrdHasSymbol() ? 'correct' : 'error'">
+                @if (passowrdHasSymbol()) { ✓ }    Password should include at least {{ PASSWORD_MIN_SYMBOL }} symbol.<br>
+              </span>
             }
-          </div>
-        </div>
+          </span>
+        </label>
 
-        <div class="field">
-          <label for="password">
-            Confirm Password:
-            <input type="password" id="password" [(ngModel)]="password2" name="password2" />
-          </label>
-          <div class="error">
-            @if (this.match == false) {
-              Passwords do not match!
+        <label for="confirmPassword" class="field">
+          Confirm Password:
+          <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="password2" (focus)="confirmPasswordGainFocus()" (blur)="confirmPasswordLostFocus()" />
+          <span class="message">
+            @if (confirmPassword && passwordRequirementsSatisfied() && password != confirmPassword) {
+              <span class="error">
+                Passwords do not match!
+              </span>
             }
-          </div>
-        </div>
+          </span>
+        </label>
 
         <div class="field">
           <button type="submit">Sign Up</button>
