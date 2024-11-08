@@ -7,27 +7,10 @@
       <h2 style="margin-bottom: 15px">Sign up</h2>
 
       <div class="form-content">
-        <label for="email" class="field">
-          Email:
-          <input type="text" id="email" [(ngModel)]="email" name="email" />
+        <label for="username" class="field">
+          Username:
+          <input type="text" id="username" [(ngModel)]="username" name="username" placeholder="Optional, default to your email"/>
           <span class="message">
-            @if (submitted && !email) {
-              <span class="error">
-                A valid email address is required!
-              </span>
-            }
-          </span>
-        </label>
-
-        <label for="inviteCode" class="field">
-          Invitation Code:
-          <input type="text" id="inviteCode" [(ngModel)]="inviteCode" name="inviteCode" />
-          <span class="message">
-            @if (submitted && !inviteCode) {
-              <span class="error">
-                A valid invitation code is required!
-              </span>
-            }
           </span>
         </label>
 
@@ -53,8 +36,8 @@
               <span [class]="passwordHasNumber() ? 'correct' : 'error'">
                 @if (passwordHasNumber()) { ✓ } Password should include at least {{ PASSWORD_MIN_NUMBER }} number.<br>
               </span>
-              <span [class]="passowrdHasSymbol() ? 'correct' : 'error'">
-                @if (passowrdHasSymbol()) { ✓ }    Password should include at least {{ PASSWORD_MIN_SYMBOL }} symbol.<br>
+              <span [class]="passwordHasSymbol() ? 'correct' : 'error'">
+                @if (passwordHasSymbol()) { ✓ }    Password should include at least {{ PASSWORD_MIN_SYMBOL }} symbol.<br>
               </span>
             }
           </span>

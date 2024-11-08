@@ -1,5 +1,5 @@
-import { APP_ID, Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { APP_ID, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/auth.service';
 import { FormsModule } from '@angular/forms';
@@ -11,24 +11,28 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [FormsModule]
 })
-export class SignUpPageComponent {
-  public readonly PASSWORD_MIN_LENGTH = 8;
-  public readonly PASSWORD_MIN_UPPER = 1;
-  public readonly PASSWORD_MIN_LOWER = 1;
-  public readonly PASSWORD_MIN_NUMBER = 1;
-  public readonly PASSWORD_MIN_SYMBOL = 1;
+export class SignUpPageComponent implements OnInit{
+  readonly PASSWORD_MIN_LENGTH = 8;
+  readonly PASSWORD_MIN_UPPER = 1;
+  readonly PASSWORD_MIN_LOWER = 1;
+  readonly PASSWORD_MIN_NUMBER = 1;
+  readonly PASSWORD_MIN_SYMBOL = 1;
+  private readonly symbolRegex = /[!@#$%^&*(),.?":{}|<>]/;
 
-  email = "";
-  inviteCode = "";
+  token!: string;
+  username = "";
   password = "";
   passwordHasFocus = false;
   confirmPassword = "";
   confirmPasswordHasFocus = false;
   passwordsMatch: boolean = false;
   submitted: boolean = false;
-  role = "";
 
-  constructor(private router: Router, private http: HttpClient, private authService: AuthService){
+  constructor(private router: Router, private http: HttpClient, private authService: AuthService, private route: ActivatedRoute){
+  }
+
+  ngOnInit() {
+    this.token = this.route.snapshot.paramMap.get('token') || '';
   }
 
   public passwordGainFocus() {
@@ -52,83 +56,53 @@ export class SignUpPageComponent {
   }
 
   public passwordHasUpperCase(): boolean {
-    for (const char of this.password) {
-      if ('A' <= char && char <= 'Z') {
-        return true;
-      }
-    }
-    return false;
+    return /[A-Z]/.test(this.password);
   }
 
   public passwordHasLowerCase(): boolean {
-    for (const char of this.password) {
-      if ('a' <= char && char <= 'z') {
-        return true;
-      }
-    }
-    return false;
+    return /[a-z]/.test(this.password);
   }
 
   public passwordHasNumber(): boolean {
-    for (const char of this.password) {
-      if ('0' <= char && char <= '9') {
-        return true;
-      }
-    }
-    return false;
+    return /\d/.test(this.password);
   }
 
-  public passowrdHasSymbol(): boolean {
-    const symbolRegex = /[!@#$%^&*(),.?":{}|<>]/;
-    return symbolRegex.test(this.password);
+  public passwordHasSymbol(): boolean {
+    return this.symbolRegex.test(this.password);
   }
 
   public passwordRequirementsSatisfied(): boolean {
-    if (!this.passwordIsLongEnough()) {
-      return false;
-    }
-    if (!this.passwordHasUpperCase()) {
-      return false;
-    }
-    if (!this.passwordHasLowerCase()) {
-      return false;
-    }
-    if (!this.passwordHasNumber()) {
-      return false;
-    }
-    if (!this.passowrdHasSymbol()) {
-      return false;
-    }
-    return true;
+    const checks = [
+      this.passwordIsLongEnough(),
+      this.passwordHasUpperCase(),
+      this.passwordHasLowerCase(),
+      this.passwordHasNumber(),
+      this.passwordHasSymbol()
+    ];
+
+    return checks.every(check => check);
   }
 
   public onSubmit() {
-      this.submitted = true;
-      // random usernames?
-      const username = "Test " + Math.floor(Math.random() * 100);
+    this.submitted = true;
 
-      if(this.password === this.confirmPassword) {
-        this.passwordsMatch = true;
-      }
-      if(this.passwordsMatch == true && this.email && this.password) {
-        //api post sign up
-        //need to check permission string to confirm user identity
-      
-        this.http.post('http://localhost:3000/api/auth/signup'+ this.role, {
-          username: username,
-          roles: ['user'],
-          email: this.email,
-          password: this.password,
-          role: this.role
-        }).subscribe(response => {
+    if(this.password === this.confirmPassword && this.token) {
+      this.http.post('http://localhost:3000/api/auth/signup', {
+        token: this.token,
+        username: this.username,
+        password: this.password,
+      }).subscribe({
+        next: response => {
           console.log(response);
           alert("Verification email sent. Please check your inbox.")
-          this.router.navigate(['']);
-        }, error => {
+          this.router.navigate([""]);
+        }, 
+        error: error => {
           alert(error.error.message);
           console.error(error);
-        });
-      }
+        }
+      });
+    }
   }
 
 }
