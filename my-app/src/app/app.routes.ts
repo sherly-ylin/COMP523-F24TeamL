@@ -23,6 +23,10 @@ import { InviteUserComponent } from './components/invite-user/invite-user.compon
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { inject } from '@angular/core';
 import { AuthService } from './auth.service';
+import { SignUpAdminPageComponent } from './components/sign-up-admin-page/sign-up-admin-page.component';
+import { SignUpProviderPageComponent } from './components/sign-up-provider-page/sign-up-provider-page.component';
+import { SignUpSuperadminPageComponent } from './components/sign-up-superadmin-page/sign-up-superadmin-page.component';
+
 
 const tokenValidGuard: CanActivateFn = (route): boolean | UrlTree => {
   const authService = inject(AuthService);
