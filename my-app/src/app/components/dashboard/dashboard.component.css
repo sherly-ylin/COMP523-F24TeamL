@@ -10,7 +10,7 @@ mat-toolbar{
   justify-content: space-between;
   align-items: center;
   font-family: "Montserrat", sans-serif;
-  border-bottom: 2px #333;
+  border: 1px #555;
 }
 
 #title {
@@ -48,9 +48,10 @@ mat-toolbar{
   display: flex;
   height: 100%;
   width: max-content;
-  box-shadow: 3px 0 6px rgba(0, 0, 0, 0.24);
+  /* box-shadow: 3px 0 6px rgba(0, 0, 0, 0.24); */
   flex-direction: column;
   position: relative;
+  background-color: #eee;
 }
 
 .mat-nav-list {

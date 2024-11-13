@@ -45,7 +45,14 @@
           <mat-icon>work</mat-icon> Job Development Log
         </span>
       </a>
-      @if (isLoggedIn()) {
+      @if (isAdmin) {
+      <a mat-list-item routerLink="setupreview">
+        <span class="logo-item">
+          <mat-icon>email</mat-icon> Set Up Review
+        </span>
+      </a>
+      }
+      @if (isSuperAdmin) {
       <a mat-list-item routerLink="inviteUser">
         <span class="logo-item">
           <mat-icon>email</mat-icon> Invite User
@@ -54,18 +61,17 @@
       }
 
     </mat-nav-list>
-    <mat-divider></mat-divider>
-    <div class="bottom-section">
-      <!-- Show Sign Out if logged in -->
+    <!-- <mat-divider></mat-divider> -->
+    <!-- <div class="bottom-section">
       @if (isLoggedIn()) {
       <a mat-list-item (click)="signOut()">
         <mat-icon>exit_to_app</mat-icon> Sign Out
       </a>
       }
-      <!-- <a mat-list-item routerLink="about-us">
-      <mat-icon>info</mat-icon> About Us
-    </a> -->
-    </div>
+      <a mat-list-item routerLink="about-us">
+        <mat-icon>info</mat-icon> About Us
+      </a>
+    </div> -->
   </mat-sidenav>
   <mat-sidenav-content class="sidenav-content">
     <!-- <div> -->

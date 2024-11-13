@@ -17,6 +17,9 @@ import {MatButtonModule} from '@angular/material/button';
 })
 export class DashboardComponent {
   authenticated = false;
+  isAdmin = false;
+  isSuperAdmin = false;
+
   constructor(
     private router: Router,
     private authService: AuthService) {
