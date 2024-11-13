@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
-import { Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 interface LoginResponse {
   accessToken: string;
 }
@@ -26,6 +26,11 @@ export class AuthService {
   constructor(
     private router: Router,
     private http: HttpClient) { 
+  }
+
+  isTokenValid(route: ActivatedRouteSnapshot): boolean {
+    console.log(route.params["token"]);
+    return true;
   }
 
   signIn(email: string, password: string){

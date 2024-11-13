@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { CanActivateFn, Router, Routes, UrlTree } from '@angular/router';
 
 import { AddIpslogComponent } from './components/ips/add-ipslog/add-ipslog.component';
 import { HomeComponent } from './components/home/home.component';
@@ -21,11 +21,21 @@ import { SignUpPageComponent } from './components/sign-up-page/sign-up-page.comp
 import { AuthGuard } from './auth.guard';
 import { InviteUserComponent } from './components/invite-user/invite-user.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { inject } from '@angular/core';
+import { AuthService } from './auth.service';
+
+const tokenValidGuard: CanActivateFn = (route): boolean | UrlTree => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  return authService.isTokenValid(route) || router.createUrlTree(['/login']);
+}
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'signup/:token', component: SignUpPageComponent },
+  { path: 'signup/:token',
+    canActivate: [tokenValidGuard],
+    component: SignUpPageComponent },
   {
     path: 'dashboard',
     component: DashboardComponent,
