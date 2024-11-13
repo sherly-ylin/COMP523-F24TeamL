@@ -2,11 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth.service';
-
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-sign-up-superadmin-page',
   templateUrl: './sign-up-superadmin-page.component.html',
-  styleUrls: ['./sign-up-superadmin-page.component.css']
+  styleUrls: ['./sign-up-superadmin-page.component.css'],
+  standalone: true,
+  imports: [FormsModule]
 })
 export class SignUpSuperadminPageComponent {
   email: string;
