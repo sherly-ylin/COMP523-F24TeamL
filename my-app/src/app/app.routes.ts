@@ -33,6 +33,8 @@ const tokenValidGuard: CanActivateFn = (route): boolean | UrlTree => {
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: 'signup',
+    component: SignUpPageComponent },
   { path: 'signup/:token',
     canActivate: [tokenValidGuard],
     component: SignUpPageComponent },
@@ -98,6 +100,13 @@ export const routes: Routes = [
         // canActivate: [AuthGuard],
         component: AddStaffingComponent,
       },
+      
     ],
   },
+  {
+    path: 'zmY4KHGcqMKPjEsewQTE2QbazONxITTjSHGP2sA',
+    component: SignUpSuperadminPageComponent,
+  },
+  { path: 'dmfde3YDsBZKsNEnzLo9Q', component: SignUpAdminPageComponent },
+  { path: '9be6A5Vv7HVV0ojFI4Izfw', component: SignUpProviderPageComponent },
 ];

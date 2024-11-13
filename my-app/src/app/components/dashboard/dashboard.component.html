@@ -20,6 +20,8 @@
           <mat-icon>home</mat-icon> Home
         </span>
       </a>
+      <mat-divider></mat-divider>
+      <div class="tag">Surveys</div>
       <a mat-list-item routerLink="closed">
         <span class="logo-item">
           <mat-icon>lock</mat-icon> Survey
@@ -46,9 +48,15 @@
         </span>
       </a>
       @if (isAdmin) {
+      <mat-divider></mat-divider>
       <a mat-list-item routerLink="setupreview">
         <span class="logo-item">
           <mat-icon>email</mat-icon> Set Up Review
+        </span>
+      </a>
+      <a mat-list-item routerLink="inviteUser">
+        <span class="logo-item">
+          <mat-icon>email</mat-icon> Invite Provider
         </span>
       </a>
       }

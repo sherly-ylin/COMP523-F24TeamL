@@ -112,3 +112,11 @@ mat-toolbar{
 .mat-nav-list a.mat-list-item {
   transition: color 0.3s;
 }
+
+
+.tag{
+  padding: 10px 25px 0px 0px; 
+  color: #777;
+  font: bold 1.5em;
+  text-align: center;
+}

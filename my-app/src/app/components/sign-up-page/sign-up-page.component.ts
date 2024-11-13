@@ -32,7 +32,7 @@ export class SignUpPageComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.token = this.route.snapshot.paramMap.get('token') || '';
+    this.token = this.route.snapshot.paramMap.get('token')??'';
   }
 
   public passwordGainFocus() {

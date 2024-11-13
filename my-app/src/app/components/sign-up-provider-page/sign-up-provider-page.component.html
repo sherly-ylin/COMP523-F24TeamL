@@ -1,0 +1,48 @@
+<div class="sign-up-page">
+    <img
+      src="https://www.med.unc.edu/psych/wp-content/uploads/sites/839/2020/03/psychiatry.png"
+      style="width: 100%; padding: 30px; max-width: 400px"
+    />
+    <form (ngSubmit)="onSubmit()">
+      <h2 style="margin-bottom: 15px">Sign up as Provider</h2>
+  
+      <div class="form-content">
+        <!-- <div class="field">
+                  <h3>Name:</h3>
+                  <input type="text" [(ngModel)]="email" name="email">
+                  <div *ngIf="submitted && !email" class="error">
+                      A valid email address is required!
+                  </div>
+              </div> -->
+  
+        <div class="field">
+          <h3>Email:</h3>
+          <input type="text" [(ngModel)]="email" name="email" />
+          <div *ngIf="submitted && !email" class="error">
+            A valid email address is required!
+          </div>
+        </div>
+  
+        <div class="field">
+          <h3>Password:</h3>
+          <input type="password" [(ngModel)]="password" name="password" />
+          <div *ngIf="submitted && !password" class="error">
+            A valid password is required!
+          </div>
+        </div>
+  
+        <div class="field">
+          <h3>Confirm Password:</h3>
+          <input type="password" [(ngModel)]="password2" name="password2" />
+          <div *ngIf="this.match == false" class="error">
+            Passwords do not match!
+          </div>
+        </div>
+  
+        <div class="field">
+          <button type="submit">Sign Up</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  
