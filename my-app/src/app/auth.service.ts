@@ -43,7 +43,7 @@ export class AuthService {
       const value = localStorage.getItem('accessToken');
       console.log(value); // Should log 'testValue' if successful
    
-      this.router.navigate(['./home']);
+      this.router.navigate(['./dashboard']);
     }, error => {
       alert(error.error.message);
       console.error(error);

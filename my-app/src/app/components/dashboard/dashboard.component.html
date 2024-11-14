@@ -5,7 +5,7 @@
       <mat-icon id="profile">account_circle</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item>Account</button>
+      <button mat-menu-item>Profile</button>
       <button mat-menu-item>Log out</button>
     </mat-menu>
 
@@ -20,6 +20,8 @@
           <mat-icon>home</mat-icon> Home
         </span>
       </a>
+      <mat-divider></mat-divider>
+      <div class="tag">Surveys</div>
       <a mat-list-item routerLink="closed">
         <span class="logo-item">
           <mat-icon>lock</mat-icon> Survey
@@ -45,7 +47,20 @@
           <mat-icon>work</mat-icon> Job Development Log
         </span>
       </a>
-      @if (isLoggedIn()) {
+      @if (isAdmin) {
+      <mat-divider></mat-divider>
+      <a mat-list-item routerLink="setupreview">
+        <span class="logo-item">
+          <mat-icon>email</mat-icon> Set Up Review
+        </span>
+      </a>
+      <a mat-list-item routerLink="inviteUser">
+        <span class="logo-item">
+          <mat-icon>email</mat-icon> Invite Provider
+        </span>
+      </a>
+      }
+      @if (isSuperAdmin) {
       <a mat-list-item routerLink="inviteUser">
         <span class="logo-item">
           <mat-icon>email</mat-icon> Invite User
@@ -54,18 +69,17 @@
       }
 
     </mat-nav-list>
-    <mat-divider></mat-divider>
-    <div class="bottom-section">
-      <!-- Show Sign Out if logged in -->
+    <!-- <mat-divider></mat-divider> -->
+    <!-- <div class="bottom-section">
       @if (isLoggedIn()) {
       <a mat-list-item (click)="signOut()">
         <mat-icon>exit_to_app</mat-icon> Sign Out
       </a>
       }
-      <!-- <a mat-list-item routerLink="about-us">
-      <mat-icon>info</mat-icon> About Us
-    </a> -->
-    </div>
+      <a mat-list-item routerLink="about-us">
+        <mat-icon>info</mat-icon> About Us
+      </a>
+    </div> -->
   </mat-sidenav>
   <mat-sidenav-content class="sidenav-content">
     <!-- <div> -->

@@ -5,18 +5,23 @@ import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/mat
 import { MatNavList, MatListItem } from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatMenuModule} from '@angular/material/menu';
-import {MatButtonModule} from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
     styleUrls: ['./dashboard.component.css'],
     standalone: true,
-    imports: [MatSidenavContainer, MatToolbarModule,MatButtonModule, MatMenuModule, MatSidenav, MatNavList, MatListItem, RouterLink, MatIcon, MatDivider, MatSidenavContent, RouterOutlet]
+    imports: [MatSidenavContainer, MatCardModule, MatToolbarModule,MatButtonModule, MatMenuModule, MatSidenav, MatNavList, MatListItem, RouterLink, MatIcon, MatDivider, MatSidenavContent, RouterOutlet]
 })
 export class DashboardComponent {
   authenticated = false;
+  isAdmin = true;
+  isSuperAdmin = true;
+
   constructor(
     private router: Router,
     private authService: AuthService) {
