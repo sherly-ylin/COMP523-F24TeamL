@@ -87,29 +87,15 @@ router.use(function (req, res, next) {
 router.post(
   '/api/auth/signup',
   [verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted],
-  authController.signup,
+  authController.signUp,
 )
-router.post(
-  '/api/auth/signupSuperadmin',
-  [verifySignUp.checkDuplicateUsernameOrEmail],
-  authController.signupSuperadmin
-)
-router.post(
-  '/api/auth/signupAdmin',
-  [verifySignUp.checkDuplicateUsernameOrEmail],
-  authController.signupAdmin
-)
-router.post(
-  '/api/auth/signupProvider',
-  [verifySignUp.checkDuplicateUsernameOrEmail],
-  authController.signupProvider
-)
+
 router.post('/api/auth/signin', authController.signIn)
 
 router.post(
   '/api/auth/invite',
   [verifySignUp.checkDuplicateUsernameOrEmail],
-  authController.invite
+  authController.invite,
 )
 
 // user routes

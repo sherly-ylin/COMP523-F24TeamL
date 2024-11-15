@@ -6,11 +6,12 @@ The intended goal of "The Beast" is to make the data collection more streamline 
 
 ## Project Structure
 
-"The Beast" utilizes the MEAN stack.  
- - MongoDB  
- - Express.js  
- - Angular  
- - Node.js
+"The Beast" utilizes the MEAN stack.
+
+- MongoDB
+- Express.js
+- Angular
+- Node.js
 
 The frontend web application is built up using Angular and Survey.js.  
 The backend API is built up using Node.js, Express.js, and mongoose for database connection.  
@@ -57,39 +58,45 @@ Once you have the repo...
 > Open the repo in whatever IDE you choose to use
 
 > To download all dependencies needed for frontend, open a terminal and run:
+
 ```shell
 cd my-app
 npm install
 ```
+
 > To download all dependencies needed for backend, open a terminal and run:
+
 ```shell
 cd api
 npm install
 ```
+
 > Upon completion, open a terminal and run the following to start the backend server:
 
 ```shell
 cd api
 npx tsx src/app.ts
 ```
+
 > In another terminal, run the following to start the frontend server:
 
 ```shell
 cd my-app
 ng serve
 ```
+
 > Make sure you have your MongoDB server running as well:
+
 ```shell
 brew services start mongodb-community@7.0
 ```
+
 > Now you can open the web page in your `localhost` browser.
 
 > To stop the MongoDB server:
+
 ```shell
 brew services stop mongodb-community@7.0
 ```
-
-
-
 
 **More detailed breakdown of the application was provided to the client.**

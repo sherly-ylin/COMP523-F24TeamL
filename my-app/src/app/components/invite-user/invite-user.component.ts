@@ -3,63 +3,65 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/auth.service';
 import { FormsModule } from '@angular/forms';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-    selector: 'app-invite-user',
-    templateUrl: './invite-user.component.html',
-    styleUrls: ['./invite-user.component.css'],
-    standalone: true,
-    imports: [FormsModule, MatCheckbox]
+  selector: 'app-invite-user',
+  templateUrl: './invite-user.component.html',
+  styleUrls: ['./invite-user.component.css'],
+  standalone: true,
+  imports: [FormsModule, MatRadioModule, MatInputModule, MatButtonModule],
 })
 export class InviteUserComponent {
   email: string;
-  isSuperadmin: boolean;
-  isAdmin: boolean;
-  isProvider: boolean;
-  submitted: boolean = false;
+  role: string;
+  timespanString: string;
+  timespan: { value: number; unit: string };
+  submitted: boolean;
 
-  constructor(private router: Router, private http: HttpClient, private authService: AuthService) {
-    this.email = "";
-    this.isSuperadmin = false;
-    this.isAdmin = false;
-    this.isProvider = false;
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private authService: AuthService,
+  ) {
+    this.email = '';
+    this.role = 'Provider';
+    this.timespanString = '3 day';
+    this.timespan = { value: 3, unit: 'day' };
+    this.submitted = false;
+  }
+
+  onTimespanChange() {
+    const [value, unit] = this.timespanString.split(' '); // Split string into value and unit
+    this.timespan = {
+      value: parseInt(value, 10), // Convert the decimal value part to a number
+      unit: unit || 'day', // Default to "day" if no unit found
+    };
   }
 
   public onSubmit() {
     this.submitted = true;
 
-    var roleCount = 0;
-    var role = "";
-    if (this.isSuperadmin) {
-      roleCount += 1;
-      role = "superadmin";
-    }
-    if (this.isAdmin) {
-      roleCount += 1;
-      role = "admin";
-    }
-    if (this.isProvider) {
-      roleCount += 1;
-      role = "provider";
-    }
-    if (roleCount == 0) {
-      alert("Please select the role of the user you want to invite.");
-    } else if (roleCount > 1) {
-      alert("Please only select one role.");
-    }
-    if (this.email && roleCount == 1) {
-      this.http.post('http://localhost:3000/api/auth/invite', {
-        email: this.email,
-        role: role
-      }).subscribe(response => {
-        console.log(response);
-        alert("Invite email sent.");
-      }, error => {
-        console.log('There is error')
-        alert(error.error.message);
-        console.error(error);
-      });
+    if (this.email && this.role) {
+      this.http
+        .post('http://localhost:3000/api/auth/invite', {
+          email: this.email,
+          role: this.role,
+          timespan: this.timespan,
+        })
+        .subscribe({
+          next: (response) => {
+            console.log(response);
+            alert('Invite email sent.');
+          },
+          error: (error) => {
+            console.log('There is an error');
+            alert(error.error.message);
+            console.error(error);
+          },
+        });
     }
   }
 }

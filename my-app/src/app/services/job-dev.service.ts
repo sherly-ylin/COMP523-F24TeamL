@@ -6,11 +6,10 @@ import { JobDev } from '../models/job-dev.model';
 const baseUrl = 'http://localhost:3000/jobDev';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class JobDevService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAll(): Observable<JobDev[]> {
     return this.http.get<JobDev[]>(baseUrl);

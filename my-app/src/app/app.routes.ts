@@ -24,29 +24,23 @@ import { InviteUserComponent } from './components/invite-user/invite-user.compon
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { inject } from '@angular/core';
 import { AuthService } from './auth.service';
-import { SignUpAdminPageComponent } from './components/sign-up-admin-page/sign-up-admin-page.component';
-import { SignUpProviderPageComponent } from './components/sign-up-provider-page/sign-up-provider-page.component';
-import { SignUpSuperadminPageComponent } from './components/sign-up-superadmin-page/sign-up-superadmin-page.component';
-
 
 const tokenValidGuard: CanActivateFn = (route): boolean | UrlTree => {
   const authService = inject(AuthService);
   const router = inject(Router);
   return authService.isTokenValid(route) || router.createUrlTree(['/login']);
-}
+};
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'signup',
-    component: SignUpPageComponent },
-  { path: 'signup/:token',
+  { path: 'signup', component: SignUpPageComponent },
+  {
+    path: 'signup/:token',
     canActivate: [tokenValidGuard],
-    component: SignUpPageComponent
+    component: SignUpPageComponent,
   },
-  { path: 'setUpReview',
-    component: SetUpReviewPageComponent
-  },
+  { path: 'setUpReview', component: SetUpReviewPageComponent },
   {
     path: 'dashboard',
     component: DashboardComponent,
@@ -84,6 +78,7 @@ export const routes: Routes = [
       { path: 'employment', component: EmploymentComponent },
       { path: 'vr', component: VrComponent },
       { path: 'inviteUser', component: InviteUserComponent },
+      { path: 'setUpReview', component: SetUpReviewPageComponent },
       {
         path: 'addPerson',
         // canActivate: [AuthGuard],
@@ -109,13 +104,6 @@ export const routes: Routes = [
         // canActivate: [AuthGuard],
         component: AddStaffingComponent,
       },
-      
     ],
   },
-  {
-    path: 'zmY4KHGcqMKPjEsewQTE2QbazONxITTjSHGP2sA',
-    component: SignUpSuperadminPageComponent,
-  },
-  { path: 'dmfde3YDsBZKsNEnzLo9Q', component: SignUpAdminPageComponent },
-  { path: '9be6A5Vv7HVV0ojFI4Izfw', component: SignUpProviderPageComponent },
 ];

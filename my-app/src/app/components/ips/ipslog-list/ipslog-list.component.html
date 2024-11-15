@@ -22,18 +22,33 @@
                     @if (element.isEdit) {
                       <div class="edit-input">
                         <mat-form-field class="form-input">
-                          <input matInput [required]="col.required" [pattern]="col.pattern" [type]="col.type" [(ngModel)]="element[col.key]" />
+                          <input
+                            matInput
+                            [required]="col.required"
+                            [pattern]="col.pattern"
+                            [type]="col.type"
+                            [(ngModel)]="element[col.key]"
+                          />
                         </mat-form-field>
                       </div>
                     }
                   </div>
                 }
-                @case ('isEdit') {
+                @case ("isEdit") {
                   <div class="edit-icons">
-                    <button mat-icon-button (click)="element.isEdit = !element.isEdit">
-                      <mat-icon>{{element.isEdit ? 'done' : 'edit'}}</mat-icon>
+                    <button
+                      mat-icon-button
+                      (click)="element.isEdit = !element.isEdit"
+                    >
+                      <mat-icon>{{
+                        element.isEdit ? "done" : "edit"
+                      }}</mat-icon>
                     </button>
-                    <button mat-icon-button color="warn" (click)="deleteOne(element.staff_name)">
+                    <button
+                      mat-icon-button
+                      color="warn"
+                      (click)="deleteOne(element.staff_name)"
+                    >
                       <mat-icon>delete</mat-icon>
                     </button>
                   </div>
@@ -49,5 +64,12 @@
     </table>
   </div>
 
-  <button mat-raised-button color="warn" (click)="deleteAll()" class="delete-all-button">Delete All Records</button>
+  <button
+    mat-raised-button
+    color="warn"
+    (click)="deleteAll()"
+    class="delete-all-button"
+  >
+    Delete All Records
+  </button>
 </div>

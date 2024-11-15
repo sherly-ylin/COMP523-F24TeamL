@@ -1,27 +1,47 @@
 <div class="invite-user-page">
+  <h1>Invite User</h1>
   <form (ngSubmit)="onSubmit()">
-    <h2 style="margin-bottom: 15px">Invite User</h2>
+    <mat-form-field class="form-field">
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="email" name="email" />
+      @if (submitted && !email) {
+        <mat-error>A valid email address is required!</mat-error>
+      }
+    </mat-form-field>
 
-    <div class="form-content">
-      <div class="field">
-        <h3>Email:</h3>
-        <input type="text" [(ngModel)]="email" name="email"/>
-        @if (submitted && !email) {
-          <div class="error">
-            A valid email address is required!
-          </div>
-        }
-      </div>
-
-      <div class="field">
-        <mat-checkbox [checked]="isSuperadmin" (change)="isSuperadmin = !isSuperadmin">Invite Superadmin</mat-checkbox>
-        <mat-checkbox [checked]="isAdmin" (change)="isAdmin = !isAdmin">Invite Admin</mat-checkbox>
-        <mat-checkbox [checked]="isProvider" (change)="isProvider = !isProvider">Invite Provider</mat-checkbox>
-      </div>
-
-      <div class="invite-button">
-        <button type="submit">Send Invite Email</button>
-      </div>
+    <div>
+      <label id="role-radio-group-label">Invite as a:</label>
+      <mat-radio-group
+        aria-labelledby="radio-group-label"
+        [(ngModel)]="role"
+        name="role"
+      >
+        <mat-radio-button value="Provider">Provider</mat-radio-button>
+        <mat-radio-button value="Admin">Admin</mat-radio-button>
+        <mat-radio-button value="Superadmin">Superadmin</mat-radio-button>
+      </mat-radio-group>
     </div>
+
+    <div>
+      <label id="timespan-radio-group-label">Expires after:</label>
+      <mat-radio-group
+        aria-labelledby="timespan-radio-group-label"
+        [(ngModel)]="timespanString"
+        name="timespan"
+        (change)="onTimespanChange()"
+      >
+        <mat-radio-button value="3 day">3 days</mat-radio-button>
+        <mat-radio-button value="7 day">7 days</mat-radio-button>
+        <mat-radio-button value="1 month">1 month</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <button
+      mat-flat-button
+      type="submit"
+      [disabled]="!email || !role || !timespanString"
+    >
+      Send Invite Email
+    </button>
   </form>
 </div>

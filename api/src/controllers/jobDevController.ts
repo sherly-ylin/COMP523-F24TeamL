@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { environment } from '../../environment.js'
 import * as jobDevServices from '../services/jobDevServices.js'
 
 /* Get all controller to retrieve all records. Result variable checks for success. */

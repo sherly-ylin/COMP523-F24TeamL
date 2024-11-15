@@ -1,34 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.css";
-@import '~@angular/material/prebuilt-themes/azure-blue.css';
+@import "~@angular/material/prebuilt-themes/azure-blue.css";
 
-html, body, app-root, :host {
-    height: 100%; 
-    display: block;
+html,
+body,
+app-root,
+:host {
+  height: 100%;
+  display: block;
 }
 
 div {
-    display: block;
+  display: block;
 }
 
 app-login-page {
-    height:100%;
-    display: block;
+  height: 100%;
+  display: block;
 }
 .center {
-    text-align: center;
-    align-items: center;
+  text-align: center;
+  align-items: center;
 }
 
 table {
-    width: 100%;
-    margin: auto;
-    margin-top: 25px;
-    margin-bottom: 25px;
+  width: 100%;
+  margin: auto;
+  margin-top: 25px;
+  margin-bottom: 25px;
 }
 
 .edit-table {
-    width: 70px;
+  width: 70px;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

@@ -1,7 +1,7 @@
 import csvtojson from 'csvtojson'
 import { Document, Error } from 'mongoose'
-import { personLevelModel } from '../models/personLevelSchema.js'
 import { environment } from '../../environment.js'
+import { personLevelModel } from '../models/personLevelSchema.js'
 import { User } from '../models/userSchema.js'
 
 /* Runs mongoose function to get all records from the database */
@@ -24,7 +24,10 @@ export async function getAllRecordsFromDB() {
     },
   ).clone()
 
-  if (signed_in_user != null && (signed_in_user.role == 'superadmin' || signed_in_user.role == 'admin')) {
+  if (
+    signed_in_user != null &&
+    (signed_in_user.role == 'superadmin' || signed_in_user.role == 'admin')
+  ) {
     console.log('🍎 I am superadmin/admin')
     var records = await personLevelModel
       .find(function (err, docs) {
@@ -173,7 +176,9 @@ export async function deleteAllRecordsFromDB() {
 /* Utilizes Add Record to DB Method to upload CSV File */
 export async function uploadCSVtoDB() {
   csvtojson()
-    .fromFile('/Users/hongqianqian/Desktop/COMP 523/COMP523-TeamC/api/src/mockDataPersonColumns.csv')
+    .fromFile(
+      '/Users/hongqianqian/Desktop/COMP 523/COMP523-TeamC/api/src/mockDataPersonColumns.csv',
+    )
     .then((csvData) => {
       for (let i: number = 0; i < csvData.length; i++) {
         addRecordToDB(csvData[i])

@@ -1,134 +1,40 @@
 import nodemailer from 'nodemailer'
-import config from '../config.js'
+import config from '../config.js' // Assuming environment variables are stored here
+import { IInvite } from '../models/inviteSchema.js'
 
-export const randString = () => {
-  const len = 8
-  let randStr = ''
-  for (let i = 0; i < len; i++) {
-    // Random number between 1 and 10
-    const ch = Math.floor(Math.random() * 10 + 1)
-    randStr += ch
-  }
-  return randStr
-}
+// Create a reusable transporter outside the function to avoid repeated initialization
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false, // true for 465, false for other ports
+  auth: {
+    user: config.email_username, // Your Gmail address from the config
+    pass: config.email_password, // Your Gmail App Password
+  },
+})
 
-export const sendEmail = (email: any, uniqueString: string) => {
-  console.log(email)
-  let Transport = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: config.email_username, // your Gmail address
-      pass: config.email_password, // your App Password
-    },
-  })
-  //   var mailOptions;
-  //   let sender = "LearnerYou_Email_Verification";
-  let mailOptions = {
+export const sendEmail = async (invite: IInvite) => {
+  console.log(`Sending email to: ${invite.email}`)
+
+  // Construct the mail options
+  const mailOptions = {
     from: '"UNC Department of Psychiatry" <hello@psychiatry.unc.edu>',
-    to: email,
-    subject: 'Verify your email address',
-    html: `Press <a href=http://localhost:3000/verify/${uniqueString}> here </a> to verify your email. Thanks.`,
+    to: invite.email,
+    subject: `Invitation to Join the eIPS Fidelity Project as a ${invite.role}!`,
+    html: `
+      <p>Welcome to the eIPS Fidelity Project!</p>
+      <p>Press <a href="http://localhost:4200/signup/${invite.token}">here</a> to sign up as a ${invite.role}!</p>
+      <p>This link expires at ${invite.expiresAt}</p>
+    `,
   }
 
-  Transport.sendMail(mailOptions, function (error, response) {
-    if (error) {
-      console.log(error)
-      return
-    } else {
-      console.log('Message sent')
-    }
-  })
-}
-
-
-export const sendInviteSuperadminEmail = (email: any) => {
-  console.log(email)
-  let Transport = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: config.email_username, // your Gmail address
-      pass: config.email_password, // your App Password
-    },
-  })
-  //   var mailOptions;
-  //   let sender = "LearnerYou_Email_Verification";
-  let mailOptions = {
-    from: '"UNC Department of Psychiatry" <hello@psychiatry.unc.edu>',
-    to: email,
-    subject: 'You are invited to join the eIPS Fidelity Project as a superadmin',
-    html: `Press <a href=http://localhost:4200/zmY4KHGcqMKPjEsewQTE2QbazONxITTjSHGP2sA> here </a> to sign up as a superadmin. Thanks.`,
+  try {
+    // Send email using the pre-configured transporter
+    const info = await transporter.sendMail(mailOptions)
+    console.log('Message sent: %s', info.messageId)
+  } catch (error) {
+    // Handle error appropriately, could rethrow or log to a monitoring service
+    console.error('Error sending email:', error)
+    throw new Error('Failed to send email')
   }
-
-  Transport.sendMail(mailOptions, function (error, response) {
-    if (error) {
-      console.log(error)
-      return
-    } else {
-      console.log('Invite Email Sent')
-    }
-  })
-}
-
-export const sendInviteAdminEmail = (email: any) => {
-  console.log(email)
-  let Transport = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: config.email_username, // your Gmail address
-      pass: config.email_password, // your App Password
-    },
-  })
-  //   var mailOptions;
-  //   let sender = "LearnerYou_Email_Verification";
-  let mailOptions = {
-    from: '"UNC Department of Psychiatry" <hello@psychiatry.unc.edu>',
-    to: email,
-    subject: 'You are invited to join the eIPS Fidelity Project as an admin',
-    html: `Press <a href=http://localhost:4200/dmfde3YDsBZKsNEnzLo9Q> here </a> to sign up as an admin. Thanks.`,
-  }
-
-  Transport.sendMail(mailOptions, function (error, response) {
-    if (error) {
-      console.log(error)
-      return
-    } else {
-      console.log('Invite Email Sent')
-    }
-  })
-}
-
-export const sendInviteProviderEmail = (email: any) => {
-  console.log(email)
-  let Transport = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: config.email_username, // your Gmail address
-      pass: config.email_password, // your App Password
-    },
-  })
-  //   var mailOptions;
-  //   let sender = "LearnerYou_Email_Verification";
-  let mailOptions = {
-    from: '"UNC Department of Psychiatry" <hello@psychiatry.unc.edu>',
-    to: email,
-    subject: 'You are invited to join the eIPS Fidelity Project as a provider',
-    html: `Press <a href=http://localhost:4200/9be6A5Vv7HVV0ojFI4Izfw> here </a> to sign up as a provider. Thanks.`,
-  }
-
-  Transport.sendMail(mailOptions, function (error, response) {
-    if (error) {
-      console.log(error)
-      return
-    } else {
-      console.log('Invite Email Sent')
-    }
-  })
 }

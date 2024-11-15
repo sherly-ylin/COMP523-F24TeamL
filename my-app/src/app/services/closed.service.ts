@@ -6,11 +6,10 @@ import { Closed } from '../models/closed.model';
 const baseUrl = 'http://localhost:3000/closed';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ClosedService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAll(): Observable<Closed[]> {
     return this.http.get<Closed[]>(baseUrl);

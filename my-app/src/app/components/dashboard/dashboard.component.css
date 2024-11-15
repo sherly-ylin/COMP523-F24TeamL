@@ -1,4 +1,4 @@
-mat-toolbar{
+mat-toolbar {
   width: 100%;
   height: max-content;
   background-color: #eee;
@@ -20,7 +20,7 @@ mat-toolbar{
   padding: 15px;
 }
 
-#btnProfile{
+#btnProfile {
   position: relative;
 }
 #profile {
@@ -67,7 +67,9 @@ mat-toolbar{
 }
 
 .navigation-list .mat-list-item a {
-  transition: background-color 0.3s, color 0.3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
   color: rgba(0, 0, 0, 0.87);
 }
 
@@ -113,9 +115,8 @@ mat-toolbar{
   transition: color 0.3s;
 }
 
-
-.tag{
-  padding: 10px 25px 0px 0px; 
+.tag {
+  padding: 10px 25px 0px 0px;
   color: #777;
   font: bold 1.5em;
   text-align: center;

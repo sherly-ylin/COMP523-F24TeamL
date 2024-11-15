@@ -1,62 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&family=Manrope:wght@500&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300&family=Manrope:wght@500&display=swap");
 
 .set-up-review-page {
-    text-align: center; /* Center the text of the title */
-    height: 100vh; /* Full viewport height */
-    background-color: #e9ecef;
-    font-family: 'Manrope', sans-serif;
-    
-    /* Flexbox layout */
-    display: flex; 
-    flex-direction: column; /* Stack elements (title, form) vertically */
-    align-items: center; /* Center horizontally */
-    padding: 20px; /* Optional padding */
+  height: 100%;
+  background-color: #e9ecef;
+  font-family: "Manrope", sans-serif;
+
+  display: flex; /* Enable flexbox */
+  flex-direction: column; /* Arrange children in a column (vertically) */
+  align-items: center; /* Center the children horizontally */
 }
 
-/* Ensure the title stays at the top, while the form is centered */
-h2 {
-    font-size: 22px;
-    margin-top: 20px; /* Add some space at the top if needed */
-    margin-bottom: 30px; /* Space between title and form */
+h1 {
+  font-size: 22px;
 }
 
-/* The form itself */
-.form-container {
-    max-width: 660px; /* Maximum width of the form */
-    width: 100%;      /* Make form width 100% of the container (up to 600px) */
-    padding: 16px;    /* Optional padding for better spacing */
-    box-sizing: border-box; /* Ensures padding does not increase the overall width */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
-/* Container for each form row */
 .form-field {
-    display: flex;
-    align-items: center;
-    margin-bottom: 16px; /* Space between rows */
-}
-
-/* Label styling */
-mat-label {
-    width: 220px; /* Fixed width for labels */
-    margin-right: 16px; /* Space between label and input */
-    display: inline-block; /* Ensures label stays on the same line */
-    text-align: right; /* Aligns label text to the right */
-}
-
-/* Form field input styling */
-mat-form-field.input-field {
-    flex-grow: 1; /* Input field grows to take available space */
-    max-width: 400px; /* Limit the input field width */
-}
-
-/* Center the button */
-.button-container {
-    display: flex;
-    justify-content: center; /* Horizontally center the button */
-    margin-top: 16px;
-}
-
-/* Optional: Button styling */
-button {
-    margin-top: 16px; /* Adds space between form and button */
+  width: 400px; /* length of the input fields */
 }

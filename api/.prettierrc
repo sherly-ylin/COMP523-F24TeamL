@@ -4,16 +4,11 @@
   "semi": false,
   "overrides": [
     {
-      "files": [
-        "*.ts",
-        "*.mts"
-      ],
+      "files": ["*.ts", "*.mts"],
       "options": {
         "parser": "typescript"
       }
     }
   ],
-  "plugins": [
-    "prettier-plugin-organize-imports"
-  ]
+  "plugins": ["prettier-plugin-organize-imports"]
 }

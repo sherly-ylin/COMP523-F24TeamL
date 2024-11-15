@@ -1,31 +1,35 @@
 <div class="login-page">
-    <img src="https://www.med.unc.edu/psych/wp-content/uploads/sites/839/2020/03/psychiatry.png"
-        style="width:100%; padding: 30px; max-width: 400px;">
-    <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
-        <h2 style="margin-bottom: 15px;"></h2>
+  <img
+    src="https://www.med.unc.edu/psych/wp-content/uploads/sites/839/2020/03/psychiatry.png"
+    style="width: 100%; padding: 30px; max-width: 400px"
+  />
 
-        <div class=form-content>
-            <div class="field">
-                <label for="email">Email:</label>
-                <input id="email" type="email" formControlName="email" required>
-                <!-- <div *ngIf="submitted && !email" class="error">
-                        A valid email address is required!
-                    </div> -->
-            </div>
+  <h1>Sign In</h1>
+  <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+    <mat-form-field class="form-field">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" required />
+      <div>
+        @if (username?.touched && username?.invalid) {
+          @if (username?.hasError("required")) {
+            <mat-error>Username is required.</mat-error>
+          }
+        }
+      </div>
+    </mat-form-field>
 
-            <div class="field">
-                <label for="password">Password:</label>
-                <input id="password" type="password" formControlName="password" required>
-                <!-- <div *ngIf="submitted && !password" class="error">
-                        A valid password is required!
-                    </div> -->
-            </div>
+    <mat-form-field class="form-field">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password" required />
+      @if (password?.touched && password?.invalid) {
+        @if (password?.hasError("required")) {
+          <mat-error>Password is required.</mat-error>
+        }
+      }
+    </mat-form-field>
 
-            <div class="field">
-                <button type="submit" [disabled]="!signInForm.valid">Sign In</button>
-                <p>Don't have an account? <a href="./signup">Sign up</a></p>
-            </div>
-        </div>
-
-    </form>
+    <button mat-flat-button type="submit" [disabled]="!signInForm.valid">
+      Sign In
+    </button>
+  </form>
 </div>

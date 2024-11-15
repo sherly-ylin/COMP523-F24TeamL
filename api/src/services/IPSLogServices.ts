@@ -1,7 +1,7 @@
 import { Document } from 'mongodb'
 import { Error } from 'mongoose'
-import { IPSLogModel } from '../models/IPSLogSchema.js'
 import { environment } from '../../environment.js'
+import { IPSLogModel } from '../models/IPSLogSchema.js'
 import { User } from '../models/userSchema.js'
 
 /* Runs mongoose function to get all records from the database */
@@ -23,43 +23,42 @@ export async function getAllRecordsFromDB() {
     },
   ).clone()
 
-  if (signed_in_user != null && (signed_in_user.role == 'superadmin' || signed_in_user.role == 'admin')) {
+  if (
+    signed_in_user != null &&
+    (signed_in_user.role == 'superadmin' || signed_in_user.role == 'admin')
+  ) {
     console.log('🍎 I am superadmin/admin')
-    var records = await IPSLogModel
-      .find(function (err, docs) {
-        if (err) {
-          throw err
+    var records = await IPSLogModel.find(function (err, docs) {
+      if (err) {
+        throw err
+      } else {
+        if (docs) {
+          console.log('Found all records.')
         } else {
-          if (docs) {
-            console.log('Found all records.')
-          } else {
-            console.log('No records found.')
-          }
+          console.log('No records found.')
         }
-      })
-      .clone()
+      }
+    }).clone()
     return records
   } else if (signed_in_user != null && signed_in_user.role == 'provider') {
     console.log('🍎 I am provider')
-    var my_records = await IPSLogModel
-      .find(
-        { user_email: environment.user_email },
-        (err: Error, doc: Document) => {
-          if (err) {
-            throw err
+    var my_records = await IPSLogModel.find(
+      { user_email: environment.user_email },
+      (err: Error, doc: Document) => {
+        if (err) {
+          throw err
+        } else {
+          if (doc) {
+            console.log('Found ' + doc)
           } else {
-            if (doc) {
-              console.log('Found ' + doc)
-            } else {
-              console.log(
-                'Could not find records with user email: ' +
-                  environment.user_email,
-              )
-            }
+            console.log(
+              'Could not find records with user email: ' +
+                environment.user_email,
+            )
           }
-        },
-      )
-      .clone()
+        }
+      },
+    ).clone()
     return my_records
   }
 }

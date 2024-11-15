@@ -2,12 +2,24 @@
   <div class="page-header">
     <h4>Person Level Logs</h4>
     <div>
-      <a routerLink="/dashboard/addPerson" class="add-log-button"><button mat-raised-button color="primary">Add Log</button></a>
-      <a routerLink="/dashboard/clinical" class="add-log-button"><button mat-raised-button color="primary">Clinical Logs</button></a>
-      <a routerLink="/dashboard/demographics" class="add-log-button"><button mat-raised-button color="primary">Demographic Logs</button></a>
-      <a routerLink="/dashboard/education" class="add-log-button"><button mat-raised-button color="primary">Education Logs</button></a>
-      <a routerLink="/dashboard/employment" class="add-log-button"><button mat-raised-button color="primary">Employment Logs</button></a>
-      <a routerLink="/dashboard/vr" class="add-log-button"><button mat-raised-button color="primary">VR Logs</button></a>
+      <a routerLink="/dashboard/addPerson" class="add-log-button"
+        ><button mat-raised-button color="primary">Add Log</button></a
+      >
+      <a routerLink="/dashboard/clinical" class="add-log-button"
+        ><button mat-raised-button color="primary">Clinical Logs</button></a
+      >
+      <a routerLink="/dashboard/demographics" class="add-log-button"
+        ><button mat-raised-button color="primary">Demographic Logs</button></a
+      >
+      <a routerLink="/dashboard/education" class="add-log-button"
+        ><button mat-raised-button color="primary">Education Logs</button></a
+      >
+      <a routerLink="/dashboard/employment" class="add-log-button"
+        ><button mat-raised-button color="primary">Employment Logs</button></a
+      >
+      <a routerLink="/dashboard/vr" class="add-log-button"
+        ><button mat-raised-button color="primary">VR Logs</button></a
+      >
     </div>
   </div>
 
@@ -22,12 +34,19 @@
                 @default {
                   <span>{{ element[col.key] }}</span>
                 }
-                @case ('isEdit') {
+                @case ("isEdit") {
                   <div class="edit-icons">
-                    <button mat-icon-button (click)="element.isEdit = !element.isEdit">
+                    <button
+                      mat-icon-button
+                      (click)="element.isEdit = !element.isEdit"
+                    >
                       <mat-icon>edit</mat-icon>
                     </button>
-                    <button mat-icon-button color="warn" (click)="deleteOne(element.uid)">
+                    <button
+                      mat-icon-button
+                      color="warn"
+                      (click)="deleteOne(element.uid)"
+                    >
                       <mat-icon>delete</mat-icon>
                     </button>
                   </div>
@@ -41,5 +60,12 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
   </div>
-  <button mat-raised-button color="warn" (click)="deleteAll()" class="delete-all-button">Delete All Records</button>
+  <button
+    mat-raised-button
+    color="warn"
+    (click)="deleteAll()"
+    class="delete-all-button"
+  >
+    Delete All Records
+  </button>
 </div>

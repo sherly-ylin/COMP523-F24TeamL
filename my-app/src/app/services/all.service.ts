@@ -3,10 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AllService {
-  private allLogsUrl = 'http://localhost:3000/alllog'; 
+  private allLogsUrl = 'http://localhost:3000/alllog';
 
   constructor(private http: HttpClient) {}
 

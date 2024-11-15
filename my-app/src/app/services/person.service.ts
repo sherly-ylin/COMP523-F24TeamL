@@ -6,11 +6,10 @@ import { Person } from '../models/person.model';
 const baseUrl = 'http://localhost:3000/person_level';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PersonService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAll(): Observable<Person[]> {
     return this.http.get<Person[]>(baseUrl);

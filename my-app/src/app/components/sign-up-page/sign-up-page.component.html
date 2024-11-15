@@ -1,63 +1,96 @@
 <div class="sign-up-page">
   <img
     src="https://www.med.unc.edu/psych/wp-content/uploads/sites/839/2020/03/psychiatry.png"
-    style="width: 100%; padding: 30px; max-width: 400px"
-    />
-    <form (ngSubmit)="onSubmit()">
-      <h2 style="margin-bottom: 15px">Sign up</h2>
+  />
+  <h1>Sign Up</h1>
+  <form (ngSubmit)="onSubmit()">
+    <mat-form-field class="form-field">
+      <mat-label>Username</mat-label>
+      <input
+        matInput
+        [(ngModel)]="username"
+        name="username"
+        placeholder="Optional, the default username is your email"
+      />
+      <mat-error></mat-error>
+    </mat-form-field>
 
-      <div class="form-content">
-        <label for="username" class="field">
-          Username:
-          <input type="text" id="username" [(ngModel)]="username" name="username" placeholder="Optional, default to your email"/>
-          <span class="message">
-          </span>
-        </label>
-
-        <label for="password" class="field">
-          Password:
-          <input type="password" id="password" [(ngModel)]="password" name="password" (focus)="passwordGainFocus()" (blur)="passwordLostFocus()" />
-          <span class="message">
-            @if (password && !passwordRequirementsSatisfied() && !passwordHasFocus || !password && submitted) {
-              <span class="error">
-                A valid password is required!<br>
-              </span>
+    <mat-form-field class="form-field">
+      <mat-label>Password:</mat-label>
+      <input
+        matInput
+        type="password"
+        [(ngModel)]="password"
+        name="password"
+        (focus)="passwordGainFocus()"
+        (blur)="passwordLostFocus()"
+      />
+      @if (
+        (password && !passwordRequirementsSatisfied() && !passwordHasFocus) ||
+        (!password && submitted)
+      ) {
+        <mat-error>A valid password is required!</mat-error>
+      }
+      @if (passwordHasFocus && password) {
+        <div>
+          <mat-error [class]="passwordIsLongEnough() ? 'correct' : 'error'">
+            @if (passwordIsLongEnough()) {
+              ✓
             }
-            @if (passwordHasFocus && password) {
-              <span [class]="passwordIsLongEnough() ? 'correct' : 'error'">
-                @if (passwordIsLongEnough()) { ✓ } Password should include at least {{ PASSWORD_MIN_LENGTH }} characters.<br>
-              </span>
-              <span [class]="passwordHasUpperCase() ? 'correct' : 'error'">
-                @if (passwordHasUpperCase()) { ✓ } Password should include at least {{ PASSWORD_MIN_UPPER }} uppercase letter.<br>
-              </span>
-              <span [class]="passwordHasLowerCase() ? 'correct' : 'error'">
-                @if (passwordHasLowerCase()) { ✓ } Password should include at least {{ PASSWORD_MIN_LOWER }} lowercase letter.<br>
-              </span>
-              <span [class]="passwordHasNumber() ? 'correct' : 'error'">
-                @if (passwordHasNumber()) { ✓ } Password should include at least {{ PASSWORD_MIN_NUMBER }} number.<br>
-              </span>
-              <span [class]="passwordHasSymbol() ? 'correct' : 'error'">
-                @if (passwordHasSymbol()) { ✓ }    Password should include at least {{ PASSWORD_MIN_SYMBOL }} symbol.<br>
-              </span>
+            Password should include at least
+            {{ PASSWORD_MIN_LENGTH }} characters.
+          </mat-error>
+          <mat-error [class]="passwordHasUpperCase() ? 'correct' : 'error'">
+            @if (passwordHasUpperCase()) {
+              ✓
             }
-          </span>
-        </label>
-
-        <label for="confirmPassword" class="field">
-          Confirm Password:
-          <input type="password" id="confirmPassword" [(ngModel)]="confirmPassword" name="password2" (focus)="confirmPasswordGainFocus()" (blur)="confirmPasswordLostFocus()" />
-          <span class="message">
-            @if (confirmPassword && passwordRequirementsSatisfied() && password != confirmPassword) {
-              <span class="error">
-                Passwords do not match!
-              </span>
+            Password should include at least {{ PASSWORD_MIN_UPPER }} uppercase
+            letter.
+          </mat-error>
+          <mat-error [class]="passwordHasLowerCase() ? 'correct' : 'error'">
+            @if (passwordHasLowerCase()) {
+              ✓
             }
-          </span>
-        </label>
-
-        <div class="field">
-          <button type="submit">Sign Up</button>
+            Password should include at least {{ PASSWORD_MIN_LOWER }} lowercase
+            letter.
+          </mat-error>
+          <mat-error [class]="passwordHasNumber() ? 'correct' : 'error'">
+            @if (passwordHasNumber()) {
+              ✓
+            }
+            Password should include at least
+            {{ PASSWORD_MIN_NUMBER }} number.
+          </mat-error>
+          <mat-error [class]="passwordHasSymbol() ? 'correct' : 'error'">
+            @if (passwordHasSymbol()) {
+              ✓
+            }
+            Password should include at least
+            {{ PASSWORD_MIN_SYMBOL }} symbol.
+          </mat-error>
         </div>
-      </div>
-    </form>
-  </div>
+      }
+    </mat-form-field>
+
+    <mat-form-field class="form-field">
+      <mat-label>Confirm Password:</mat-label>
+      <input
+        matInput
+        type="password"
+        [(ngModel)]="confirmPassword"
+        name="confirmPassword"
+        (focus)="confirmPasswordGainFocus()"
+        (blur)="confirmPasswordLostFocus()"
+      />
+      @if (
+        confirmPassword &&
+        passwordRequirementsSatisfied() &&
+        password != confirmPassword
+      ) {
+        <mat-error class="error">Passwords do not match!</mat-error>
+      }
+    </mat-form-field>
+
+    <button mat-flat-button type="submit">Sign Up</button>
+  </form>
+</div>

@@ -22,7 +22,10 @@ export async function getAllRecordsFromDB() {
     },
   ).clone()
 
-  if (signed_in_user != null && (signed_in_user.role == 'superadmin' || signed_in_user.role == 'admin')) {
+  if (
+    signed_in_user != null &&
+    (signed_in_user.role == 'superadmin' || signed_in_user.role == 'admin')
+  ) {
     console.log('🍎 I am superadmin/admin')
     var records = await jobDevModel
       .find(function (err, docs) {

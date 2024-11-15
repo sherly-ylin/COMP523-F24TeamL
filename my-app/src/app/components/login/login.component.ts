@@ -1,45 +1,70 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/auth.service';
-import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-interface LoginResponse {
-  accessToken: string;
-}
-
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css'],
-    standalone: true,
-    imports: [FormsModule, ReactiveFormsModule]
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
+  standalone: true,
+  imports: [
+    MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+  ], // FormsModule is not needed unless you're using template-driven forms
 })
-
-export class LoginComponent {
-  email = new FormControl('', [Validators.required, Validators.email]);
-  password = new FormControl('', [Validators.required]);
-  
-  public signInForm = this.formBuilder.group({
-    email: this.email,
-    password: this.password
-  })
+export class LoginComponent implements OnInit {
+  public signInForm!: FormGroup;
 
   constructor(
-    public authService: AuthService,
-    private router: Router, 
+    private authService: AuthService,
+    private router: Router,
     private http: HttpClient,
-    protected formBuilder: FormBuilder) { 
-      this.signInForm.setValue({
-        email: this.email.value,
-        password: this.password.value
-      })
-    }
+    private formBuilder: FormBuilder,
+  ) {}
 
-  public onSubmit() {
+  ngOnInit(): void {
+    // Initialize form with validation rules
+    this.signInForm = this.formBuilder.group({
+      username: ['', [Validators.required]], //, Validators.email
+      password: ['', [Validators.required]],
+    });
+  }
+
+  // Mark all controls as touched to show validation errors on submit
+  private markAllControlsAsTouched(): void {
+    Object.values(this.signInForm.controls).forEach((control) => {
+      control.markAsTouched();
+    });
+  }
+
+  // Getters for easy access in template
+  get username() {
+    return this.signInForm.get('username');
+  }
+
+  get password() {
+    return this.signInForm.get('password');
+  }
+
+  // Form submission method
+  public onSubmit(): void {
     if (this.signInForm.valid) {
-      this.authService.signIn(this.email.value??'', this.password.value??'');
+      const { username, password } = this.signInForm.value;
+      this.authService.signIn(username, password);
+    } else {
+      this.markAllControlsAsTouched(); // To trigger form validation feedback on UI
     }
   }
 }

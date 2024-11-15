@@ -24,7 +24,8 @@ h4 {
   border-collapse: collapse;
 }
 
-.job-dev-table th, .job-dev-table td {
+.job-dev-table th,
+.job-dev-table td {
   padding: 8px;
   text-align: center;
   border-bottom: 1px solid #e0e0e0;

@@ -6,11 +6,10 @@ import { IpsLog } from '../models/ips-log.model';
 const baseUrl = 'http://localhost:3000/ipslog';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class IpslogService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAll(): Observable<IpsLog[]> {
     return this.http.get<IpsLog[]>(baseUrl);

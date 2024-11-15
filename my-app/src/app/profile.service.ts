@@ -12,19 +12,17 @@ export interface Profile {
   // permissions: ;
 }
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProfileService {
-
   private profileSubject: Subject<Profile | undefined> = new ReplaySubject(1);
   public profile$: Observable<Profile | undefined> =
     this.profileSubject.asObservable();
 
   constructor(
     protected http: HttpClient,
-    protected auth: AuthService
+    protected auth: AuthService,
   ) {
     // this.auth.isAuthenticated$.subscribe((isAuthenticated) =>
     //   this.refreshProfile(isAuthenticated)
@@ -48,5 +46,4 @@ export class ProfileService {
   //     this.profileSignal.set(undefined);
   //   }
   // }
-
 }

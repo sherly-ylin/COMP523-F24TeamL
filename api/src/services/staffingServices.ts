@@ -1,6 +1,6 @@
 import { Document, Error } from 'mongoose'
-import { staffingModel } from '../models/staffingSchema.js'
 import { environment } from '../../environment.js'
+import { staffingModel } from '../models/staffingSchema.js'
 import { User } from '../models/userSchema.js'
 
 /* Runs mongoose function to get all records from the database */
@@ -22,7 +22,10 @@ export async function getAllRecordsFromDB() {
     },
   ).clone()
 
-  if (signed_in_user != null && (signed_in_user.role == 'superadmin' || signed_in_user.role == 'admin')) {
+  if (
+    signed_in_user != null &&
+    (signed_in_user.role == 'superadmin' || signed_in_user.role == 'admin')
+  ) {
     console.log('🍎 I am superadmin/admin')
     var records = await staffingModel
       .find(function (err, docs) {

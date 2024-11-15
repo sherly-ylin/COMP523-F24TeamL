@@ -1,10 +1,16 @@
-import { ApplicationConfig } from "@angular/core";
+import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { routes } from './app.routes'
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { provideAnimations, BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { routes } from './app.routes';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
+import {
+  provideAnimations,
+  BrowserAnimationsModule,
+} from '@angular/platform-browser/animations';
 
-import { importProvidersFrom } from "@angular/core";
+import { importProvidersFrom } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
@@ -18,24 +24,24 @@ import { MatListModule } from '@angular/material/list';
 import { SurveyModule } from 'survey-angular-ui';
 
 export const appConfig: ApplicationConfig = {
-    providers: [
-        provideRouter(routes),
-        // importProvidersFrom(
-        //     BrowserModule, 
-        //     FormsModule, 
-        //     MatTableModule, 
-        //     MatButtonModule, 
-        //     MatInputModule, 
-        //     MatIconModule, 
-        //     MatCheckboxModule, 
-        //     MatOptionModule, 
-        //     MatSidenavModule, // Added to imports
-        //     MatListModule, // Added to imports
-        //     SurveyModule, 
-        //     ReactiveFormsModule, 
-        //     BrowserAnimationsModule,
-        // ),
-        provideHttpClient(withInterceptorsFromDi()),
-        provideAnimations(),
-    ]
-}
+  providers: [
+    provideRouter(routes),
+    // importProvidersFrom(
+    //     BrowserModule,
+    //     FormsModule,
+    //     MatTableModule,
+    //     MatButtonModule,
+    //     MatInputModule,
+    //     MatIconModule,
+    //     MatCheckboxModule,
+    //     MatOptionModule,
+    //     MatSidenavModule, // Added to imports
+    //     MatListModule, // Added to imports
+    //     SurveyModule,
+    //     ReactiveFormsModule,
+    //     BrowserAnimationsModule,
+    // ),
+    provideHttpClient(withInterceptorsFromDi()),
+    provideAnimations(),
+  ],
+};

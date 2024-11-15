@@ -6,11 +6,10 @@ import { Staffing } from '../models/staffing.model';
 const baseUrl = 'http://localhost:3000/staffing';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StaffingService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAll(): Observable<Staffing[]> {
     return this.http.get<Staffing[]>(baseUrl);
