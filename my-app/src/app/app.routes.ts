@@ -18,6 +18,7 @@ import { StaffingListComponent } from './components/staffing/staffing-list/staff
 import { AddStaffingComponent } from './components/staffing/add-staffing/add-staffing.component';
 import { LoginComponent } from './components/login/login.component';
 import { SignUpPageComponent } from './components/sign-up-page/sign-up-page.component';
+import { SetUpReviewPageComponent } from './components/set-up-review-page/set-up-review-page.component';
 import { AuthGuard } from './auth.guard';
 import { InviteUserComponent } from './components/invite-user/invite-user.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -41,7 +42,11 @@ export const routes: Routes = [
     component: SignUpPageComponent },
   { path: 'signup/:token',
     canActivate: [tokenValidGuard],
-    component: SignUpPageComponent },
+    component: SignUpPageComponent
+  },
+  { path: 'setUpReview',
+    component: SetUpReviewPageComponent
+  },
   {
     path: 'dashboard',
     component: DashboardComponent,

@@ -1,0 +1,40 @@
+<div class="set-up-review-page">
+    <h2>Set Up Reviews</h2>
+    <form (ngSubmit)="onSubmit()" class="form-container">
+        <div class="form-field">
+            <mat-label>Select a review type:</mat-label>
+            <mat-form-field appearance="fill" class="input-field">
+                <mat-select [(value)]="review">
+                    <mat-option>empty</mat-option>
+                    <mat-option value="person">person level survey</mat-option>
+                    <mat-option value="staff">staffing level survey</mat-option>
+                    <mat-option value="ipsLog">IPS log survey</mat-option>
+                    <mat-option value="jobdev">job development log</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="form-field">
+            <mat-label>Select team(s) (if exists):</mat-label>
+            <mat-form-field appearance="fill" class="input-field">
+                <mat-select [(value)]="team">
+                    <mat-option>empty</mat-option>
+                    @for (team of teams; track team.name) {
+                        <mat-option [value]="team.name">{{ team.name }}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="form-field">
+            <mat-label>Invite user by email:</mat-label>
+            <mat-form-field appearance="fill" class="input-field">
+                <input matInput [(ngModel)]="email" name="email">
+            </mat-form-field>
+        </div>
+
+        <div class="form-group button-container">
+            <button mat-flat-button type="submit">Submit</button>
+        </div>
+    </form>
+</div>
