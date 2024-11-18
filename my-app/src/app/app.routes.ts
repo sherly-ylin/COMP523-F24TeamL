@@ -28,30 +28,27 @@ import { SignUpAdminPageComponent } from './components/sign-up-admin-page/sign-u
 import { SignUpProviderPageComponent } from './components/sign-up-provider-page/sign-up-provider-page.component';
 import { SignUpSuperadminPageComponent } from './components/sign-up-superadmin-page/sign-up-superadmin-page.component';
 
-
 const tokenValidGuard: CanActivateFn = (route): boolean | UrlTree => {
   const authService = inject(AuthService);
   const router = inject(Router);
   return authService.isTokenValid(route) || router.createUrlTree(['/login']);
-}
+};
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'signup',
-    component: SignUpPageComponent },
-  { path: 'signup/:token',
+  { path: 'signup', component: SignUpPageComponent },
+  {
+    path: 'signup/:token',
     canActivate: [tokenValidGuard],
-    component: SignUpPageComponent
-  },
-  { path: 'setUpReview',
-    component: SetUpReviewPageComponent
+    component: SignUpPageComponent,
   },
   {
     path: 'dashboard',
     component: DashboardComponent,
     children: [
       { path: 'home', component: HomeComponent },
+      { path: 'setUpReview', component: SetUpReviewPageComponent },
       {
         path: 'closed',
         // canActivate: [AuthGuard],
@@ -109,7 +106,6 @@ export const routes: Routes = [
         // canActivate: [AuthGuard],
         component: AddStaffingComponent,
       },
-      
     ],
   },
   {
