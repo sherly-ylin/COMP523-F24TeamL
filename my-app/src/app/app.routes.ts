@@ -30,14 +30,10 @@ const tokenValidGuard: CanActivateFn = (route): boolean | UrlTree => {
   const router = inject(Router);
   return authService.isTokenValid(route) || router.createUrlTree(['/login']);
 };
-};
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignUpPageComponent },
-  {
-    path: 'signup/:token',
   { path: 'signup', component: SignUpPageComponent },
   {
     path: 'signup/:token',
