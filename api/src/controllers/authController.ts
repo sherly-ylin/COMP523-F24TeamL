@@ -130,7 +130,7 @@ async function generateUniqueInviteToken() {
 
   // Keep generating a new token until it is unique
   do {
-    token = generateSecureRandomString(getRandomInt(8, 16))
+    token = generateSecureRandomString(getRandomInt(32, 64))
     existingDoc = await Invite.findOne({ token })
   } while (existingDoc)
 

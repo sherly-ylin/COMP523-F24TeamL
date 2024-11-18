@@ -2,16 +2,42 @@ import { APP_ID, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/auth.service';
-import { FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+
+import { AbstractControl, ValidationErrors } from '@angular/forms';
+
+export function hasUpperCaseValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value;
+  return /[A-Z]/.test(value) ? null : { noUppercase: true };
+}
+
+export function hasLowerCaseValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value;
+  return /[a-z]/.test(value) ? null : { noLowercase: true };
+}
+
+export function hasNumberValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value;
+  return /\d/.test(value) ? null : { noNumber: true };
+}
+
+export function hasSymbolValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value;
+  return /[!@#$%^&*(),.?":{}|<>]/.test(value) ? null : { noSymbol: true };
+}
 
 @Component({
   selector: 'app-sign-up-page',
   templateUrl: './sign-up-page.component.html',
   styleUrls: ['./sign-up-page.component.css'],
   standalone: true,
-  imports: [FormsModule, MatInputModule, MatButtonModule],
+  imports: [ReactiveFormsModule, MatInputModule, MatButtonModule],
 })
 export class SignUpPageComponent implements OnInit {
   readonly PASSWORD_MIN_LENGTH = 8;
@@ -19,14 +45,10 @@ export class SignUpPageComponent implements OnInit {
   readonly PASSWORD_MIN_LOWER = 1;
   readonly PASSWORD_MIN_NUMBER = 1;
   readonly PASSWORD_MIN_SYMBOL = 1;
-  private readonly symbolRegex = /[!@#$%^&*(),.?":{}|<>]/;
+
+  public signUpForm!: FormGroup;
 
   token!: string;
-  username = '';
-  password = '';
-  passwordHasFocus = false;
-  confirmPassword = '';
-  confirmPasswordHasFocus = false;
   passwordsMatch: boolean = false;
   submitted: boolean = false;
 
@@ -35,58 +57,31 @@ export class SignUpPageComponent implements OnInit {
     private http: HttpClient,
     private authService: AuthService,
     private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.token = this.route.snapshot.paramMap.get('token') ?? '';
+
+    // Initialize form with validation rules
+    this.signUpForm = this.formBuilder.group({
+      username: ['', []],
+      password: ['', [Validators.required, Validators.minLength(this.PASSWORD_MIN_LENGTH), hasUpperCaseValidator, hasLowerCaseValidator, hasNumberValidator, hasSymbolValidator]],
+      confirmPassword: ['', [Validators.required]],
+    });
   }
 
-  public passwordGainFocus() {
-    this.passwordHasFocus = true;
+  // Getters for easy access in template
+  get username() {
+    return this.signUpForm.get('username');
   }
 
-  public passwordLostFocus() {
-    this.passwordHasFocus = false;
+  get password() {
+    return this.signUpForm.get('password');
   }
 
-  public confirmPasswordGainFocus() {
-    this.confirmPasswordHasFocus = true;
-  }
-
-  public confirmPasswordLostFocus() {
-    this.confirmPasswordHasFocus = false;
-  }
-
-  public passwordIsLongEnough(): boolean {
-    return this.password.length >= this.PASSWORD_MIN_LENGTH;
-  }
-
-  public passwordHasUpperCase(): boolean {
-    return /[A-Z]/.test(this.password);
-  }
-
-  public passwordHasLowerCase(): boolean {
-    return /[a-z]/.test(this.password);
-  }
-
-  public passwordHasNumber(): boolean {
-    return /\d/.test(this.password);
-  }
-
-  public passwordHasSymbol(): boolean {
-    return this.symbolRegex.test(this.password);
-  }
-
-  public passwordRequirementsSatisfied(): boolean {
-    const checks = [
-      this.passwordIsLongEnough(),
-      this.passwordHasUpperCase(),
-      this.passwordHasLowerCase(),
-      this.passwordHasNumber(),
-      this.passwordHasSymbol(),
-    ];
-
-    return checks.every((check) => check);
+  get confirmPassword() {
+    return this.signUpForm.get('confirmPassword');
   }
 
   public onSubmit() {
