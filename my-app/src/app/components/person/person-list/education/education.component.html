@@ -1,11 +1,10 @@
 <div class="list row">
+  <div>
+    <a routerLink="/dashboard/person"><button mat-icon-button color="primary" aria-label="Return to person level">
+        <mat-icon>arrow_back</mat-icon>
+      </button></a>
+  </div>
   <div class="center">
-    <a routerLink="/dashboard/person"
-      ><button mat-raised-button color="primary">
-        Return to person level
-      </button></a
-    >
-
     <h4>Education Logs</h4>
 
     <table mat-table [dataSource]="dataSource">

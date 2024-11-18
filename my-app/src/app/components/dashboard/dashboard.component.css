@@ -31,6 +31,8 @@ mat-toolbar{
 
 #btnProfile {
   position: relative;
+  height: 48px;
+  width: 48px;
 }
 #profile {
   position: absolute;
