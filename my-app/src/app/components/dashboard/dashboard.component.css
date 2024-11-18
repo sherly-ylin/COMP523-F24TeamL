@@ -1,4 +1,13 @@
-mat-toolbar {
+.container{
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+mat-toolbar{
   width: 100%;
   height: max-content;
   background-color: #eee;
@@ -46,7 +55,7 @@ mat-toolbar {
 
 .sidenav {
   display: flex;
-  height: 100%;
+  /* height: 100%-200px; */
   width: max-content;
   /* box-shadow: 3px 0 6px rgba(0, 0, 0, 0.24); */
   flex-direction: column;
@@ -55,7 +64,7 @@ mat-toolbar {
 }
 
 .mat-nav-list {
-  padding-bottom: 70px;
+  padding: 0 !important;
 }
 
 .mat-nav-list a {
@@ -107,9 +116,9 @@ mat-toolbar {
   padding: 15px 20px;
 }
 
-.mat-nav-list a {
-  border-radius: 4px; /* Optional: add rounded corners to nav items */
-}
+/* .mat-nav-list a {
+  border-radius: 4px; 
+} */
 
 .mat-nav-list a.mat-list-item {
   transition: color 0.3s;
