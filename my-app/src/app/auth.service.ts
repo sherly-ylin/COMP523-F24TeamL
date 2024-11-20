@@ -10,6 +10,10 @@ interface LoginResponse {
   accessToken: string;
 }
 
+interface VerifyTokenResponse {
+  email: string;
+}
+
 export interface User {
   username: string;
   id: number | null;
@@ -25,14 +29,48 @@ export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
   loggedIn$ = this.loggedIn.asObservable();
 
+  private email: string | null = null;
+  setEmail(email: string): void {
+    this.email = email;
+  }
+  getEmail(): string | null {
+    return this.email;
+  }
+
   constructor(
     private router: Router,
     private http: HttpClient,
   ) {}
 
-  isTokenValid(route: ActivatedRouteSnapshot): boolean {
+  async verifyTokenAndGetEmail(route: ActivatedRouteSnapshot): Promise<boolean> {
     console.log('Frontend token:', route.params['token']);
-    return true;
+    await this.http.post<VerifyTokenResponse>('http://localhost:3000/api/auth/verify-token-get-email', {
+      token: route.params['token']
+    })
+    .pipe(
+      // Handle any errors with a fallback
+      catchError((error) => {
+        alert(error?.error?.message || 'An error occurred during verifying token and get email.');
+        console.error('verify token error:', error);
+        return of(null); // Return a null observable to prevent breaking the stream
+      }),
+    )
+    .subscribe({
+      next: (response) => {
+        if (response && response.email) {
+          this.setEmail(response.email);
+          console.log('got email:', this.getEmail());
+        } else {
+          console.log('Invalid invite token');
+        }
+      },
+    });
+    console.log("outside:", this.getEmail());
+    return !!this.getEmail();
+  }
+
+  checkToken(route: ActivatedRouteSnapshot) {
+    return !!this.verifyTokenAndGetEmail(route);
   }
 
   signIn(username: string, password: string): void {

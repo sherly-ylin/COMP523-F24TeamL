@@ -28,7 +28,7 @@ import { AuthService } from './auth.service';
 const tokenValidGuard: CanActivateFn = (route): boolean | UrlTree => {
   const authService = inject(AuthService);
   const router = inject(Router);
-  return authService.isTokenValid(route) || router.createUrlTree(['/login']);
+  return authService.checkToken(route) || router.createUrlTree(['/login']);
 };
 
 export const routes: Routes = [
@@ -40,13 +40,12 @@ export const routes: Routes = [
     canActivate: [tokenValidGuard],
     component: SignUpPageComponent,
   },
-  { path: 'setUpReview', component: SetUpReviewPageComponent },
   {
     path: 'dashboard',
     component: DashboardComponent,
     children: [
       { path: 'home', component: HomeComponent },
-      { path: 'setUpReview', component: SetUpReviewPageComponent },
+      { path: 'set-up-review', component: SetUpReviewPageComponent },
       {
         path: 'closed',
         // canActivate: [AuthGuard],
