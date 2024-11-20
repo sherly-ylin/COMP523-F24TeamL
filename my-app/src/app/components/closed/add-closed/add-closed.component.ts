@@ -95,11 +95,10 @@ const surveyJson = {
 };
 
 @Component({
-  selector: 'app-add-closed',
-  templateUrl: './add-closed.component.html',
-  styleUrls: ['./add-closed.component.css'],
-  standalone: true,
-  imports: [SurveyModule],
+    selector: 'app-add-closed',
+    templateUrl: './add-closed.component.html',
+    styleUrls: ['./add-closed.component.css'],
+    imports: [SurveyModule]
 })
 export class AddClosedComponent implements OnInit {
   title = 'IPS Log Survey';

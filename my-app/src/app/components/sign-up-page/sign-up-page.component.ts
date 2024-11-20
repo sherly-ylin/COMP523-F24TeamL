@@ -15,16 +15,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Component({
-  selector: 'app-sign-up-page',
-  templateUrl: './sign-up-page.component.html',
-  styleUrls: ['./sign-up-page.component.css'],
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-  ],
+    selector: 'app-sign-up-page',
+    templateUrl: './sign-up-page.component.html',
+    styleUrls: ['./sign-up-page.component.css'],
+    imports: [
+        ReactiveFormsModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+    ]
 })
 export class SignUpPageComponent implements OnInit {
   readonly PASSWORD_MIN_LENGTH = 8;

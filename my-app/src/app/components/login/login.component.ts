@@ -13,16 +13,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
-  standalone: true,
-  imports: [
-    MatButtonModule,
-    MatInputModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-  ], // FormsModule is not needed unless you're using template-driven forms
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.css'],
+    imports: [
+        MatButtonModule,
+        MatInputModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+    ]
 })
 export class LoginComponent implements OnInit {
   public signInForm!: FormGroup;

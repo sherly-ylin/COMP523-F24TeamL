@@ -15,25 +15,24 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
-  standalone: true,
-  imports: [
-    MatSidenavContainer,
-    MatCardModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatMenuModule,
-    MatSidenav,
-    MatNavList,
-    MatListItem,
-    RouterLink,
-    MatIcon,
-    MatDivider,
-    MatSidenavContent,
-    RouterOutlet,
-  ],
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.css'],
+    imports: [
+        MatSidenavContainer,
+        MatCardModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatMenuModule,
+        MatSidenav,
+        MatNavList,
+        MatListItem,
+        RouterLink,
+        MatIcon,
+        MatDivider,
+        MatSidenavContent,
+        RouterOutlet,
+    ]
 })
 export class DashboardComponent {
   authenticated = false;

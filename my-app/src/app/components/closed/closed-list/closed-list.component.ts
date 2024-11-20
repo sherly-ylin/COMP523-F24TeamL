@@ -21,29 +21,28 @@ import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-closed-list',
-  templateUrl: './closed-list.component.html',
-  styleUrls: ['./closed-list.component.css'],
-  standalone: true,
-  imports: [
-    RouterLink,
-    MatButton,
-    MatTable,
-    MatColumnDef,
-    MatHeaderCellDef,
-    MatHeaderCell,
-    MatCellDef,
-    MatCell,
-    MatIconButton,
-    MatIcon,
-    MatFormField,
-    MatInput,
-    FormsModule,
-    MatHeaderRowDef,
-    MatHeaderRow,
-    MatRowDef,
-    MatRow,
-  ],
+    selector: 'app-closed-list',
+    templateUrl: './closed-list.component.html',
+    styleUrls: ['./closed-list.component.css'],
+    imports: [
+        RouterLink,
+        MatButton,
+        MatTable,
+        MatColumnDef,
+        MatHeaderCellDef,
+        MatHeaderCell,
+        MatCellDef,
+        MatCell,
+        MatIconButton,
+        MatIcon,
+        MatFormField,
+        MatInput,
+        FormsModule,
+        MatHeaderRowDef,
+        MatHeaderRow,
+        MatRowDef,
+        MatRow,
+    ]
 })
 export class ClosedListComponent implements OnInit {
   displayedColumns: string[] = ClosedColumns.map((col) => col.key);

@@ -18,26 +18,25 @@ import {
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-person-list',
-  templateUrl: './person-list.component.html',
-  styleUrls: ['./person-list.component.css'],
-  standalone: true,
-  imports: [
-    RouterLink,
-    MatButton,
-    MatTable,
-    MatColumnDef,
-    MatHeaderCellDef,
-    MatHeaderCell,
-    MatCellDef,
-    MatCell,
-    MatIconButton,
-    MatIcon,
-    MatHeaderRowDef,
-    MatHeaderRow,
-    MatRowDef,
-    MatRow,
-  ],
+    selector: 'app-person-list',
+    templateUrl: './person-list.component.html',
+    styleUrls: ['./person-list.component.css'],
+    imports: [
+        RouterLink,
+        MatButton,
+        MatTable,
+        MatColumnDef,
+        MatHeaderCellDef,
+        MatHeaderCell,
+        MatCellDef,
+        MatCell,
+        MatIconButton,
+        MatIcon,
+        MatHeaderRowDef,
+        MatHeaderRow,
+        MatRowDef,
+        MatRow,
+    ]
 })
 export class PersonListComponent implements OnInit {
   displayedColumns: string[] = PersonColumns.map((col) => col.key);

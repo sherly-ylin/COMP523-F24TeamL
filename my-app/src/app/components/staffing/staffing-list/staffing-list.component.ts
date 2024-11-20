@@ -12,19 +12,18 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-staffing-list',
-  templateUrl: './staffing-list.component.html',
-  styleUrls: ['./staffing-list.component.css'],
-  standalone: true,
-  imports: [
-    RouterLink,
-    MatButtonModule,
-    MatTableModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-  ],
+    selector: 'app-staffing-list',
+    templateUrl: './staffing-list.component.html',
+    styleUrls: ['./staffing-list.component.css'],
+    imports: [
+        RouterLink,
+        MatButtonModule,
+        MatTableModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+    ]
 })
 export class StaffingListComponent implements OnInit {
   displayedColumns: string[] = StaffingColumns.map((col) => col.key);
