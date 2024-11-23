@@ -18,19 +18,18 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-profile-editor',
-  standalone: true,
-  imports: [
-    MatCardModule,
-    MatFormFieldModule,
-    MatExpansionModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatButtonModule,
-  ],
-  templateUrl: './profile-editor.component.html',
-  styleUrl: './profile-editor.component.css',
+    selector: 'app-profile-editor',
+    imports: [
+        MatCardModule,
+        MatFormFieldModule,
+        MatExpansionModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatButtonModule,
+    ],
+    templateUrl: './profile-editor.component.html',
+    styleUrl: './profile-editor.component.css'
 })
 export class ProfileEditorComponent {
   public profile: Profile;
