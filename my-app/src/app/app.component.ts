@@ -3,12 +3,9 @@ import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from './auth.service';
 
 @Component({
-  selector: 'app-root',
-  template: '<router-outlet></router-outlet>',
-  // templateUrl: './app.component.html',
-  // styleUrls: ['./app.component.css']
-  standalone: true,
-  imports: [RouterOutlet],
+    selector: 'app-root',
+    template: '<router-outlet></router-outlet>',
+    imports: [RouterOutlet]
 })
 export class AppComponent {
   title = 'ips';

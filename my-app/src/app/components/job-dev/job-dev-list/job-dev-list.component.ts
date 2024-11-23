@@ -21,29 +21,28 @@ import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-job-dev-list',
-  templateUrl: './job-dev-list.component.html',
-  styleUrls: ['./job-dev-list.component.css'],
-  standalone: true,
-  imports: [
-    RouterLink,
-    MatButton,
-    MatTable,
-    MatColumnDef,
-    MatHeaderCellDef,
-    MatHeaderCell,
-    MatCellDef,
-    MatCell,
-    MatIconButton,
-    MatIcon,
-    MatFormField,
-    MatInput,
-    FormsModule,
-    MatHeaderRowDef,
-    MatHeaderRow,
-    MatRowDef,
-    MatRow,
-  ],
+    selector: 'app-job-dev-list',
+    templateUrl: './job-dev-list.component.html',
+    styleUrls: ['./job-dev-list.component.css'],
+    imports: [
+        RouterLink,
+        MatButton,
+        MatTable,
+        MatColumnDef,
+        MatHeaderCellDef,
+        MatHeaderCell,
+        MatCellDef,
+        MatCell,
+        MatIconButton,
+        MatIcon,
+        MatFormField,
+        MatInput,
+        FormsModule,
+        MatHeaderRowDef,
+        MatHeaderRow,
+        MatRowDef,
+        MatRow,
+    ]
 })
 export class JobDevListComponent implements OnInit {
   displayedColumns: string[] = JobColumns.map((col) => col.key);

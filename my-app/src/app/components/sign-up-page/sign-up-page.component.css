@@ -29,5 +29,10 @@ form {
 }
 
 .form-field {
-  width: 400px; /* length of the input fields */
+  width: 400px; /* Length of the input fields */
+  padding-bottom: 20px; /* Space below each input field */
+}
+
+.green-message {
+  color: green !important;
 }

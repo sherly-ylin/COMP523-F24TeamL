@@ -8,11 +8,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-  selector: 'app-invite-user',
-  templateUrl: './invite-user.component.html',
-  styleUrls: ['./invite-user.component.css'],
-  standalone: true,
-  imports: [FormsModule, MatRadioModule, MatInputModule, MatButtonModule],
+    selector: 'app-invite-user',
+    templateUrl: './invite-user.component.html',
+    styleUrls: ['./invite-user.component.css'],
+    imports: [FormsModule, MatRadioModule, MatInputModule, MatButtonModule]
 })
 export class InviteUserComponent {
   email: string;

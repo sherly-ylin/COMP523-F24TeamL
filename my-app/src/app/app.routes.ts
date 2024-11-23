@@ -29,7 +29,7 @@ import { ProfileEditorComponent } from './components/profile-editor/profile-edit
 const tokenValidGuard: CanActivateFn = (route): boolean | UrlTree => {
   const authService = inject(AuthService);
   const router = inject(Router);
-  return authService.isTokenValid(route) || router.createUrlTree(['/login']);
+  return authService.checkToken(route) || router.createUrlTree(['/login']);
 };
 
 export const routes: Routes = [
@@ -41,12 +41,13 @@ export const routes: Routes = [
     canActivate: [tokenValidGuard],
     component: SignUpPageComponent,
   },
-  { path: 'setUpReview', component: SetUpReviewPageComponent },
   {
     path: 'dashboard',
     canActivate: [AuthGuard],
     component: DashboardComponent,
     children: [
+      { path: 'home', component: HomeComponent },
+      { path: 'set-up-review', component: SetUpReviewPageComponent },
       { path: 'home', 
         canActivate: [AuthGuard],
         component: HomeComponent },

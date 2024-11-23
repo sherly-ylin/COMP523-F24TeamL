@@ -286,11 +286,10 @@ const surveyJson = {
 };
 
 @Component({
-  selector: 'app-add-person',
-  templateUrl: './add-person.component.html',
-  styleUrls: ['./add-person.component.css'],
-  standalone: true,
-  imports: [SurveyModule],
+    selector: 'app-add-person',
+    templateUrl: './add-person.component.html',
+    styleUrls: ['./add-person.component.css'],
+    imports: [SurveyModule]
 })
 export class AddPersonComponent implements OnInit {
   title = 'Person Survery';

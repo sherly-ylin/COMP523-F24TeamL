@@ -5,11 +5,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-set-up-review-page',
-  standalone: true,
-  imports: [FormsModule, MatSelectModule, MatInputModule, MatButtonModule],
-  templateUrl: './set-up-review-page.component.html',
-  styleUrl: './set-up-review-page.component.css',
+    selector: 'app-set-up-review-page',
+    imports: [FormsModule, MatSelectModule, MatInputModule, MatButtonModule],
+    templateUrl: './set-up-review-page.component.html',
+    styleUrl: './set-up-review-page.component.css'
 })
 export class SetUpReviewPageComponent {
   review = '';

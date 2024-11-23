@@ -1,17 +1,29 @@
-import { APP_ID, Component, OnInit } from '@angular/core';
+import { APP_ID, Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/auth.service';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Component({
-  selector: 'app-sign-up-page',
-  templateUrl: './sign-up-page.component.html',
-  styleUrls: ['./sign-up-page.component.css'],
-  standalone: true,
-  imports: [FormsModule, MatInputModule, MatButtonModule],
+    selector: 'app-sign-up-page',
+    templateUrl: './sign-up-page.component.html',
+    styleUrls: ['./sign-up-page.component.css'],
+    imports: [
+        ReactiveFormsModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+    ]
 })
 export class SignUpPageComponent implements OnInit {
   readonly PASSWORD_MIN_LENGTH = 8;
@@ -19,97 +31,147 @@ export class SignUpPageComponent implements OnInit {
   readonly PASSWORD_MIN_LOWER = 1;
   readonly PASSWORD_MIN_NUMBER = 1;
   readonly PASSWORD_MIN_SYMBOL = 1;
-  private readonly symbolRegex = /[!@#$%^&*(),.?":{}|<>]/;
 
+  signUpForm!: FormGroup;
   token!: string;
-  username = '';
-  password = '';
-  passwordHasFocus = false;
-  confirmPassword = '';
-  confirmPasswordHasFocus = false;
-  passwordsMatch: boolean = false;
-  submitted: boolean = false;
+
+  isPasswordVisible = signal(false);
+  isConfirmPasswordVisible = signal(false);
+  togglePasswordVisibility(event: MouseEvent) {
+    this.isPasswordVisible.set(!this.isPasswordVisible());
+    event.stopPropagation();
+  }
+  toggleConfirmPasswordVisibility(event: MouseEvent) {
+    this.isConfirmPasswordVisible.set(!this.isConfirmPasswordVisible());
+    event.stopPropagation();
+  }
+
+  clearUsernameField() {
+    this.username?.setValue('');
+  }
+  clearPasswordField() {
+    this.password?.setValue('');
+  }
+  clearConfirmPasswordField() {
+    this.confirmPassword?.setValue('');
+  }
+  resetConfirmPasswordField() {
+    this.confirmPassword?.reset();
+  }
+  markConfirmPasswordUntouched() {
+    this.confirmPassword?.markAsUntouched();
+  }
+  markConfirmPasswordUntouchedIfPasswordInvalid() {
+    if (!this.password?.valid) {
+      this.markConfirmPasswordUntouched();
+    }
+  }
+  setUsernameDefaultValue() {
+    if (this.username?.value.trim() === '') {
+      this.username?.setValue(this.authService.getEmail());
+    }
+  }
 
   constructor(
     private router: Router,
     private http: HttpClient,
     private authService: AuthService,
     private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.token = this.route.snapshot.paramMap.get('token') ?? '';
+
+    // Initialize form with validation rules
+    this.signUpForm = this.formBuilder.group({
+      username: ['', []],
+      password: [
+        '',
+        [
+          Validators.required,
+          this.isLongEnoughValidator,
+          this.hasUppercaseValidator,
+          this.hasLowercaseValidator,
+          this.hasNumberValidator,
+          this.hasSymbolValidator,
+        ],
+      ],
+      confirmPassword: [
+        '',
+        [Validators.required, this.passwordsMatchValidator],
+      ],
+    });
   }
 
-  public passwordGainFocus() {
-    this.passwordHasFocus = true;
+  // Getters for easy access in template
+  get username() {
+    return this.signUpForm.get('username');
+  }
+  get password() {
+    return this.signUpForm.get('password');
+  }
+  get confirmPassword() {
+    return this.signUpForm.get('confirmPassword');
   }
 
-  public passwordLostFocus() {
-    this.passwordHasFocus = false;
+  private isLongEnoughValidator = (control: AbstractControl): ValidationErrors | null => {
+    const value = control.value;
+    return value != null && value.length >= this.PASSWORD_MIN_LENGTH
+      ? null
+      : { notLongEnough: true };
+  };
+  private hasUppercaseValidator(
+    control: AbstractControl,
+  ): ValidationErrors | null {
+    const value = control.value;
+    return /[A-Z]/.test(value) ? null : { noUppercase: true };
   }
-
-  public confirmPasswordGainFocus() {
-    this.confirmPasswordHasFocus = true;
+  private hasLowercaseValidator(
+    control: AbstractControl,
+  ): ValidationErrors | null {
+    const value = control.value;
+    return /[a-z]/.test(value) ? null : { noLowercase: true };
   }
-
-  public confirmPasswordLostFocus() {
-    this.confirmPasswordHasFocus = false;
+  private hasNumberValidator(
+    control: AbstractControl,
+  ): ValidationErrors | null {
+    const value = control.value;
+    return /\d/.test(value) ? null : { noNumber: true };
   }
-
-  public passwordIsLongEnough(): boolean {
-    return this.password.length >= this.PASSWORD_MIN_LENGTH;
+  private hasSymbolValidator(
+    control: AbstractControl,
+  ): ValidationErrors | null {
+    const value = control.value;
+    return /[!@#$%^&*(),.?":{}|<>]/.test(value) ? null : { noSymbol: true };
   }
-
-  public passwordHasUpperCase(): boolean {
-    return /[A-Z]/.test(this.password);
-  }
-
-  public passwordHasLowerCase(): boolean {
-    return /[a-z]/.test(this.password);
-  }
-
-  public passwordHasNumber(): boolean {
-    return /\d/.test(this.password);
-  }
-
-  public passwordHasSymbol(): boolean {
-    return this.symbolRegex.test(this.password);
-  }
-
-  public passwordRequirementsSatisfied(): boolean {
-    const checks = [
-      this.passwordIsLongEnough(),
-      this.passwordHasUpperCase(),
-      this.passwordHasLowerCase(),
-      this.passwordHasNumber(),
-      this.passwordHasSymbol(),
-    ];
-
-    return checks.every((check) => check);
+  private passwordsMatchValidator(
+    control: AbstractControl,
+  ): ValidationErrors | null {
+    const password = control.parent?.get('password');
+    const confirmPassword = control.parent?.get('confirmPassword');
+    return password?.invalid || password?.value == confirmPassword?.value
+      ? null
+      : { passwordsDontMatch: true };
   }
 
   public onSubmit() {
-    this.submitted = true;
-
-    if (this.password === this.confirmPassword && this.token) {
-      this.http
-        .post('http://localhost:3000/api/auth/signup', {
-          token: this.token,
-          username: this.username,
-          password: this.password,
-        })
-        .subscribe({
-          next: (response) => {
-            console.log(response);
-            alert('Verification email sent. Please check your inbox.');
-            this.router.navigate(['']);
-          },
-          error: (error) => {
-            alert(error.error.message);
-            console.error(error);
-          },
-        });
-    }
+    this.http
+      .post('http://localhost:3000/api/auth/signup', {
+        token: this.token,
+        username: this.username,
+        password: this.password,
+      })
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+          alert('Verification email sent. Please check your inbox.');
+          this.router.navigate(['']);
+        },
+        error: (error) => {
+          alert(error.error.message);
+          console.error(error);
+        },
+      });
   }
 }
