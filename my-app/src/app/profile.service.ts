@@ -4,11 +4,11 @@ import { Observable, ReplaySubject, Subject, tap } from 'rxjs';
 import { AuthService } from './auth.service';
 
 export interface Profile {
-  id: number | null;
   first_name: string | null;
   last_name: string | null;
   email: string | null;
   role: number;
+  // password:
   // permissions: ;
 }
 
@@ -20,10 +20,7 @@ export class ProfileService {
   public profile$: Observable<Profile | undefined> =
     this.profileSubject.asObservable();
 
-  constructor(
-    protected http: HttpClient,
-    protected auth: AuthService,
-  ) {
+  constructor(protected http: HttpClient, protected auth: AuthService) {
     // this.auth.isAuthenticated$.subscribe((isAuthenticated) =>
     //   this.refreshProfile(isAuthenticated)
     // );
@@ -46,4 +43,27 @@ export class ProfileService {
   //     this.profileSignal.set(undefined);
   //   }
   // }
+
+  updateProfile(firstname: string, lastname: string, email: string) {
+    this.http
+      .put('http://localhost:3000/api/profile/update', {
+        first_name: firstname,
+        last_name: lastname,
+        email: email,
+      })
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+          alert('Verification email sent. Please check your inbox.');
+        },
+        error: (error) => {
+          alert(error.error.message);
+          console.error(error);
+        },
+      });
+  }
+
+  updatePassword(passward: string){
+
+  }
 }

@@ -24,6 +24,7 @@ import { InviteUserComponent } from './components/invite-user/invite-user.compon
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { inject } from '@angular/core';
 import { AuthService } from './auth.service';
+import { ProfileEditorComponent } from './components/profile-editor/profile-editor.component';
 
 const tokenValidGuard: CanActivateFn = (route): boolean | UrlTree => {
   const authService = inject(AuthService);
@@ -32,7 +33,7 @@ const tokenValidGuard: CanActivateFn = (route): boolean | UrlTree => {
 };
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignUpPageComponent },
   {
@@ -43,33 +44,41 @@ export const routes: Routes = [
   { path: 'setUpReview', component: SetUpReviewPageComponent },
   {
     path: 'dashboard',
+    canActivate: [AuthGuard],
     component: DashboardComponent,
     children: [
-      { path: 'home', component: HomeComponent },
-      { path: 'setUpReview', component: SetUpReviewPageComponent },
+      { path: 'home', 
+        canActivate: [AuthGuard],
+        component: HomeComponent },
+      { path: 'profile', 
+        canActivate: [AuthGuard],
+        component: ProfileEditorComponent },
+      { path: 'setUpReview', 
+        canActivate: [AuthGuard],
+        component: SetUpReviewPageComponent },
       {
         path: 'closed',
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         component: ClosedListComponent,
       },
       {
         path: 'addClosed',
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         component: AddClosedComponent,
       },
       {
         path: 'jobDev',
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         component: JobDevListComponent,
       },
       {
         path: 'addjobDev',
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         component: AddJobDevComponent,
       },
       {
         path: 'person',
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         component: PersonListComponent,
         children: [],
       },
@@ -82,27 +91,27 @@ export const routes: Routes = [
       { path: 'setUpReview', component: SetUpReviewPageComponent },
       {
         path: 'addPerson',
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         component: AddPersonComponent,
       },
       {
         path: 'ipslog',
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         component: IpslogListComponent,
       },
       {
         path: 'addIPS',
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         component: AddIpslogComponent,
       },
       {
         path: 'staffing',
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         component: StaffingListComponent,
       },
       {
         path: 'addStaffing',
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
         component: AddStaffingComponent,
       },
     ],

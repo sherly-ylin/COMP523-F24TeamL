@@ -22,6 +22,13 @@ mat-toolbar{
   border: 1px #555;
 }
 
+#titlelink{
+  text-decoration: none; 
+  color:#333;
+}
+#titlelink:hover{
+  color: #555;
+}
 #title {
   text-align: center;
   font: 1.5em bold;

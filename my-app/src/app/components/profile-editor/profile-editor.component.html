@@ -1,0 +1,39 @@
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+  <mat-card class="container-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Update your Profile</mat-card-title>
+  </mat-card-header>
+  <!-- <ng-template #registration>
+        <mat-card-header>
+       
+        </mat-card-header>
+      </ng-template> -->
+  <mat-card-content>
+    <mat-form-field appearance="outline">
+      <mat-label>First Name</mat-label>
+      <input matInput placeholder="First Name" formControlName="first_name" name="first_name" required />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Last Name</mat-label>
+      <input matInput placeholder="Last Name" formControlName="last_name" name="last_name" required />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" placeholder="" formControlName="email" name="email" required />
+    </mat-form-field>
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title> Change Password </mat-panel-title>
+      </mat-expansion-panel-header>
+
+    </mat-expansion-panel>
+    
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-stroked-button routerLink="/profile">Cancel</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="profileForm.invalid">
+      Save
+    </button>
+  </mat-card-actions>
+  </mat-card>
+</form>

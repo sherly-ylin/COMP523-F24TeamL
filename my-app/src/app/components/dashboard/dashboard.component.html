@@ -1,13 +1,11 @@
 <!-- <div class="container"> -->
 <mat-toolbar>
   <div class="topbar-container">
-    <div id="title">eIPS Fidelity</div>
-    <button
-      id="btnProfile"
-      mat-icon-button
-      [matMenuTriggerFor]="menu"
-      aria-label="profile"
-    >
+    <a routerLink="/dashboard" id="titlelink">
+      <div id="title">eIPS Fidelity</div>
+    </a>
+
+    <button id="btnProfile" mat-icon-button [matMenuTriggerFor]="menu" aria-label="profile" routerLink="profile">
       <mat-icon id="profile">account_circle</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
@@ -49,24 +47,24 @@
         </span>
       </a>
       @if (isAdmin) {
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="setUpReview">
-          <span class="logo-item">
-            <mat-icon>email</mat-icon> Set Up Review
-          </span>
-        </a>
-        <a mat-list-item routerLink="inviteUser">
-          <span class="logo-item">
-            <mat-icon>email</mat-icon> Invite Provider
-          </span>
-        </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item routerLink="setUpReview">
+        <span class="logo-item">
+          <mat-icon>email</mat-icon> Set Up Review
+        </span>
+      </a>
+      <a mat-list-item routerLink="inviteUser">
+        <span class="logo-item">
+          <mat-icon>email</mat-icon> Invite Provider
+        </span>
+      </a>
       }
       @if (isSuperAdmin) {
-        <a mat-list-item routerLink="inviteUser">
-          <span class="logo-item">
-            <mat-icon>email</mat-icon> Invite User
-          </span>
-        </a>
+      <a mat-list-item routerLink="inviteUser">
+        <span class="logo-item">
+          <mat-icon>email</mat-icon> Invite User
+        </span>
+      </a>
       }
     </mat-nav-list>
     <!-- <mat-divider></mat-divider> -->
