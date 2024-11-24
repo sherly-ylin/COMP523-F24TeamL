@@ -8,6 +8,7 @@ import {
   ReactiveFormsModule,
   FormBuilder,
   Validators,
+  FormGroup,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,30 +19,25 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-    selector: 'app-profile-editor',
-    imports: [
-        MatCardModule,
-        MatFormFieldModule,
-        MatExpansionModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        MatButtonModule,
-    ],
-    templateUrl: './profile-editor.component.html',
-    styleUrl: './profile-editor.component.css'
+  selector: 'app-profile-editor',
+  imports: [
+    MatCardModule,
+    MatFormFieldModule,
+    MatExpansionModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+  ],
+  templateUrl: './profile-editor.component.html',
+  styleUrl: './profile-editor.component.css',
 })
 export class ProfileEditorComponent {
-  public profile: Profile;
-  public token: string;
-  public showToken: boolean = false;
-
-  public profileForm = this.formBuilder.group({
-    first_name: '',
-    last_name: '',
-    email: '',
-    // passward: '',
-  });
+  public profileForm: FormGroup;
+  loading = true;
+  error: string | null = null;
+  // public token: string;
+  // public showToken: boolean = false;
 
   constructor(
     route: ActivatedRoute,
@@ -52,33 +48,43 @@ export class ProfileEditorComponent {
     protected snackBar: MatSnackBar,
     protected dialog: MatDialog
   ) {
-    const form = this.profileForm;
-    form.get('first_name')?.addValidators(Validators.required);
-    form.get('lastname')?.addValidators(Validators.required);
-    form
-      .get('email')
-      ?.addValidators([
-        Validators.required,
-        Validators.email,
-        Validators.pattern(/\.$/),
-      ]);
-    const data = route.snapshot.data as { profile: Profile };
-    this.profile = data.profile;
-    this.token = `${localStorage.getItem('accessToken')}`;
+    this.profileForm = this.formBuilder.group({
+      first_name: ['', [Validators.required]],
+      last_name: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      // passward: '',
+    });
+
+    // this.token = `${localStorage.getItem('accessToken')}`;
   }
 
   ngOnInit(): void {
-    let profile = this.profile;
-    this.profileForm.setValue({
-      first_name: profile.first_name,
-      last_name: profile.last_name,
-      email: profile.email,
+    this.profileService.getProfile().subscribe({
+      next: (profile: Profile) => {
+        this.profileForm.patchValue(profile);
+        this.loading = false;
+      },
+      error: (err) => {
+        this.error = 'Failed to load profile. Please try again.';
+        this.loading = false;
+      },
     });
+    // let profile = this.profile;
+    // this.profileForm.setValue({
+    //   first_name: profile.first_name,
+    //   last_name: profile.last_name,
+    //   email: profile.email,
+    // });
   }
   public onSubmit() {
     if (this.profileForm.valid) {
-      const { first_name, last_name, email } = this.profileForm.value;
-      this.profileService.updateProfile(first_name!, last_name!, email!);
+      this.profileService.updateProfile(this.profileForm.value).subscribe({
+        next: () => alert('Profile updated successfully!'),
+        error: () => alert('Failed to update profile. Please try again.'),
+      });
+      //   const { first_name, last_name, email } = this.profileForm.value;
+      //   this.profileService.updateProfile(first_name!, last_name!, email!);
+      // }
     }
   }
 }
