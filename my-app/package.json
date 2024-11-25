@@ -27,7 +27,7 @@
     "jquery-ui": "^1.13.2",
     "rxjs": "~7.5.0",
     "smart-webcomponents-angular": "^14.4.0",
-    "survey-angular-ui": "^1.9.60",
+    "survey-angular-ui": "^1.12.10",
     "survey-core": "^1.11.14",
     "surveyjs": "^4.0.1",
     "tslib": "^2.3.0",
