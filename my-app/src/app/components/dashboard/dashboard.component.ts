@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from 'src/app/auth.service';
+import { Profile, ProfileService } from 'src/app/profile.service';
 import {
   MatSidenavContainer,
   MatSidenav,
@@ -34,20 +35,20 @@ import { MatCardModule } from '@angular/material/card';
         RouterOutlet,
     ]
 })
-export class DashboardComponent {
-  authenticated = false;
-  isAdmin = true;
-  isSuperAdmin = true;
+export class DashboardComponent implements OnInit{
+  userRole: string | null = null;
 
   constructor(
     private router: Router,
     private authService: AuthService,
-  ) {
-    this.authenticated = this.isLoggedIn();
-  }
+    private profileService: ProfileService
+  ) {}
 
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('accessToken');
+  ngOnInit(): void {
+    const user = this.profileService.currentUser;
+    if (user){
+      this.userRole = user.role;
+    }
   }
 
   signOut(): void {

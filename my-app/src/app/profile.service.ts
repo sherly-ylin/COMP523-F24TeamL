@@ -4,10 +4,12 @@ import { Observable, ReplaySubject, BehaviorSubject, Subject, tap } from 'rxjs';
 import { AuthService } from './auth.service';
 
 export interface Profile {
+  id: number;
+  username: string |null;
   first_name: string | null;
   last_name: string | null;
   email: string | null;
-  role: 'provider' | 'admin' | 'superadmin';
+  role: 'provider' | 'admin' | 'superadmin'; //consider making it number
   password?: string;
   // permissions: ;
 }

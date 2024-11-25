@@ -33,8 +33,10 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './profile-editor.component.css',
 })
 export class ProfileEditorComponent {
-  public profileForm: FormGroup;
-  loading = true;
+  profileForm: FormGroup;
+  emailForm: FormGroup;
+  passwordForm: FormGroup;
+  loading = false;
   error: string | null = null;
   // public token: string;
   // public showToken: boolean = false;
@@ -49,32 +51,34 @@ export class ProfileEditorComponent {
     protected dialog: MatDialog
   ) {
     this.profileForm = this.formBuilder.group({
+      username: ['', [Validators.required]],
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.required]],
+    });
+    this.emailForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      // passward: '',
     });
 
+    this.passwordForm = this.formBuilder.group({
+      currentPassword: ['', Validators.required],
+      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+    });
     // this.token = `${localStorage.getItem('accessToken')}`;
   }
 
   ngOnInit(): void {
-    this.profileService.getProfile().subscribe({
-      next: (profile: Profile) => {
-        this.profileForm.patchValue(profile);
-        this.loading = false;
-      },
-      error: (err) => {
-        this.error = 'Failed to load profile. Please try again.';
-        this.loading = false;
-      },
-    });
-    // let profile = this.profile;
-    // this.profileForm.setValue({
-    //   first_name: profile.first_name,
-    //   last_name: profile.last_name,
-    //   email: profile.email,
+    
+    // this.profileService.getProfile().subscribe({
+    //   next: (profile: Profile) => {
+    //     this.profileForm.patchValue(profile);
+    //     this.loading = false;
+    //   },
+    //   error: (err) => {
+    //     this.error = 'Failed to load profile. Please try again.';
+    //     this.loading = false;
+    //   },
     // });
+    
   }
   public onSubmit() {
     if (this.profileForm.valid) {

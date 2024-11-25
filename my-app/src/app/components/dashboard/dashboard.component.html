@@ -1,4 +1,5 @@
-<!-- <div class="container"> -->
+
+
 <mat-toolbar>
   <div class="topbar-container">
     <a routerLink="/dashboard" id="titlelink">
@@ -46,7 +47,7 @@
           <mat-icon>work</mat-icon> Job Development Log
         </span>
       </a>
-      @if (isAdmin) {
+      @if (userRole === 'admin') {
         <mat-divider></mat-divider>
         <a mat-list-item routerLink="set-up-review">
           <span class="logo-item">
@@ -59,7 +60,7 @@
           </span>
         </a>
       }
-      @if (isSuperAdmin) {
+      @if (userRole === 'superadmin') {
       <a mat-list-item routerLink="inviteUser">
         <span class="logo-item">
           <mat-icon>email</mat-icon> Invite User

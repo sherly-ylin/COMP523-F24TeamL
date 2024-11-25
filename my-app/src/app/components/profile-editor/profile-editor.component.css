@@ -1,21 +1,34 @@
-mat-card{
-    width: 80%;
-    display: flex;
-    justify-content: center;
+.container {
+  padding: 1em;
 }
 
-mat-card-content {
+mat-card {
+  width: 100%;
+  display: flex;
+  /* flex-direction: row;
+  align-content: center;
+  justify-content: center; */
+}
+form{
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding-top: 16px;
+}
+mat-card-content {
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  padding-top: 8px;
 }
 
 mat-form-field {
   width: 400px;
 }
 mat-expansion-panel {
-  width: 400px;
+  /* width: fit-content; */
+  width: auto;
+  margin-top: 1em;
 }
 .horizontal-wrapper {
   display: flex;
