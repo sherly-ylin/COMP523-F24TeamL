@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { IpsLog, IPSColumns } from 'src/app/models/ips-log.model';
 import { IpslogService } from 'src/app/services/ipslog.service';
 import { RouterLink } from '@angular/router';
@@ -45,12 +45,12 @@ import { FormsModule } from '@angular/forms';
     ]
 })
 export class IpslogListComponent implements OnInit {
+  private IpsLogService = inject(IpslogService);
+
   displayedColumns: string[] = IPSColumns.map((col) => col.key);
   dataSource: any = [];
   columnsSchema: any = IPSColumns;
   name = '';
-
-  constructor(private IpsLogService: IpslogService) {}
 
   ngOnInit(): void {
     this.retrieveLogs();

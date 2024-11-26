@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/auth.service';
@@ -24,14 +24,12 @@ import { MatButtonModule } from '@angular/material/button';
     ]
 })
 export class LoginComponent implements OnInit {
-  public signInForm!: FormGroup;
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private http = inject(HttpClient);
+  private formBuilder = inject(FormBuilder);
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private http: HttpClient,
-    private formBuilder: FormBuilder,
-  ) {}
+  public signInForm!: FormGroup;
 
   ngOnInit(): void {
     // Initialize form with validation rules

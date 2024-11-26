@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Person, VRColumn } from 'src/app/models/person.model';
 import { PersonService } from 'src/app/services/person.service';
 import { RouterLink } from '@angular/router';
@@ -45,11 +45,11 @@ import { FormsModule } from '@angular/forms';
     ]
 })
 export class VrComponent implements OnInit {
+  private PersonService = inject(PersonService);
+
   displayedColumns: string[] = VRColumn.map((col) => col.key);
   dataSource: any = [];
   columnsSchema: any = VRColumn;
-
-  constructor(private PersonService: PersonService) {}
 
   ngOnInit(): void {
     this.retrieveLogs();

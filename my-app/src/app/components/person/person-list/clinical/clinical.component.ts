@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Person, ClinicalColumn } from 'src/app/models/person.model';
 import { PersonService } from 'src/app/services/person.service';
 import { RouterLink } from '@angular/router';
@@ -45,11 +45,11 @@ import { FormsModule } from '@angular/forms';
     ]
 })
 export class ClinicalComponent implements OnInit {
+  private PersonService = inject(PersonService);
+
   displayedColumns: string[] = ClinicalColumn.map((col) => col.key);
   dataSource: any = [];
   columnsSchema: any = ClinicalColumn;
-
-  constructor(private PersonService: PersonService) {}
 
   ngOnInit(): void {
     this.retrieveLogs();

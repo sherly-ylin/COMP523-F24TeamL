@@ -10,30 +10,28 @@ import { Invite } from '../models/inviteSchema.js'
 import { User } from '../models/userSchema.js'
 import * as verify from './emailVerifyController.js'
 
-async function isTokenValid(token: string) {
+export async function getInvite(req: Request, res: Response) {
   try {
     // Search for a document with the specified token
-    const invite = await Invite.findOne({ token })
+    const invite = await Invite.findOne({ token: req.body.token })
 
-    // Check if the document exists
-    return invite !== null
+    return res.status(200).send({ email: invite?.email })
   } catch (err) {
     console.error('Error checking invite:', err)
     return false // Return false if there's an error
   }
 }
 
+// Setting up the initial Superadmin account (username: henry passwrod: 1)
 User.findOne({ email: 'liuheng1@unc.edu' })
   .then((user) => {
+    console.log()
+    console.log('You can log in with this Superadmin account:')
+    console.log('username: "henry"')
+    console.log('password: "1"')
+    console.log()
     if (user) {
-      console.log()
-      console.log('User henry found:')
-      console.log('username: "henry"')
-      console.log('password: "1"')
-      console.log(user)
-      console.log()
     } else {
-      console.log('User henry not found')
       new User({
         email: 'liuheng1@unc.edu',
         role: 'Superadmin',
@@ -103,7 +101,7 @@ export const signIn = (req: Request, res: Response) => {
     console.log('current username:', environment.currentUsername)
     console.log('current user role:', environment.currentUserRole)
 
-    var token = jwt.sign({ id: user.id }, config.secret, {
+    const token = jwt.sign({ id: user.id }, config.secret, {
       expiresIn: 86400, // 24 hours
     })
     res.status(200).send({

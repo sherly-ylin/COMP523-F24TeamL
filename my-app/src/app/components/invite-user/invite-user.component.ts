@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/auth.service';
@@ -14,17 +14,17 @@ import { MatButtonModule } from '@angular/material/button';
     imports: [FormsModule, MatRadioModule, MatInputModule, MatButtonModule]
 })
 export class InviteUserComponent {
+  private router = inject(Router);
+  private http = inject(HttpClient);
+  private authService = inject(AuthService);
+
   email: string;
   role: string;
   timespanString: string;
   timespan: { value: number; unit: string };
   submitted: boolean;
 
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-    private authService: AuthService,
-  ) {
+  constructor() {
     this.email = '';
     this.role = 'Provider';
     this.timespanString = '3 day';

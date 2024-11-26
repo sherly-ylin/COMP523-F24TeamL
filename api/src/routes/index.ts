@@ -84,6 +84,11 @@ router.use(function (req, res, next) {
   next()
 })
 
+router.get(
+  '/api/auth/invite',
+  authController.getInvite,
+)
+
 router.post(
   '/api/auth/signup',
   [verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted],

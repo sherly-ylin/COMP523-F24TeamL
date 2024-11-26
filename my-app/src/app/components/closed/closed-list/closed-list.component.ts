@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Closed, ClosedColumns } from 'src/app/models/closed.model';
 import { ClosedService } from 'src/app/services/closed.service';
 import { RouterLink } from '@angular/router';
@@ -45,13 +45,13 @@ import { FormsModule } from '@angular/forms';
     ]
 })
 export class ClosedListComponent implements OnInit {
+  private ClosedService = inject(ClosedService);
+
   displayedColumns: string[] = ClosedColumns.map((col) => col.key);
   dataSource: any = [];
   columnsSchema: any = ClosedColumns;
 
   name = '';
-
-  constructor(private ClosedService: ClosedService) {}
 
   ngOnInit(): void {
     this.retrieveLogs();

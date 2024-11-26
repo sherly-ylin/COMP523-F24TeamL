@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
@@ -26,6 +26,9 @@ export interface User {
   providedIn: 'root',
 })
 export class AuthService {
+  private router = inject(Router);
+  private http = inject(HttpClient);
+
   private loggedIn = new BehaviorSubject<boolean>(false);
   loggedIn$ = this.loggedIn.asObservable();
 
@@ -36,11 +39,6 @@ export class AuthService {
   getEmail(): string | null {
     return this.email;
   }
-
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-  ) {}
 
   async verifyTokenAndGetEmail(route: ActivatedRouteSnapshot): Promise<boolean> {
     console.log('Frontend token:', route.params['token']);

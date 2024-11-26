@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { JobDev } from '../models/job-dev.model';
@@ -9,7 +9,8 @@ const baseUrl = 'http://localhost:3000/jobDev';
   providedIn: 'root',
 })
 export class JobDevService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
+
 
   getAll(): Observable<JobDev[]> {
     return this.http.get<JobDev[]>(baseUrl);

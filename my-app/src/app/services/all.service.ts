@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -6,9 +6,9 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AllService {
-  private allLogsUrl = 'http://localhost:3000/alllog';
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  private allLogsUrl = 'http://localhost:3000/alllog';
 
   getAllLogs(): Observable<any> {
     return this.http.get(this.allLogsUrl);

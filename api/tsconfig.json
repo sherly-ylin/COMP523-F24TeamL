@@ -4,7 +4,8 @@
     "outDir": "bin",
     "allowJs": true,
     "module": "ES2022",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "typeRoots": ["node_modules/@types", "src/types"]
   },
   "include": ["src", "__tests__", "environment.ts"],
   "exclude": ["node_modules"]

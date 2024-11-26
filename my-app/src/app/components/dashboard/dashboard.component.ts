@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from 'src/app/auth.service';
 import {
@@ -35,14 +35,14 @@ import { MatCardModule } from '@angular/material/card';
     ]
 })
 export class DashboardComponent {
+  private router = inject(Router);
+  private authService = inject(AuthService);
+
   authenticated = false;
   isAdmin = true;
   isSuperAdmin = true;
 
-  constructor(
-    private router: Router,
-    private authService: AuthService,
-  ) {
+  constructor() {
     this.authenticated = this.isLoggedIn();
   }
 

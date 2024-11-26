@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Route, Router } from '@angular/router';
@@ -12,6 +12,12 @@ import { Profile, ProfileService } from '../profile.service';
   styleUrl: './profile-editor.component.css',
 })
 export class ProfileEditorComponent {
+  private router = inject(Router);
+  protected formBuilder = inject(FormBuilder);
+  protected profileService = inject(ProfileService);
+  protected snackBar = inject(MatSnackBar);
+  protected dialog = inject(MatDialog);
+
   public profile: Profile;
   public token: string;
   public showToken: boolean = false;
@@ -21,13 +27,4 @@ export class ProfileEditorComponent {
     last_name: '',
     email: '',
   });
-
-  constructor(
-    route: ActivatedRoute,
-    private router: Router,
-    protected formBuilder: FormBuilder,
-    protected profileService: ProfileService,
-    protected snackBar: MatSnackBar,
-    protected dialog: MatDialog
-  ) {}
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { JobDev, JobColumns } from 'src/app/models/job-dev.model';
 import { JobDevService } from 'src/app/services/job-dev.service';
 import { RouterLink } from '@angular/router';
@@ -45,12 +45,12 @@ import { FormsModule } from '@angular/forms';
     ]
 })
 export class JobDevListComponent implements OnInit {
+  private JobDevService = inject(JobDevService);
+
   displayedColumns: string[] = JobColumns.map((col) => col.key);
   dataSource: any = [];
   columnsSchema: any = JobColumns;
   name = '';
-
-  constructor(private JobDevService: JobDevService) {}
 
   ngOnInit(): void {
     this.retrieveLogs();

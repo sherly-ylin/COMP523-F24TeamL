@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Staffing, StaffingColumns } from 'src/app/models/staffing.model';
 import { StaffingService } from 'src/app/services/staffing.service';
 import { RouterLink } from '@angular/router';
@@ -26,12 +26,12 @@ import { FormsModule } from '@angular/forms';
     ]
 })
 export class StaffingListComponent implements OnInit {
+  private StaffingService = inject(StaffingService);
+
   displayedColumns: string[] = StaffingColumns.map((col) => col.key);
   dataSource: any = [];
   columnsSchema: any = StaffingColumns;
   name = '';
-
-  constructor(private StaffingService: StaffingService) {}
 
   ngOnInit(): void {
     this.retrieveLogs();

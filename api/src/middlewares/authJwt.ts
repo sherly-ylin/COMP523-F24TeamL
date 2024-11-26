@@ -1,61 +1,27 @@
-import { NextFunction, Request, Response } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
+import { DecodedToken } from '../types/DecodedToken';
+
 import config from '../config.js'
 import { Role } from '../models/roleSchema.js'
 import { User } from '../models/userSchema.js'
 
-export const verifyToken = (
+export const verifyJwtToken = (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  let token = req.headers['x-access-token']
+  const token = req.cookies.token
 
   if (!token) {
     return res.status(403).send({ message: 'No token provided!' })
   }
 
-  if (Array.isArray(token)) {
-    token = token[0]
-  }
-
-  jwt.verify(token, config.secret, (err, decoded) => {
+  jwt.verify(token, process.env.JWT_SECRET as string, (err: jwt.VerifyErrors | null, decoded: any) => {
     if (err) {
-      return res.status(401).send({ message: 'Unauthorized!' })
+      return res.status(401).send({ message: 'Invalid or expired token!' })
     }
-    req.params.userId =
-      typeof decoded === 'string' ? JSON.parse(decoded).id : decoded?.id
+    req.user = decoded;
     next()
-  })
-}
-
-export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
-  User.findById(req.params.userId).exec((err, user) => {
-    if (err) {
-      res.status(500).send({ message: err })
-      return
-    }
-
-    Role.find(
-      {
-        _id: { $in: user?.roles },
-      },
-      (err: Error, roles: Array<any>) => {
-        if (err) {
-          res.status(500).send({ message: err })
-          return
-        }
-
-        for (let i = 0; i < roles.length; i++) {
-          if (roles[i].name === 'admin') {
-            next()
-            return
-          }
-        }
-
-        res.status(403).send({ message: 'Require Admin Role!' })
-        return
-      },
-    )
   })
 }

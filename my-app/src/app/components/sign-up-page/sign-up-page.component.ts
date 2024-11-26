@@ -1,4 +1,4 @@
-import { APP_ID, Component, OnInit, signal } from '@angular/core';
+import { APP_ID, Component, OnInit, signal, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from 'src/app/auth.service';
@@ -26,6 +26,12 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
     ]
 })
 export class SignUpPageComponent implements OnInit {
+  private router = inject(Router);
+  private http = inject(HttpClient);
+  private authService = inject(AuthService);
+  private route = inject(ActivatedRoute);
+  private formBuilder = inject(FormBuilder);
+
   readonly PASSWORD_MIN_LENGTH = 8;
   readonly PASSWORD_MIN_UPPER = 1;
   readonly PASSWORD_MIN_LOWER = 1;
@@ -71,14 +77,6 @@ export class SignUpPageComponent implements OnInit {
       this.username?.setValue(this.authService.getEmail());
     }
   }
-
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-    private authService: AuthService,
-    private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
-  ) {}
 
   ngOnInit(): void {
     this.token = this.route.snapshot.paramMap.get('token') ?? '';

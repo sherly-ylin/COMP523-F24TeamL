@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Person, EmploymentColumn } from 'src/app/models/person.model';
 import { PersonService } from 'src/app/services/person.service';
 import { RouterLink } from '@angular/router';
@@ -45,11 +45,11 @@ import { FormsModule } from '@angular/forms';
     ]
 })
 export class EmploymentComponent implements OnInit {
+  private PersonService = inject(PersonService);
+
   displayedColumns: string[] = EmploymentColumn.map((col) => col.key);
   dataSource: any = [];
   columnsSchema: any = EmploymentColumn;
-
-  constructor(private PersonService: PersonService) {}
 
   ngOnInit(): void {
     this.retrieveLogs();
