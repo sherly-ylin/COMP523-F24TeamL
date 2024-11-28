@@ -25,6 +25,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { inject } from '@angular/core';
 import { AuthService } from './auth.service';
 import { ProfileEditorComponent } from './components/profile-editor/profile-editor.component';
+import { RoleGuard } from './role.guard';
 
 const tokenValidGuard: CanActivateFn = (route): boolean | UrlTree => {
   const authService = inject(AuthService);
@@ -92,7 +93,7 @@ export const routes: Routes = [
       { path: 'setUpReview', component: SetUpReviewPageComponent },
       {
         path: 'addPerson',
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, ],
         component: AddPersonComponent,
       },
       {

@@ -11,8 +11,10 @@ export interface Profile {
   email: string | null;
   role: 'provider' | 'admin' | 'superadmin'; //consider making it number
   password?: string;
+  team_name?: string;
   // permissions: ;
 }
+
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +23,8 @@ export class ProfileService {
   private profileSubject = new BehaviorSubject<Profile | null>(null);
   profile$ = this.profileSubject.asObservable();
 
+  private baseUrl = 'http://localhost:3000/api/profile';
+
   constructor(protected http: HttpClient, protected auth: AuthService) {
     // this.auth.isAuthenticated$.subscribe((isAuthenticated) =>
     //   this.refreshProfile(isAuthenticated)
@@ -28,7 +32,7 @@ export class ProfileService {
   }
   getProfile(): Observable<Profile> {
     return this.http
-      .get<Profile>('http://localhost:3000/api/profile/')
+      .get<Profile>(this.baseUrl)
       .pipe(tap((profile) => this.profileSubject.next(profile)));
   }
 
@@ -56,7 +60,7 @@ export class ProfileService {
   // Update the user's profile
   updateProfile(profile: Partial<Profile>): Observable<Profile> {
     return this.http
-      .put<Profile>('http://localhost:3000/api/profile/', profile)
+      .patch<Profile>(this.baseUrl, profile)
       .pipe(tap((updatedProfile) => this.profileSubject.next(updatedProfile)));
   }
   // updateProfile(firstname: string, lastname: string, email: string) {
@@ -78,5 +82,12 @@ export class ProfileService {
   //     });
   // }
 
-  updatePassword(passward: string) {}
+  updateEmail(email:string): Observable<any> {
+    return this.http
+      .post<Profile>(`${this.baseUrl}/email`, {email})
+  }
+  updatePassword(data: {currentPassword: string, newPassword:string}): Observable<any> {
+    return this.http
+      .put<Profile>(`${this.baseUrl}/password`, data)
+  }
 }

@@ -67,7 +67,6 @@ export class ProfileEditorComponent {
   }
 
   ngOnInit(): void {
-    
     // this.profileService.getProfile().subscribe({
     //   next: (profile: Profile) => {
     //     this.profileForm.patchValue(profile);
@@ -78,9 +77,8 @@ export class ProfileEditorComponent {
     //     this.loading = false;
     //   },
     // });
-    
   }
-  public onSubmit() {
+  public updateProfile() {
     if (this.profileForm.valid) {
       this.profileService.updateProfile(this.profileForm.value).subscribe({
         next: () => alert('Profile updated successfully!'),
@@ -89,6 +87,26 @@ export class ProfileEditorComponent {
       //   const { first_name, last_name, email } = this.profileForm.value;
       //   this.profileService.updateProfile(first_name!, last_name!, email!);
       // }
+    }
+  }
+  updateEmail(): void {
+    if (this.emailForm.valid) {
+      this.profileService.updateEmail(this.emailForm.value.email).subscribe({
+        next: () =>
+          alert(
+            'Email update initiated. Please check your inbox for verification.'
+          ),
+        error: () => alert('Failed to update email'),
+      });
+    }
+  }
+
+  updatePassword(): void {
+    if (this.passwordForm.valid) {
+      this.profileService.updatePassword(this.passwordForm.value).subscribe({
+        next: () => alert('Password updated successfully'),
+        error: () => alert('Failed to update password'),
+      });
     }
   }
 }
