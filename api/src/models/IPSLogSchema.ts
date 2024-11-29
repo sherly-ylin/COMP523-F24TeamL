@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, {Schema} from 'mongoose'
 
 const IPSSchema = new mongoose.Schema({
   uid: String,
@@ -10,6 +10,16 @@ const IPSSchema = new mongoose.Schema({
   community_hours_spent: Number,
   train_PTO_hours_spent: Number,
   user_email: String,
+  team_id: {type: Schema.Types.ObjectId, ref: 'Team'},
+  admin_id: {type: Schema.Types.ObjectId, ref: 'User'},
+  login: {type: String, required: true},
+  password: {type: String, required: true},
+  status: {
+    type: String,
+    enum: ['PENDING', 'IN_PROGRESS', 'COMPLETED'],
+    required: true
+  },
+  assigned_date: {type: Date}
 })
 
 export const IPSLogModel = mongoose.model('ips_activity_log', IPSSchema)

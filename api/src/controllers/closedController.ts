@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import * as closedServices from '../services/closedServices.js'
+import mongoose from 'mongoose'
 
 /* Get all controller to retrieve all records. Result variable checks for success. */
 export async function getAllRecords(req: Request, res: Response) {
@@ -19,7 +20,7 @@ export async function getAllRecords(req: Request, res: Response) {
 
 /* Get specific record controller to retrieve a record. Result variable checks for success. */
 export async function getRecord(req: Request, res: Response) {
-  const id = req.params.id
+  const id = req.body.id
   try {
     const result = await closedServices.getRecordFromDB(id)
     if (result) {
@@ -31,6 +32,39 @@ export async function getRecord(req: Request, res: Response) {
     const err = e as Error
     console.error(err.message)
     res.status(500).json({ success: false, msg: 'Failed to retrieve record.' })
+  }
+}
+
+/* Get specific record controller to retrieve a record. Result variable checks for success. */
+export async function getRecordByAdmin_ID(req: Request, res: Response) {
+  const admin_id = req.body.admin_id
+  try {
+    const result = await closedServices.getRecordsByAdmin_ID(admin_id)
+    if (result) {
+      res.status(200).jsonp(result)
+    } else {
+      res.status(200).json({ success: true, msg: 'Records not found.' })
+    }
+  } catch (e) {
+    const err = e as Error
+    console.error(err.message)
+    res.status(500).json({ success: false, msg: 'Failed to retrieve records.' })
+  }
+}
+
+export async function getRecordByTeam_ID(req: Request, res: Response) {
+  const team_id = req.body.team_id
+  try {
+    const result = await closedServices.getRecordsByTeam_ID(team_id)
+    if (result) {
+      res.status(200).jsonp(result)
+    } else {
+      res.status(200).json({ success: true, msg: 'Records not found.' })
+    }
+  } catch (e) {
+    const err = e as Error
+    console.error(err.message)
+    res.status(500).json({ success: false, msg: 'Failed to retrieve records.' })
   }
 }
 
@@ -57,6 +91,24 @@ export async function updateRecord(req: Request, res: Response) {
   var body = req.body
 
   try {
+    // Validate the references (team_id, admin_id) are valid ObjectIds
+    if (body._id && !mongoose.Types.ObjectId.isValid(body._id)) {
+      return res.status(400).json({ success: false, msg: 'Invalid team_id format.' });
+    }
+
+    if (body.admin_id && !mongoose.Types.ObjectId.isValid(body.admin_id)) {
+      return res.status(400).json({ success: false, msg: 'Invalid admin_id format.' });
+    }
+
+    // Validate if the user IDs in the "users" array are ObjectIds (for "users" field in the Team schema)
+    if (body.users) {
+      for (const userId of body.users) {
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+          return res.status(400).json({ success: false, msg: 'Invalid user ID in users array.' });
+        }
+      }
+    }
+
     var status = await closedServices.updateRecordInDB(id, body)
     if (status) {
       res

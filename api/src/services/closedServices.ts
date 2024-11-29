@@ -1,4 +1,4 @@
-import { Document, Error } from 'mongoose'
+import { Document, Error, Types } from 'mongoose'
 import { environment } from '../../environment.js'
 import { closedModel } from '../models/closedSchema.js'
 import { User } from '../models/userSchema.js'
@@ -67,7 +67,7 @@ export async function getAllRecordsFromDB() {
 }
 
 /* Runs mongoose function to find a specific record */
-export async function getRecordFromDB(id: string) {
+export async function getRecordFromDB(id: Types.ObjectId) {
   var record = await closedModel
     .findOne({ uid: id }, (err: Error, doc: Document) => {
       if (err) {
@@ -84,6 +84,41 @@ export async function getRecordFromDB(id: string) {
 
   return record
 }
+
+export async function getRecordsByAdmin_ID(admin_id: Types.ObjectId) {
+  try {
+    const records = await closedModel.find({ admin_id: admin_id }).exec();
+
+    if (records.length > 0) {
+      console.log(`Found ${records.length} records for admin_id: ${admin_id}`);
+    } else {
+      console.log(`No records found with admin_id: ${admin_id}`);
+    }
+
+    return records;
+  } catch (err) {
+    console.error("Error fetching records by admin_id:", err);
+    throw err;
+  }
+}
+
+export async function getRecordsByTeam_ID(team_id: Types.ObjectId) {
+  try {
+    const records = await closedModel.find({ team_id: team_id }).exec();
+
+    if (records.length > 0) {
+      console.log(`Found ${records.length} records for team_id: ${team_id}`);
+    } else {
+      console.log(`No records found with team_id: ${team_id}`);
+    }
+
+    return records;
+  } catch (err) {
+    console.error("Error fetching records by team_id:", err);
+    throw err;
+  }
+}
+
 
 /* Runs mongoose function to add an entire record to the database */
 export async function addRecordToDB(body: any) {
@@ -170,3 +205,4 @@ export async function deleteAllRecordsFromDB() {
 
   return records
 }
+

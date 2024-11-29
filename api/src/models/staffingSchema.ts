@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, {Schema} from 'mongoose'
 
 const staffingSchema = new mongoose.Schema({
   uid: String,
@@ -14,6 +14,16 @@ const staffingSchema = new mongoose.Schema({
   hours_worked: Number,
   IPS_training: [String],
   user_email: String,
+  team_id: {type: Schema.Types.ObjectId, ref: 'Team'},
+  admin_id: {type: Schema.Types.ObjectId, ref: 'User'},
+  login: {type: String, required: true},
+  password: {type: String, required: true},
+  status: {
+    type: String,
+    enum: ['PENDING', 'IN_PROGRESS', 'COMPLETED'],
+    required: true
+  },
+  assigned_date: {type: Date}
 })
 
 export const staffingModel = mongoose.model('staffing_level', staffingSchema)

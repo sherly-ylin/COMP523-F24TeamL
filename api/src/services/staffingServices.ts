@@ -1,4 +1,4 @@
-import { Document, Error } from 'mongoose'
+import { Document, Error, Types } from 'mongoose'
 import { environment } from '../../environment.js'
 import { staffingModel } from '../models/staffingSchema.js'
 import { User } from '../models/userSchema.js'
@@ -83,6 +83,40 @@ export async function getRecordFromDB(id: string) {
     .clone()
 
   return record
+}
+
+export async function getRecordsByAdmin_ID(admin_id: Types.ObjectId) {
+  try {
+    const records = await staffingModel.find({ admin_id: admin_id }).exec();
+
+    if (records.length > 0) {
+      console.log(`Found ${records.length} records for admin_id: ${admin_id}`);
+    } else {
+      console.log(`No records found with admin_id: ${admin_id}`);
+    }
+
+    return records;
+  } catch (err) {
+    console.error("Error fetching records by admin_id:", err);
+    throw err;
+  }
+}
+
+export async function getRecordsByTeam_ID(team_id: Types.ObjectId) {
+  try {
+    const records = await staffingModel.find({ team_id: team_id }).exec();
+
+    if (records.length > 0) {
+      console.log(`Found ${records.length} records for team_id: ${team_id}`);
+    } else {
+      console.log(`No records found with team_id: ${team_id}`);
+    }
+
+    return records;
+  } catch (err) {
+    console.error("Error fetching records by team_id:", err);
+    throw err;
+  }
 }
 
 /* Runs mongoose function to find records provided by this provide */

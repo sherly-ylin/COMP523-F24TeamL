@@ -1,6 +1,7 @@
-import mongoose, { Document, Schema } from 'mongoose'
+import mongoose, { Document, Schema, Types } from 'mongoose'
 
 export interface IUser extends Document {
+  _id?: Types.ObjectId,
   email: string
   role: string
   username: string
@@ -10,6 +11,7 @@ export interface IUser extends Document {
 }
 
 export const UserSchema: Schema<IUser> = new Schema({
+  _id: {type: Types.ObjectId},
   email: { type: String, required: true },
   role: { type: String, required: true },
   username: String,
