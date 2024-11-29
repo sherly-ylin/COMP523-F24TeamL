@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
-import { Error } from 'mongoose'
+import { Error, Types } from 'mongoose'
 
 import crypto from 'crypto'
 import { environment } from '../../environment.js'
@@ -58,6 +58,15 @@ export const signUp = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Invite token is invalid.' })
     }
 
+    if(invite.role=='provider'){
+      const user = new User({
+      email: invite.email,
+      role: invite.role,
+      team_id: Types.ObjectId,
+      username: req.body.username ?? invite.email,
+      password: bcrypt.hashSync(req.body.password, 8),
+    })
+    }
     // Save the new user
     const user = new User({
       email: invite.email,
