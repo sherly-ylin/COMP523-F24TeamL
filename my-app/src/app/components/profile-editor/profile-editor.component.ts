@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { Profile, ProfileService } from '../../profile.service';
+import { Profile, AuthService } from 'src/app/auth.service';
 import { HttpClient } from '@angular/common/http';
 
 import {
@@ -46,7 +46,7 @@ export class ProfileEditorComponent {
     private router: Router,
     private http: HttpClient,
     protected formBuilder: FormBuilder,
-    protected profileService: ProfileService,
+    protected authService: AuthService,
     protected snackBar: MatSnackBar,
     protected dialog: MatDialog
   ) {
@@ -67,7 +67,7 @@ export class ProfileEditorComponent {
   }
 
   ngOnInit(): void {
-    // this.profileService.getProfile().subscribe({
+    // this.authService.getProfile().subscribe({
     //   next: (profile: Profile) => {
     //     this.profileForm.patchValue(profile);
     //     this.loading = false;
@@ -80,18 +80,18 @@ export class ProfileEditorComponent {
   }
   public updateProfile() {
     if (this.profileForm.valid) {
-      this.profileService.updateProfile(this.profileForm.value).subscribe({
+      this.authService.updateProfile(this.profileForm.value).subscribe({
         next: () => alert('Profile updated successfully!'),
         error: () => alert('Failed to update profile. Please try again.'),
       });
       //   const { first_name, last_name, email } = this.profileForm.value;
-      //   this.profileService.updateProfile(first_name!, last_name!, email!);
+      //   this.authService.updateProfile(first_name!, last_name!, email!);
       // }
     }
   }
   updateEmail(): void {
     if (this.emailForm.valid) {
-      this.profileService.updateEmail(this.emailForm.value.email).subscribe({
+      this.authService.updateEmail(this.emailForm.value.email).subscribe({
         next: () =>
           alert(
             'Email update initiated. Please check your inbox for verification.'
@@ -103,7 +103,7 @@ export class ProfileEditorComponent {
 
   updatePassword(): void {
     if (this.passwordForm.valid) {
-      this.profileService.updatePassword(this.passwordForm.value).subscribe({
+      this.authService.updatePassword(this.passwordForm.value).subscribe({
         next: () => alert('Password updated successfully'),
         error: () => alert('Failed to update password'),
       });

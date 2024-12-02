@@ -1,7 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { AuthService } from 'src/app/guards/auth.service';
-import { Profile, ProfileService } from 'src/app/profile.service';
+import { Profile, AuthService } from 'src/app/guards/auth.service';
 import {
   MatSidenavContainer,
   MatSidenav,
@@ -42,11 +41,10 @@ export class DashboardComponent implements OnInit{
 
   userRole: string | null = null;
 
-  constructor(
-  ) {}
+  constructor() {}
 
   ngOnInit(): void {
-    const user = this.profileService.currentUser;
+    const user = this.authService.currentUser;
     if (user){
       this.userRole = user.role;
     }

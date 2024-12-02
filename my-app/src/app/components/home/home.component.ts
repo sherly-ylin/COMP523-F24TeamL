@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Profile, ProfileService } from 'src/app/profile.service';
+import { Profile, AuthService } from 'src/app/auth.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,12 +24,12 @@ export class HomeComponent implements OnInit {
     { id: 3, title: 'Review 3' },
   ];
 
-  constructor(private profileService: ProfileService) {}
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
     this.displayName = 'Sherly'; // Replace with actual user data
 
-    // this.profileService.profile$.subscribe((profile: Profile | null) => {
+    // this.authService.profile$.subscribe((profile: Profile | null) => {
     //   if (profile) {
     //     this.displayName = profile.team_name || profile.username;
     //   } else {
