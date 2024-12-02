@@ -15,7 +15,7 @@ import {
   userBoard,
 } from '../controllers/userController.js'
 
-import * as authJwt from '../middlewares/authJwt.js'
+// import * as authJwt from '../middlewares/authJwt.js'
 import { getCurrentUser } from './getCurrentUserRoutes.js'
 import { getUserInfo } from './getUserInfoRoutes.js'
 import { setUserInfo } from './setUserInfoRoutes.js'
@@ -85,7 +85,7 @@ router.use(function (req, res, next) {
 })
 
 router.get(
-  '/api/auth/invite',
+  '/api/auth/invite/:token',
   authController.getInvite,
 )
 
@@ -106,12 +106,12 @@ router.post(
 // user routes
 router.use('/api/test', verifyMiddleware)
 router.get('/api/test/all', allAccess)
-router.get('/api/test/user', [authJwt.verifyToken], userBoard)
-router.get(
-  '/api/test/admin',
-  [authJwt.verifyToken, authJwt.isAdmin],
-  adminBoard,
-)
+// router.get('/api/test/user', [authJwt.verifyToken], userBoard)
+// router.get(
+//   '/api/test/admin',
+//   [authJwt.verifyToken, authJwt.isAdmin],
+//   adminBoard,
+// )
 
 // verify email routes
 router.use('/verify', verifyMiddleware)

@@ -13,12 +13,17 @@ import * as verify from './emailVerifyController.js'
 export async function getInvite(req: Request, res: Response) {
   try {
     // Search for a document with the specified token
-    const invite = await Invite.findOne({ token: req.body.token })
+    const invite = await Invite.findOne({ token: req.params.token })
 
-    return res.status(200).send({ email: invite?.email })
+    if (!invite) {
+      // If no invite is found, send a 404 error
+      return res.status(404).json({ message: 'Invite not found' });
+    }
+
+    return res.status(200).json(invite)
   } catch (err) {
     console.error('Error checking invite:', err)
-    return false // Return false if there's an error
+    return res.status(500).json({ message: 'Internal Server Error', error: err });
   }
 }
 

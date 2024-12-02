@@ -1,7 +1,6 @@
 import { APP_ID, Component, OnInit, signal, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from 'src/app/auth.service';
 import {
   FormBuilder,
   FormGroup,
@@ -28,7 +27,6 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
 export class SignUpPageComponent implements OnInit {
   private router = inject(Router);
   private http = inject(HttpClient);
-  private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
   private formBuilder = inject(FormBuilder);
 
@@ -40,6 +38,7 @@ export class SignUpPageComponent implements OnInit {
 
   signUpForm!: FormGroup;
   token!: string;
+  email!: string;
 
   isPasswordVisible = signal(false);
   isConfirmPasswordVisible = signal(false);
@@ -74,16 +73,19 @@ export class SignUpPageComponent implements OnInit {
   }
   setUsernameDefaultValue() {
     if (this.username?.value.trim() === '') {
-      this.username?.setValue(this.authService.getEmail());
+      this.username?.setValue(this.email);
     }
   }
 
   ngOnInit(): void {
     this.token = this.route.snapshot.paramMap.get('token') ?? '';
+    this.route.data.subscribe((response: any) => {
+      this.email = response.invite.email;
+    });
 
     // Initialize form with validation rules
     this.signUpForm = this.formBuilder.group({
-      username: ['', []],
+      username: [this.email, []],
       password: [
         '',
         [

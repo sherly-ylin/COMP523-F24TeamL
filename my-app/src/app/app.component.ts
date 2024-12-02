@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { AuthService } from './auth.service';
+import { AuthService } from './auth/auth.service';
 
 @Component({
     selector: 'app-root',
@@ -16,7 +16,7 @@ export class AppComponent {
   constructor() {
     const authService = this.authService;
 
-    this.authenticated = authService.isLoggedIn();
+    this.authenticated = authService.isAuthenticated();
   }
 
   signOut(): void {
