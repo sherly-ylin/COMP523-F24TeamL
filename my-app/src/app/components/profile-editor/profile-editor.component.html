@@ -48,6 +48,10 @@
           </mat-form-field>
           <div style="display:flex; justify-content:end;">
             <button mat-flat-button color="primary" type="submit" [disabled]="!emailForm.valid">Change Email</button>
+            @if (email_sent){
+              <mat-error>A verification email has been sent to this email address.</mat-error>
+
+            }
           </div>
         </form>
       </mat-expansion-panel>

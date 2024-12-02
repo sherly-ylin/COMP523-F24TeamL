@@ -115,12 +115,15 @@ export const signIn = (req: Request, res: Response) => {
     var token = jwt.sign({ id: user.id }, config.secret, {
       expiresIn: 86400, // 24 hours
     })
+    // TODO: based on the user's role, if provider, sent team_id and team_name as well
     res.status(200).send({
       id: user._id,
       username: environment.currentUsername,
       email: user.email,
       role: environment.currentUserRole,
       accessToken: token,
+      first_name: user.firstname,
+      last_name: user.lastname,
     })
   })
 }

@@ -11,9 +11,14 @@ export class AuthGuard {
     const token = localStorage.getItem('accessToken');
     if (token) {
       // Token exists, user is logged in
+      // console.log("user exists, token =", token);
       return true;
     } else {
-      this.router.navigate(['/login']);
+      if (
+        confirm('You are not logged in. Redirecting you to the login page.')
+      ) {
+        this.router.navigate(['/login']);
+      }
       return false;
     }
   }

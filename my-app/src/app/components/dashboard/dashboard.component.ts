@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit{
 
   constructor(
     private router: Router,
-    private authService: AuthService,
+    protected authService: AuthService,
     private profileService: ProfileService
   ) {}
 
@@ -51,8 +51,4 @@ export class DashboardComponent implements OnInit{
     }
   }
 
-  signOut(): void {
-    localStorage.removeItem('accessToken');
-    this.router.navigate(['']); // Navigate to login after sign out
-  }
 }
