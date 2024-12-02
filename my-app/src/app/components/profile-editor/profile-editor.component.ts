@@ -9,6 +9,7 @@ import {
   FormBuilder,
   Validators,
   FormGroup,
+  AbstractControl
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
@@ -36,6 +37,8 @@ export class ProfileEditorComponent {
   profileForm: FormGroup;
   emailForm: FormGroup;
   passwordForm: FormGroup;
+  verificationForm: FormGroup;
+  verificationSent: boolean = false;
   loading = false;
   error: string | null = null;
   // public token: string;
@@ -58,10 +61,14 @@ export class ProfileEditorComponent {
     this.emailForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
     });
-
+    this.verificationForm = this.formBuilder.group({
+      code: ['', [Validators.required, Validators.minLength(6)]],
+    });
     this.passwordForm = this.formBuilder.group({
       currentPassword: ['', Validators.required],
-      newPassword: ['', [Validators.required, Validators.minLength(6)]],
+      newPassword: ['', [Validators.required, Validators.minLength(8)]],
+      confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
+
     });
     // this.token = `${localStorage.getItem('accessToken')}`;
   }
@@ -84,20 +91,35 @@ export class ProfileEditorComponent {
         next: () => alert('Profile updated successfully!'),
         error: () => alert('Failed to update profile. Please try again.'),
       });
-      //   const { first_name, last_name, email } = this.profileForm.value;
-      //   this.authService.updateProfile(first_name!, last_name!, email!);
-      // }
     }
   }
+  requestEmailChange(): void {
+    if (this.emailForm.valid) {
+      const email = this.emailForm.value.email;
+      this.authService.requestEmailChange(email).subscribe({
+        next: () => {
+          this.verificationSent = true;
+          alert('Verification code sent to your email.');
+        },
+        error: () => alert('Failed to send verification code.'),
+      });
+    }
+  }
+
   updateEmail(): void {
     if (this.emailForm.valid) {
-      this.authService.updateEmail(this.emailForm.value.email).subscribe({
-        next: () =>
-          alert(
-            'Email update initiated. Please check your inbox for verification.',
-          ),
-        error: () => alert('Failed to update email'),
-      });
+      this.authService
+        .verifyAndUpdateEmail(
+          this.emailForm.value.email,
+          this.verificationForm.value.code
+        )
+        .subscribe({
+          next: () =>
+            alert(
+              'Email update complete.'
+            ),
+          error: () => alert('Failed to update email'),
+        });
     }
   }
 
@@ -108,5 +130,10 @@ export class ProfileEditorComponent {
         error: () => alert('Failed to update password'),
       });
     }
+  }
+
+
+  cancelEmailUpdate(){
+    this.emailForm.setValue({email: ''});
   }
 }

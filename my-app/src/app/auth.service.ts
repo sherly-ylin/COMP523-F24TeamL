@@ -55,18 +55,54 @@ export class AuthService {
 
   private baseUrl = 'http://localhost:3000/';
 
-  constructor() {}
+  private email: string | null = null;
+  setEmail(email: string): void {
+    this.email = email;
+  }
+  getEmail(): string | null {
+    return this.email;
+  }
 
-  isAuthenticated(): boolean {
-    // // Implement your authentication logic here
-    // const token = localStorage.getItem('token'); // get token from local storage
-    // if (token === null) {
-    //   return false;
-    // }
-    // const payload = atob(token.split('.')[1]); // decode payload of token
-    // const parsedPayload = JSON.parse(payload); // convert payload into an Object
-    // return parsedPayload.exp > Date.now() / 1000; // check if token is expired
-    return this.authenticated;
+  constructor(private router: Router, private http: HttpClient) {}
+
+  async verifyTokenAndGetEmail(
+    route: ActivatedRouteSnapshot
+  ): Promise<boolean> {
+    console.log('Frontend token:', route.params['token']);
+    await this.http
+      .post<VerifyTokenResponse>(
+        'http://localhost:3000/api/auth/verify-token-get-email',
+        {
+          token: route.params['token'],
+        }
+      )
+      .pipe(
+        // Handle any errors with a fallback
+        catchError((error) => {
+          alert(
+            error?.error?.message ||
+              'An error occurred during verifying token and get email.'
+          );
+          console.error('verify token error:', error);
+          return of(null); // Return a null observable to prevent breaking the stream
+        })
+      )
+      .subscribe({
+        next: (response) => {
+          if (response && response.email) {
+            this.setEmail(response.email);
+            console.log('got email:', this.getEmail());
+          } else {
+            console.log('Invalid invite token');
+          }
+        },
+      });
+    console.log('outside:', this.getEmail());
+    return !!this.getEmail();
+  }
+
+  checkToken(route: ActivatedRouteSnapshot) {
+    return !!this.verifyTokenAndGetEmail(route);
   }
 
   signIn(username: string, password: string): void {
@@ -139,8 +175,17 @@ export class AuthService {
     this.profileSubject.next(profile);
   }
 
-  updateEmail(email: string): Observable<any> {
-    return this.http.post<Profile>(`${this.baseUrl}/user/email`, { email });
+  requestEmailChange(email: string): Observable<any> | any {
+    return true;
+    // return this.http.post<Profile>(`${this.baseUrl}/user/email`, { email });
+  }
+
+  verifyAndUpdateEmail(email: string, code: string): Observable<any> | any {
+    return true
+    // return this.http.post<Profile>(`${this.baseUrl}/user/email/verify`, {
+    //   email,
+    //   code,
+    // });
   }
   updatePassword(data: {
     currentPassword: string;
