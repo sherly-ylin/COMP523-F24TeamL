@@ -1,11 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Signal, WritableSignal, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { BehaviorSubject } from 'rxjs';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { Profile, ProfileService } from './profile.service';
+import { Observable, ReplaySubject, BehaviorSubject, Subject, tap, of } from 'rxjs';
+
 interface LoginResponse {
   id: number;
   username: string | null;
@@ -21,12 +19,14 @@ interface VerifyTokenResponse {
   email: string;
 }
 
-export interface User {
-  username: string;
-  id: number | null;
-  email: string;
-  password: string;
-  role: string;
+export interface Profile {
+  id: number;
+  username: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  email: string | null;
+  role: 'provider' | 'admin' | 'superadmin'; //consider making it number
+  team_name?: string | null;
 }
 
 @Injectable({
@@ -35,6 +35,11 @@ export interface User {
 export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
   loggedIn$ = this.loggedIn.asObservable();
+
+  private profileSubject = new BehaviorSubject<Profile | null>(null);
+  profile$ = this.profileSubject.asObservable();
+
+  private baseUrl = 'http://localhost:3000/';
 
   private email: string | null = null;
   setEmail(email: string): void {
@@ -47,7 +52,6 @@ export class AuthService {
   constructor(
     private router: Router,
     private http: HttpClient,
-    private profileService: ProfileService
   ) {}
 
   async verifyTokenAndGetEmail(
@@ -107,17 +111,17 @@ export class AuthService {
       .subscribe({
         next: (response) => {
           if (response && response.accessToken) {
-            // const profile: Profile = {
-            //   id: response.id,
-            //   username: response.username,
-            //   first_name: response.first_name,
-            //   last_name: response.last_name,
-            //   email: response.email,
-            //   role: response.role,
-            //   team_name:
-            //     response.role === 'provider' ? response.team_name : null,
-            // };
-            // this.profileService.manuallyUpdateProfile(profile);
+            const profile: Profile = {
+              id: response.id,
+              username: response.username,
+              first_name: response.first_name,
+              last_name: response.last_name,
+              email: response.email,
+              role: response.role,
+              team_name:
+                response.role === 'provider' ? response.team_name : null,
+            };
+            this.manuallyUpdateProfile(profile);
 
             // Storing token and navigating to the dashboard
             localStorage.setItem('accessToken', response.accessToken);
@@ -139,17 +143,36 @@ export class AuthService {
     }
     this.router.navigate(['/login']); // Navigate to login after sign out
   }
-  /**
-   * Adds a user to user array.
-   *
-   * @returns Event object.
-   */
 
-  // addUser(e: User): Observable<User> {
-  //   return this.http.post<User>("/api/auth/signup", e);
-  // }
+  getProfile(): Observable<Profile> {
+    return this.http
+      .get<Profile>(`${this.baseUrl}/user/profile`)
+      .pipe(tap((profile) => this.profileSubject.next(profile)));
+  }
 
-  isAdmin(): Observable<any> {
-    return this.http.get('localhost:3000/API/test/admin');
+  // Get the current user synchronously
+  get currentUser(): Profile | null {
+    return this.profileSubject.value;
+  }
+
+  // Update the user's basic info
+  updateProfile(profile: Partial<Profile>): Observable<Profile> {
+    return this.http
+      .patch<Profile>(`${this.baseUrl}/user/profile`, profile)
+      .pipe(tap((updatedProfile) => this.profileSubject.next(updatedProfile)));
+  }
+
+  manuallyUpdateProfile(profile: Profile|any) {
+    this.profileSubject.next(profile);
+  }
+
+  updateEmail(email: string): Observable<any> {
+    return this.http.post<Profile>(`${this.baseUrl}/user/email`, { email });
+  }
+  updatePassword(data: {
+    currentPassword: string;
+    newPassword: string;
+  }): Observable<any> {
+    return this.http.put<Profile>(`${this.baseUrl}/password`, data);
   }
 }
