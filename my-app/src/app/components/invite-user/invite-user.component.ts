@@ -1,17 +1,17 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from 'src/app/guards/auth.service';
+import { AuthService } from 'src/app/auth.service';
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-    selector: 'app-invite-user',
-    templateUrl: './invite-user.component.html',
-    styleUrls: ['./invite-user.component.css'],
-    imports: [FormsModule, MatRadioModule, MatInputModule, MatButtonModule]
+  selector: 'app-invite-user',
+  templateUrl: './invite-user.component.html',
+  styleUrls: ['./invite-user.component.css'],
+  imports: [FormsModule, MatRadioModule, MatInputModule, MatButtonModule],
 })
 export class InviteUserComponent {
   private router = inject(Router);

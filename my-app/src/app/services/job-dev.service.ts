@@ -11,7 +11,6 @@ const baseUrl = 'http://localhost:3000/jobDev';
 export class JobDevService {
   private http = inject(HttpClient);
 
-
   getAll(): Observable<JobDev[]> {
     return this.http.get<JobDev[]>(baseUrl);
   }

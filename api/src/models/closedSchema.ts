@@ -1,4 +1,4 @@
-import mongoose, {Schema} from 'mongoose'
+import mongoose, { Schema } from 'mongoose'
 
 // Create a schema
 const closedSchema = new mongoose.Schema({
@@ -9,16 +9,16 @@ const closedSchema = new mongoose.Schema({
   engagement_activities: [String],
   closure_reason: [String],
   user_email: String,
-  team_id: {type: Schema.Types.ObjectId, ref: 'Team'},
-  admin_id: {type: Schema.Types.ObjectId, ref: 'User'},
-  login: {type: String, required: true},
-  password: {type: String, required: true},
+  team_id: { type: Schema.Types.ObjectId, ref: 'Team' },
+  admin_id: { type: Schema.Types.ObjectId, ref: 'User' },
+  login: { type: String, required: true },
+  password: { type: String, required: true },
   status: {
     type: String,
     enum: ['PENDING', 'IN_PROGRESS', 'COMPLETED'],
-    required: true
+    required: true,
   },
-  assigned_date: {type: Date}
+  assigned_date: { type: Date },
 })
 
 // Create a model

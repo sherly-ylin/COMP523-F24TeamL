@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from 'src/app/guards/auth.service';
+import { AuthService } from 'src/app/auth.service';
 import {
   FormBuilder,
   FormGroup,
@@ -13,15 +13,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css'],
-    imports: [
-        MatButtonModule,
-        MatInputModule,
-        MatFormFieldModule,
-        ReactiveFormsModule,
-    ]
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
+  imports: [
+    MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+  ],
 })
 export class LoginComponent implements OnInit {
   private authService = inject(AuthService);

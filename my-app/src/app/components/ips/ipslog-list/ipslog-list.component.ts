@@ -21,27 +21,27 @@ import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-ipslog-list',
-    templateUrl: './ipslog-list.component.html',
-    styleUrls: ['./ipslog-list.component.css'],
-    imports: [
-        MatButton,
-        MatTable,
-        MatColumnDef,
-        MatHeaderCellDef,
-        MatHeaderCell,
-        MatCellDef,
-        MatCell,
-        MatIconButton,
-        MatIcon,
-        MatFormField,
-        MatInput,
-        FormsModule,
-        MatHeaderRowDef,
-        MatHeaderRow,
-        MatRowDef,
-        MatRow,
-    ]
+  selector: 'app-ipslog-list',
+  templateUrl: './ipslog-list.component.html',
+  styleUrls: ['./ipslog-list.component.css'],
+  imports: [
+    MatButton,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatIconButton,
+    MatIcon,
+    MatFormField,
+    MatInput,
+    FormsModule,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+  ],
 })
 export class IpslogListComponent implements OnInit {
   private IpsLogService = inject(IpslogService);

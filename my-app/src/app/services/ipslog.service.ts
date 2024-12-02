@@ -11,7 +11,6 @@ const baseUrl = 'http://localhost:3000/ipslog';
 export class IpslogService {
   private http = inject(HttpClient);
 
-
   getAll(): Observable<IpsLog[]> {
     return this.http.get<IpsLog[]>(baseUrl);
   }

@@ -1,8 +1,21 @@
-import { Injectable, Signal, WritableSignal, inject, signal } from '@angular/core';
+import {
+  Injectable,
+  Signal,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { catchError } from 'rxjs/operators';
-import { Observable, ReplaySubject, BehaviorSubject, Subject, tap, of } from 'rxjs';
+import {
+  Observable,
+  ReplaySubject,
+  BehaviorSubject,
+  Subject,
+  tap,
+  of,
+} from 'rxjs';
 
 interface LoginResponse {
   id: number;
@@ -26,7 +39,7 @@ export interface Profile {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private router = inject(Router);
@@ -42,7 +55,19 @@ export class AuthService {
 
   private baseUrl = 'http://localhost:3000/';
 
-  constructor() { }
+  constructor() {}
+
+  isAuthenticated(): boolean {
+    // // Implement your authentication logic here
+    // const token = localStorage.getItem('token'); // get token from local storage
+    // if (token === null) {
+    //   return false;
+    // }
+    // const payload = atob(token.split('.')[1]); // decode payload of token
+    // const parsedPayload = JSON.parse(payload); // convert payload into an Object
+    // return parsedPayload.exp > Date.now() / 1000; // check if token is expired
+    return this.authenticated;
+  }
 
   signIn(username: string, password: string): void {
     this.http
@@ -110,7 +135,7 @@ export class AuthService {
       .pipe(tap((updatedProfile) => this.profileSubject.next(updatedProfile)));
   }
 
-  manuallyUpdateProfile(profile: Profile|any) {
+  manuallyUpdateProfile(profile: Profile | any) {
     this.profileSubject.next(profile);
   }
 

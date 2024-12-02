@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
-import * as personLevelServices from '../services/personLevelServices.js'
 import mongoose from 'mongoose'
+import * as personLevelServices from '../services/personLevelServices.js'
 
 /* Get all controller to retrieve all records. Result variable checks for success. */
 export async function getAllRecords(req: Request, res: Response) {
@@ -91,17 +91,23 @@ export async function updateRecord(req: Request, res: Response) {
 
   try {
     if (body._id && !mongoose.Types.ObjectId.isValid(body._id)) {
-      return res.status(400).json({ success: false, msg: 'Invalid team_id format.' });
+      return res
+        .status(400)
+        .json({ success: false, msg: 'Invalid team_id format.' })
     }
 
     if (body.admin_id && !mongoose.Types.ObjectId.isValid(body.admin_id)) {
-      return res.status(400).json({ success: false, msg: 'Invalid admin_id format.' });
+      return res
+        .status(400)
+        .json({ success: false, msg: 'Invalid admin_id format.' })
     }
 
     if (body.users) {
       for (const userId of body.users) {
         if (!mongoose.Types.ObjectId.isValid(userId)) {
-          return res.status(400).json({ success: false, msg: 'Invalid user ID in users array.' });
+          return res
+            .status(400)
+            .json({ success: false, msg: 'Invalid user ID in users array.' })
         }
       }
     }

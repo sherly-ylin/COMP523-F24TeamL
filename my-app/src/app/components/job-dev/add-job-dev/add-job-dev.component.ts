@@ -147,10 +147,10 @@ const surveyJson = {
 };
 
 @Component({
-    selector: 'app-add-job-dev',
-    templateUrl: './add-job-dev.component.html',
-    styleUrls: ['./add-job-dev.component.css'],
-    imports: [SurveyModule]
+  selector: 'app-add-job-dev',
+  templateUrl: './add-job-dev.component.html',
+  styleUrls: ['./add-job-dev.component.css'],
+  imports: [SurveyModule],
 })
 export class AddJobDevComponent implements OnInit {
   title = 'Job Development Log';

@@ -11,7 +11,6 @@ const baseUrl = 'http://localhost:3000/closed';
 export class ClosedService {
   private http = inject(HttpClient);
 
-
   getAll(): Observable<Closed[]> {
     return this.http.get<Closed[]>(baseUrl);
   }

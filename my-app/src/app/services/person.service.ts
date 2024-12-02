@@ -11,7 +11,6 @@ const baseUrl = 'http://localhost:3000/person_level';
 export class PersonService {
   private http = inject(HttpClient);
 
-
   getAll(): Observable<Person[]> {
     return this.http.get<Person[]>(baseUrl);
   }

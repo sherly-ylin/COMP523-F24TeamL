@@ -22,34 +22,36 @@ import { SetUpReviewPageComponent } from './components/set-up-review-page/set-up
 import { InviteUserComponent } from './components/invite-user/invite-user.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { inject } from '@angular/core';
-import { authGuard } from './guards/auth.guard';
-import { AuthService } from './guards/auth.service';
+import { authGuard } from './auth.guard';
+import { AuthService } from './auth.service';
 import { ProfileEditorComponent } from './components/profile-editor/profile-editor.component';
-import { RoleGuard } from './guards/role.guard';
+import { RoleGuard } from './role.guard';
 import { inviteResolver } from './resolvers/invite.resolver';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   {
     path: 'signup/:token',
     component: SignUpPageComponent,
-    resolve: { invite: inviteResolver }
+    resolve: { invite: inviteResolver },
   },
   {
     path: 'dashboard',
     canActivate: [authGuard],
     component: DashboardComponent,
     children: [
-      { path: 'home', 
+      { path: 'home', canActivate: [authGuard], component: HomeComponent },
+      {
+        path: 'profile',
         canActivate: [authGuard],
-        component: HomeComponent },
-      { path: 'profile', 
+        component: ProfileEditorComponent,
+      },
+      {
+        path: 'set-up-review',
         canActivate: [authGuard],
-        component: ProfileEditorComponent },
-      { path: 'set-up-review', 
-        canActivate: [authGuard],
-        component: SetUpReviewPageComponent },
+        component: SetUpReviewPageComponent,
+      },
       {
         path: 'closed',
         canActivate: [authGuard],
@@ -84,12 +86,12 @@ export const routes: Routes = [
       { path: 'invite-user', component: InviteUserComponent },
       {
         path: 'add-person',
-        canActivate: [authGuard, ],
+        canActivate: [authGuard],
         component: AddPersonComponent,
       },
       {
         path: 'ipslog',
-        // canActivate: [AuthGuard],
+        canActivate: [authGuard],
         component: IpslogListComponent,
       },
       {

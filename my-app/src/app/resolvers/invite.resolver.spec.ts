@@ -5,8 +5,8 @@ import { inviteResolver } from './invite.resolver';
 import { IInvite } from '../../../../api/src/models/inviteSchema';
 
 describe('inviteResolver', () => {
-  const executeResolver: ResolveFn<IInvite> = (...resolverParameters) => 
-      TestBed.runInInjectionContext(() => inviteResolver(...resolverParameters));
+  const executeResolver: ResolveFn<IInvite> = (...resolverParameters) =>
+    TestBed.runInInjectionContext(() => inviteResolver(...resolverParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

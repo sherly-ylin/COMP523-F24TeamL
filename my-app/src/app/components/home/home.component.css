@@ -3,12 +3,12 @@
   border: 3px solid white;
   padding: 10px;
   margin: 16px;
-  background-color:#eee;
+  background-color: #eee;
 }
-.welcome{
+.welcome {
   margin: 16px;
 }
-.content{
+.content {
   margin: 16px 0;
   padding: 16px;
   text-align: center;
@@ -36,5 +36,5 @@
   justify-content: space-between;
   align-items: center;
   background-color: rgb(177, 228, 248);
-  margin:6px 0;
+  margin: 6px 0;
 }

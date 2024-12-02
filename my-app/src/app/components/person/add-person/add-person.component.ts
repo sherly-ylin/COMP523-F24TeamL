@@ -6,13 +6,15 @@ import { SurveyModule } from 'survey-angular-ui';
 StylesManager.applyTheme('defaultV2');
 
 // Move the surveyJson to an external file or service for better maintainability
-const surveyJson = { /* surveyJson data */ };
+const surveyJson = {
+  /* surveyJson data */
+};
 
 @Component({
   selector: 'app-add-person',
   templateUrl: './add-person.component.html',
   styleUrls: ['./add-person.component.css'],
-  imports: [SurveyModule]
+  imports: [SurveyModule],
 })
 export class AddPersonComponent implements OnInit {
   title = 'Person Survey';
@@ -33,15 +35,14 @@ export class AddPersonComponent implements OnInit {
 
   // Simplify API call using Angular's HttpClient
   submitSurveyData(data: any, options: any): void {
-    this.http.post('http://localhost:3000/person_level', data)
-      .subscribe({
-        next: () => {
-          options.showDataSavingSuccess();
-          window.location.href = 'http://localhost:4200/person';
-        },
-        error: () => {
-          options.showDataSavingError();
-        }
-      });
+    this.http.post('http://localhost:3000/person_level', data).subscribe({
+      next: () => {
+        options.showDataSavingSuccess();
+        window.location.href = 'http://localhost:4200/person';
+      },
+      error: () => {
+        options.showDataSavingError();
+      },
+    });
   }
 }

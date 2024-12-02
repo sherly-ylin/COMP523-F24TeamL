@@ -14,15 +14,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Component({
-    selector: 'app-sign-up-page',
-    templateUrl: './sign-up-page.component.html',
-    styleUrls: ['./sign-up-page.component.css'],
-    imports: [
-        ReactiveFormsModule,
-        MatInputModule,
-        MatButtonModule,
-        MatIconModule,
-    ]
+  selector: 'app-sign-up-page',
+  templateUrl: './sign-up-page.component.html',
+  styleUrls: ['./sign-up-page.component.css'],
+  imports: [
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
 })
 export class SignUpPageComponent implements OnInit {
   private router = inject(Router);
@@ -115,7 +115,9 @@ export class SignUpPageComponent implements OnInit {
     return this.signUpForm.get('confirmPassword');
   }
 
-  private isLongEnoughValidator = (control: AbstractControl): ValidationErrors | null => {
+  private isLongEnoughValidator = (
+    control: AbstractControl,
+  ): ValidationErrors | null => {
     const value = control.value;
     return value != null && value.length >= this.PASSWORD_MIN_LENGTH
       ? null

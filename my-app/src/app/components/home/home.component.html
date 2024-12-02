@@ -1,34 +1,35 @@
 <div class="containter">
-    <div class="welcome">
-        <h2>Welcome, {{ displayName }}!</h2>
-    </div>
-    <div class="content">
-        <div class="dashboard-summary">
-            <mat-card class="summary-card">
-                <h5>Reviews to Complete</h5>
-                <p>{{ reviewsToComplete }}</p>
-            </mat-card>
-            <mat-card class="summary-card">
-                <h5>Reviews Completed</h5>
-                <p>{{ reviewsCompleted }}</p>
-            </mat-card>
-            <mat-card class="summary-card">
-                <h5>Total Reviews Assigned</h5>
-                <p>{{ totalReviews }}</p>
-            </mat-card>
-        </div>
-
-        <mat-card class="reviews-list-card">
-            <h2>Pending Reviews</h2>
-            <mat-list>
-                @for (review of pendingReviews; track review.title){
-                <mat-list-item class="list-item">
-                    <span>{{ review.title }}</span>
-                    <button mat-button color="primary" (click)="goToReview(review.id)">Go</button>
-                </mat-list-item>
-                }
-            </mat-list>
-        </mat-card>
+  <div class="welcome">
+    <h2>Welcome, {{ displayName }}!</h2>
+  </div>
+  <div class="content">
+    <div class="dashboard-summary">
+      <mat-card class="summary-card">
+        <h5>Reviews to Complete</h5>
+        <p>{{ reviewsToComplete }}</p>
+      </mat-card>
+      <mat-card class="summary-card">
+        <h5>Reviews Completed</h5>
+        <p>{{ reviewsCompleted }}</p>
+      </mat-card>
+      <mat-card class="summary-card">
+        <h5>Total Reviews Assigned</h5>
+        <p>{{ totalReviews }}</p>
+      </mat-card>
     </div>
 
+    <mat-card class="reviews-list-card">
+      <h2>Pending Reviews</h2>
+      <mat-list>
+        @for (review of pendingReviews; track review.title) {
+          <mat-list-item class="list-item">
+            <span>{{ review.title }}</span>
+            <button mat-button color="primary" (click)="goToReview(review.id)">
+              Go
+            </button>
+          </mat-list-item>
+        }
+      </mat-list>
+    </mat-card>
+  </div>
 </div>

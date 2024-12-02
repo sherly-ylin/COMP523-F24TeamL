@@ -48,7 +48,7 @@ export class ProfileEditorComponent {
     protected formBuilder: FormBuilder,
     protected authService: AuthService,
     protected snackBar: MatSnackBar,
-    protected dialog: MatDialog
+    protected dialog: MatDialog,
   ) {
     this.profileForm = this.formBuilder.group({
       username: ['', [Validators.required]],
@@ -94,7 +94,7 @@ export class ProfileEditorComponent {
       this.authService.updateEmail(this.emailForm.value.email).subscribe({
         next: () =>
           alert(
-            'Email update initiated. Please check your inbox for verification.'
+            'Email update initiated. Please check your inbox for verification.',
           ),
         error: () => alert('Failed to update email'),
       });

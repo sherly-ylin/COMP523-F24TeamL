@@ -1,4 +1,3 @@
-  
 // export interface IReview {
 //     _id?: string;
 //     team_id: Types.ObjectId;
@@ -10,7 +9,7 @@
 // }
 
 export enum ReviewStatus {
-    PENDING = 'PENDING',
-    IN_PROGRESS = 'IN_PROGRESS',
-    COMPLETED = 'COMPLETED'
+  PENDING = 'PENDING',
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETED = 'COMPLETED',
 }

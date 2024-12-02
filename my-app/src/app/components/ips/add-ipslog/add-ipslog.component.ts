@@ -76,10 +76,10 @@ const surveyJson = {
 };
 
 @Component({
-    selector: 'app-ips',
-    templateUrl: './add-ipslog.component.html',
-    styleUrls: ['./add-ipslog.component.css'],
-    imports: [SurveyModule]
+  selector: 'app-ips',
+  templateUrl: './add-ipslog.component.html',
+  styleUrls: ['./add-ipslog.component.css'],
+  imports: [SurveyModule],
 })
 export class AddIpslogComponent implements OnInit {
   title = 'IPS Log Survey';
