@@ -1,15 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Signal, WritableSignal, signal, inject } from '@angular/core';
-import { Observable, ReplaySubject, Subject, tap } from 'rxjs';
-import { AuthService } from './auth.service';
+import { Observable, ReplaySubject, BehaviorSubject, Subject, tap } from 'rxjs';
+import { AuthService } from './guards/auth.service';
 
 export interface Profile {
-  id: number | null;
+  id: number;
+  username: string | null;
   first_name: string | null;
   last_name: string | null;
   email: string | null;
-  role: number;
-  // permissions: ;
+  role: 'provider' | 'admin' | 'superadmin'; //consider making it number
+  team_name?: string | null;
 }
 
 @Injectable({
@@ -19,10 +20,26 @@ export class ProfileService {
   protected http = inject(HttpClient);
   protected auth = inject(AuthService);
 
-  private profileSubject: Subject<Profile | undefined> = new ReplaySubject(1);
-  public profile$: Observable<Profile | undefined> =
-    this.profileSubject.asObservable();
+  private profileSubject = new BehaviorSubject<Profile | null>(null);
+  profile$ = this.profileSubject.asObservable();
 
+  private baseUrl = 'http://localhost:3000/api/user';
+
+  constructor() {
+    // this.auth.isAuthenticated$.subscribe((isAuthenticated) =>
+    //   this.refreshProfile(isAuthenticated)
+    // );
+  }
+  getProfile(): Observable<Profile> {
+    return this.http
+      .get<Profile>(this.baseUrl)
+      .pipe(tap((profile) => this.profileSubject.next(profile)));
+  }
+
+  // Get the current user synchronously
+  get currentUser(): Profile | null {
+    return this.profileSubject.value;
+  }
   // private refreshProfile(isAuthenticated: boolean) {
   //   if (isAuthenticated) {
   //     this.http.get<Profile>('/api/profile').subscribe({
@@ -40,4 +57,23 @@ export class ProfileService {
   //     this.profileSignal.set(undefined);
   //   }
   // }
+  // Update the user's profile
+  updateProfile(profile: Partial<Profile>): Observable<Profile> {
+    return this.http
+      .patch<Profile>(this.baseUrl, profile)
+      .pipe(tap((updatedProfile) => this.profileSubject.next(updatedProfile)));
+  }
+  manuallyUpdateProfile(profile: Profile|any) {
+    this.profileSubject.next(profile);
+  }
+
+  updateEmail(email: string): Observable<any> {
+    return this.http.post<Profile>(`${this.baseUrl}/email`, { email });
+  }
+  updatePassword(data: {
+    currentPassword: string;
+    newPassword: string;
+  }): Observable<any> {
+    return this.http.put<Profile>(`${this.baseUrl}/password`, data);
+  }
 }

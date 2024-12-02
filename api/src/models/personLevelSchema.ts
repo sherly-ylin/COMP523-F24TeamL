@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, {Schema} from 'mongoose'
 
 const personLevelSchema = new mongoose.Schema({
   uid: String,
@@ -26,6 +26,16 @@ const personLevelSchema = new mongoose.Schema({
   full_or_part: String,
   hours: Number,
   user_email: String,
+  team_id: {type: Schema.Types.ObjectId, ref: 'Team'},
+  admin_id: {type: Schema.Types.ObjectId, ref: 'User'},
+  login: {type: String, required: true},
+  password: {type: String, required: true},
+  status: {
+    type: String,
+    enum: ['PENDING', 'IN_PROGRESS', 'COMPLETED'],
+    required: true
+  },
+  assigned_date: {type: Date}
 })
 
 export const personLevelModel = mongoose.model(

@@ -1,5 +1,5 @@
 import { Document } from 'mongodb'
-import { Error } from 'mongoose'
+import { Error, Types } from 'mongoose'
 import { environment } from '../../environment.js'
 import { IPSLogModel } from '../models/IPSLogSchema.js'
 import { User } from '../models/userSchema.js'
@@ -22,7 +22,8 @@ export async function getAllRecordsFromDB() {
       }
     },
   ).clone()
-
+  /* TODO: modify this function to get records */
+  //If superadmin, get all records
   if (
     signed_in_user != null &&
     (signed_in_user.role == 'superadmin' || signed_in_user.role == 'admin')
@@ -40,6 +41,7 @@ export async function getAllRecordsFromDB() {
       }
     }).clone()
     return records
+    //else if admin, get records by admin_id
   } else if (signed_in_user != null && signed_in_user.role == 'provider') {
     console.log('🍎 I am provider')
     var my_records = await IPSLogModel.find(
@@ -61,6 +63,7 @@ export async function getAllRecordsFromDB() {
     ).clone()
     return my_records
   }
+  //else (provider), get records by the provider's team_id
 }
 
 /* Runs mongoose function to find a specific record */
@@ -81,6 +84,40 @@ export async function getRecordFromDB(id: string) {
   ).clone()
 
   return record
+}
+
+export async function getRecordsByAdmin_ID(admin_id: Types.ObjectId) {
+  try {
+    const records = await IPSLogModel.find({ admin_id: admin_id }).exec();
+
+    if (records.length > 0) {
+      console.log(`Found ${records.length} records for admin_id: ${admin_id}`);
+    } else {
+      console.log(`No records found with admin_id: ${admin_id}`);
+    }
+
+    return records;
+  } catch (err) {
+    console.error("Error fetching records by admin_id:", err);
+    throw err;
+  }
+}
+
+export async function getRecordsByTeam_ID(team_id: Types.ObjectId) {
+  try {
+    const records = await IPSLogModel.find({ team_id: team_id }).exec();
+
+    if (records.length > 0) {
+      console.log(`Found ${records.length} records for team_id: ${team_id}`);
+    } else {
+      console.log(`No records found with team_id: ${team_id}`);
+    }
+
+    return records;
+  } catch (err) {
+    console.error("Error fetching records by team_id:", err);
+    throw err;
+  }
 }
 
 /* Runs mongoose function to add an entire record to the database */

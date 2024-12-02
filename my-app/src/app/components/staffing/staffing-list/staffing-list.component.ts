@@ -16,7 +16,6 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './staffing-list.component.html',
     styleUrls: ['./staffing-list.component.css'],
     imports: [
-        RouterLink,
         MatButtonModule,
         MatTableModule,
         MatIconModule,

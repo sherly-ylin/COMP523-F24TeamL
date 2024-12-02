@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import { AuthService } from 'src/app/auth/auth.service';
+import { AuthService } from 'src/app/guards/auth.service';
+import { Profile, ProfileService } from 'src/app/profile.service';
 import {
   MatSidenavContainer,
   MatSidenav,
@@ -34,24 +35,21 @@ import { MatCardModule } from '@angular/material/card';
         RouterOutlet,
     ]
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit{
   private router = inject(Router);
-  private authService = inject(AuthService);
+  public authService = inject(AuthService);
+  private profileService = inject(ProfileService);
 
-  authenticated = false;
-  isAdmin = true;
-  isSuperAdmin = true;
+  userRole: string | null = null;
 
-  constructor() {
-    this.authenticated = this.isLoggedIn();
+  constructor(
+  ) {}
+
+  ngOnInit(): void {
+    const user = this.profileService.currentUser;
+    if (user){
+      this.userRole = user.role;
+    }
   }
 
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('accessToken');
-  }
-
-  signOut(): void {
-    localStorage.removeItem('accessToken');
-    this.router.navigate(['']); // Navigate to login after sign out
-  }
 }

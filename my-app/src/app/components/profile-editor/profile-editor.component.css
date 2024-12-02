@@ -1,0 +1,47 @@
+.container {
+  padding: 1em;
+}
+
+mat-card {
+  width: 100%;
+  display: flex;
+  /* flex-direction: row;
+  align-content: center;
+  justify-content: center; */
+}
+form{
+  display: flex;
+  flex-direction: column;
+}
+mat-card-content {
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  padding-top: 8px;
+}
+
+mat-form-field {
+  width: 400px;
+}
+mat-expansion-panel {
+  /* width: fit-content; */
+  width: auto;
+  margin-top: 1em;
+}
+.horizontal-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.mat-mdc-card-actions {
+  padding-bottom: 16px;
+  justify-content: end;
+  gap: 12px;
+}
+
+.mat-mdc-card-outlined {
+  /* border-color: transparent !important; */
+}

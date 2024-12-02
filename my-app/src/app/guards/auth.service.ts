@@ -2,9 +2,17 @@ import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
+import { Profile, ProfileService } from '../profile.service';
 
 interface LoginResponse {
+  id: number;
+  username: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  email: string | null;
+  role: 'provider' | 'admin' | 'superadmin';
+  team_name?: string;
   accessToken: string;
 }
 
@@ -48,9 +56,20 @@ export class AuthService {
       .subscribe({
         next: (response) => {
           if (response && response.accessToken) {
+            // const profile: Profile = {
+            //   id: response.id,
+            //   username: response.username,
+            //   first_name: response.first_name,
+            //   last_name: response.last_name,
+            //   email: response.email,
+            //   role: response.role,
+            //   team_name:
+            //     response.role === 'provider' ? response.team_name : null,
+            // };
+            // this.profileService.manuallyUpdateProfile(profile);
+
             // Storing token and navigating to the dashboard
             localStorage.setItem('accessToken', response.accessToken);
-            console.log('Access token stored:', response.accessToken);
             this.authenticated = true;
             this.router.navigate(['./dashboard']);
           } else {
@@ -60,35 +79,24 @@ export class AuthService {
       });
   }
 
-  signOut(): void {
-    // Perform logout actions
+  signOut() {
+    if (confirm('Are you sure to sign out?')) {
+      localStorage.removeItem('accessToken');
+    }
     this.authenticated = false;
+    this.router.navigate(['/login']); // Navigate to login after sign out
   }
+  /**
+   * Adds a user to user array.
+   *
+   * @returns Event object.
+   */
 
+  // addUser(e: User): Observable<User> {
+  //   return this.http.post<User>("/api/auth/signup", e);
+  // }
+
+  isAdmin(): Observable<any> {
+    return this.http.get('localhost:3000/API/test/admin');
+  }
 }
-
-
-// export class AuthService {
-  
-//   private loggedIn = new BehaviorSubject<boolean>(false);
-//   loggedIn$ = this.loggedIn.asObservable();
-
-
-//   isLoggedIn(): boolean {
-//     return !!localStorage.getItem('accessToken'); //convert the result into a strict Boolean value (true or false)
-//   }
-
-//   /**
-//    * Adds a user to user array.
-//    *
-//    * @returns Event object.
-//    */
-
-//   // addUser(e: User): Observable<User> {
-//   //   return this.http.post<User>("/api/auth/signup", e);
-//   // }
-
-//   isAdmin(): Observable<any> {
-//     return this.http.get('localhost:3000/API/test/admin');
-//   }
-// }

@@ -25,7 +25,6 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './closed-list.component.html',
     styleUrls: ['./closed-list.component.css'],
     imports: [
-        RouterLink,
         MatButton,
         MatTable,
         MatColumnDef,

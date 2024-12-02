@@ -25,7 +25,6 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './ipslog-list.component.html',
     styleUrls: ['./ipslog-list.component.css'],
     imports: [
-        RouterLink,
         MatButton,
         MatTable,
         MatColumnDef,

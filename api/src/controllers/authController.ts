@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
-import { Error } from 'mongoose'
+import { Error, Types } from 'mongoose'
 
 import crypto from 'crypto'
 import { environment } from '../../environment.js'
@@ -31,7 +31,7 @@ export async function getInvite(req: Request, res: Response) {
 User.findOne({ email: 'liuheng1@unc.edu' })
   .then((user) => {
     console.log()
-    console.log('You can log in with this Superadmin account:')
+    console.log('You can log in using this Superadmin account:')
     console.log('username: "henry"')
     console.log('password: "1"')
     console.log()
@@ -61,6 +61,15 @@ export const signUp = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Invite token is invalid.' })
     }
 
+    if(invite.role=='provider'){
+      const user = new User({
+      email: invite.email,
+      role: invite.role,
+      team_id: Types.ObjectId,
+      username: req.body.username ?? invite.email,
+      password: bcrypt.hashSync(req.body.password, 8),
+    })
+    }
     // Save the new user
     const user = new User({
       email: invite.email,
@@ -109,12 +118,15 @@ export const signIn = (req: Request, res: Response) => {
     const token = jwt.sign({ id: user.id }, config.secret, {
       expiresIn: 86400, // 24 hours
     })
+    // TODO: based on the user's role, if provider, sent team_id and team_name as well
     res.status(200).send({
       id: user._id,
       username: environment.currentUsername,
       email: user.email,
       role: environment.currentUserRole,
       accessToken: token,
+      first_name: user.firstname,
+      last_name: user.lastname,
     })
   })
 }
