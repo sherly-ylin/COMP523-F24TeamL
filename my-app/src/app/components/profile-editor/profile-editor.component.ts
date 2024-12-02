@@ -9,7 +9,7 @@ import {
   FormBuilder,
   Validators,
   FormGroup,
-  AbstractControl
+  AbstractControl,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
@@ -34,6 +34,7 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './profile-editor.component.css',
 })
 export class ProfileEditorComponent {
+  protected profile = this.authService.currentUser;
   profileForm: FormGroup;
   emailForm: FormGroup;
   passwordForm: FormGroup;
@@ -51,24 +52,28 @@ export class ProfileEditorComponent {
     protected formBuilder: FormBuilder,
     protected authService: AuthService,
     protected snackBar: MatSnackBar,
-    protected dialog: MatDialog,
+    protected dialog: MatDialog
   ) {
     this.profileForm = this.formBuilder.group({
       username: ['', [Validators.required]],
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.required]],
     });
+    this.profileForm.setValue({
+      username: this.profile?.username,
+      first_name: this.profile?.first_name,
+      last_name: this.profile?.last_name,
+    });
     this.emailForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
     });
     this.verificationForm = this.formBuilder.group({
-      code: ['', [Validators.required, Validators.minLength(6)]],
+      code: ['', [Validators.required, Validators.minLength(8)]],
     });
     this.passwordForm = this.formBuilder.group({
       currentPassword: ['', Validators.required],
       newPassword: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
-
     });
     // this.token = `${localStorage.getItem('accessToken')}`;
   }
@@ -114,10 +119,7 @@ export class ProfileEditorComponent {
           this.verificationForm.value.code
         )
         .subscribe({
-          next: () =>
-            alert(
-              'Email update complete.'
-            ),
+          next: () => alert('Email update complete.'),
           error: () => alert('Failed to update email'),
         });
     }
@@ -132,8 +134,7 @@ export class ProfileEditorComponent {
     }
   }
 
-
-  cancelEmailUpdate(){
-    this.emailForm.setValue({email: ''});
+  cancelEmailUpdate() {
+    this.emailForm.setValue({ email: '' });
   }
 }
