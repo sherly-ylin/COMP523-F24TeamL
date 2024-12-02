@@ -22,7 +22,8 @@ export async function getAllRecordsFromDB() {
       }
     },
   ).clone()
-
+  /* TODO: modify this function to get records */
+  //If superadmin, get all records
   if (
     signed_in_user != null &&
     (signed_in_user.role == 'superadmin' || signed_in_user.role == 'admin')
@@ -40,6 +41,7 @@ export async function getAllRecordsFromDB() {
       }
     }).clone()
     return records
+    //else if admin, get records by admin_id
   } else if (signed_in_user != null && signed_in_user.role == 'provider') {
     console.log('🍎 I am provider')
     var my_records = await IPSLogModel.find(
@@ -61,6 +63,7 @@ export async function getAllRecordsFromDB() {
     ).clone()
     return my_records
   }
+  //else (provider), get records by the provider's team_id
 }
 
 /* Runs mongoose function to find a specific record */
