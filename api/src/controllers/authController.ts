@@ -121,7 +121,7 @@ export const signIn = (req: Request, res: Response) => {
       expiresIn: 86400, // 24 hours
     })
     // TODO: based on the user's role, if provider, sent team_id and team_name as well
-    res.status(200).send({
+    const responseData: any = {
       id: user._id,
       username: environment.currentUsername,
       email: user.email,
@@ -129,7 +129,24 @@ export const signIn = (req: Request, res: Response) => {
       accessToken: token,
       first_name: user.firstname,
       last_name: user.lastname,
-    })
+    }
+
+    // Add team_name if the user is a provider
+    if (environment.currentUserRole === 'provider') {
+      responseData.team_name = user.team_name || null
+    }
+
+    res.status(200).send(responseData)
+
+    // res.status(200).send({
+    //   id: user._id,
+    //   username: environment.currentUsername,
+    //   email: user.email,
+    //   role: environment.currentUserRole,
+    //   accessToken: token,
+    //   first_name: user.firstname,
+    //   last_name: user.lastname,
+    // })
   })
 }
 

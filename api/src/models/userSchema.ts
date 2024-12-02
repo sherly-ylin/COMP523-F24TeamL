@@ -5,6 +5,7 @@ export interface IUser extends Document {
   email: string
   role: string
   team_id: Types.ObjectId
+  team_name: string
   username: string
   password: string
   firstname: string
@@ -16,6 +17,7 @@ export const UserSchema: Schema<IUser> = new Schema({
   email: { type: String, required: true },
   role: { type: String, required: true },
   team_id: { type: Schema.Types.ObjectId, ref: 'Team' },
+  team_name: {type: String, ref: 'Team'},
   username: String,
   password: { type: String, required: true },
   firstname: String,
