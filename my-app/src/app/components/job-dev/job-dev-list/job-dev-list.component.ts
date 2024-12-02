@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { JobDev, JobColumns } from 'src/app/models/job-dev.model';
 import { JobDevService } from 'src/app/services/job-dev.service';
 import { RouterLink } from '@angular/router';
@@ -21,36 +21,35 @@ import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-job-dev-list',
-    templateUrl: './job-dev-list.component.html',
-    styleUrls: ['./job-dev-list.component.css'],
-    imports: [
-        RouterLink,
-        MatButton,
-        MatTable,
-        MatColumnDef,
-        MatHeaderCellDef,
-        MatHeaderCell,
-        MatCellDef,
-        MatCell,
-        MatIconButton,
-        MatIcon,
-        MatFormField,
-        MatInput,
-        FormsModule,
-        MatHeaderRowDef,
-        MatHeaderRow,
-        MatRowDef,
-        MatRow,
-    ]
+  selector: 'app-job-dev-list',
+  templateUrl: './job-dev-list.component.html',
+  styleUrls: ['./job-dev-list.component.css'],
+  imports: [
+    MatButton,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatIconButton,
+    MatIcon,
+    MatFormField,
+    MatInput,
+    FormsModule,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+  ],
 })
 export class JobDevListComponent implements OnInit {
+  private JobDevService = inject(JobDevService);
+
   displayedColumns: string[] = JobColumns.map((col) => col.key);
   dataSource: any = [];
   columnsSchema: any = JobColumns;
   name = '';
-
-  constructor(private JobDevService: JobDevService) {}
 
   ngOnInit(): void {
     this.retrieveLogs();

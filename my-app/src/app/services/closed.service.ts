@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Closed } from '../models/closed.model';
@@ -9,7 +9,7 @@ const baseUrl = 'http://localhost:3000/closed';
   providedIn: 'root',
 })
 export class ClosedService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getAll(): Observable<Closed[]> {
     return this.http.get<Closed[]>(baseUrl);

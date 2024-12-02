@@ -9,7 +9,9 @@
     <mat-form-field class="form-field">
       <mat-label>Username</mat-label>
       <input matInput formControlName="username" required />
-      @if (username?.touched && username?.invalid && username?.hasError("required")) {
+      @if (
+        username?.touched && username?.invalid && username?.hasError("required")
+      ) {
         <mat-error>Username is required.</mat-error>
       }
     </mat-form-field>
@@ -17,7 +19,9 @@
     <mat-form-field class="form-field">
       <mat-label>Password</mat-label>
       <input matInput type="password" formControlName="password" required />
-      @if (password?.touched && password?.invalid && password?.hasError("required")) {
+      @if (
+        password?.touched && password?.invalid && password?.hasError("required")
+      ) {
         <mat-error>Password is required.</mat-error>
       }
     </mat-form-field>

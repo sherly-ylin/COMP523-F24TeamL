@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Person, PersonColumns } from 'src/app/models/person.model';
 import { PersonService } from 'src/app/services/person.service';
 import { RouterLink } from '@angular/router';
@@ -18,32 +18,32 @@ import {
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
-    selector: 'app-person-list',
-    templateUrl: './person-list.component.html',
-    styleUrls: ['./person-list.component.css'],
-    imports: [
-        RouterLink,
-        MatButton,
-        MatTable,
-        MatColumnDef,
-        MatHeaderCellDef,
-        MatHeaderCell,
-        MatCellDef,
-        MatCell,
-        MatIconButton,
-        MatIcon,
-        MatHeaderRowDef,
-        MatHeaderRow,
-        MatRowDef,
-        MatRow,
-    ]
+  selector: 'app-person-list',
+  templateUrl: './person-list.component.html',
+  styleUrls: ['./person-list.component.css'],
+  imports: [
+    RouterLink,
+    MatButton,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatIconButton,
+    MatIcon,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+  ],
 })
 export class PersonListComponent implements OnInit {
+  private PersonService = inject(PersonService);
+
   displayedColumns: string[] = PersonColumns.map((col) => col.key);
   dataSource: any = [];
   columnsSchema: any = PersonColumns;
-
-  constructor(private PersonService: PersonService) {}
 
   ngOnInit(): void {
     this.retrieveLogs();

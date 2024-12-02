@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Profile, AuthService } from 'src/app/auth.service';
 import {
@@ -15,38 +15,37 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
 @Component({
-    selector: 'app-dashboard',
-    templateUrl: './dashboard.component.html',
-    styleUrls: ['./dashboard.component.css'],
-    imports: [
-        MatSidenavContainer,
-        MatCardModule,
-        MatToolbarModule,
-        MatButtonModule,
-        MatMenuModule,
-        MatSidenav,
-        MatNavList,
-        MatListItem,
-        RouterLink,
-        MatIcon,
-        MatDivider,
-        MatSidenavContent,
-        RouterOutlet,
-    ]
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css'],
+  imports: [
+    MatSidenavContainer,
+    MatCardModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatSidenav,
+    MatNavList,
+    MatListItem,
+    RouterLink,
+    MatIcon,
+    MatDivider,
+    MatSidenavContent,
+    RouterOutlet,
+  ],
 })
-export class DashboardComponent implements OnInit{
+export class DashboardComponent implements OnInit {
+  private router = inject(Router);
+  public authService = inject(AuthService);
+
   userRole: string | null = null;
 
-  constructor(
-    private router: Router,
-    protected authService: AuthService,
-  ) {}
+  constructor() {}
 
   ngOnInit(): void {
     const user = this.authService.currentUser;
-    if (user){
+    if (user) {
       this.userRole = user.role;
     }
   }
-
 }

@@ -9,14 +9,10 @@ import * as closedController from '../controllers/closedController.js'
 import * as jobDevController from '../controllers/jobDevController.js'
 import * as personLevelController from '../controllers/personLevelController.js'
 import * as staffingController from '../controllers/staffingController.js'
-import {TeamController} from '../controllers/teamController.js'
-import {
-  adminBoard,
-  allAccess,
-  userBoard,
-} from '../controllers/userController.js'
+import { TeamController } from '../controllers/teamController.js'
+import { allAccess } from '../controllers/userController.js'
 
-import * as authJwt from '../middlewares/authJwt.js'
+// import * as authJwt from '../middlewares/authJwt.js'
 import { getCurrentUser } from './getCurrentUserRoutes.js'
 import { getUserInfo } from './getUserInfoRoutes.js'
 import { setUserInfo } from './setUserInfoRoutes.js'
@@ -33,8 +29,14 @@ router.get('/', (req, res) => {
 router.get('/person_level', personLevelController.getAllRecords)
 // Get record
 router.get('/person_level/:id', personLevelController.getRecord)
-router.get('/person_level/admin/:admin_id', personLevelController.getRecordByAdmin_ID)
-router.get('/person_level/team/:team_id', personLevelController.getRecordByTeam_ID)
+router.get(
+  '/person_level/admin/:admin_id',
+  personLevelController.getRecordByAdmin_ID,
+)
+router.get(
+  '/person_level/team/:team_id',
+  personLevelController.getRecordByTeam_ID,
+)
 // Add record
 router.post('/person_level', personLevelController.addRecord)
 // router.post('/person_level/csv/:id', personLevelController.uploadCSVFile)
@@ -58,7 +60,7 @@ router.delete('/closed', closedController.deleteAllRecords)
 router.get('/staffing', staffingController.getAllRecords)
 router.get('/staffing/:id', staffingController.getMyRecords)
 router.get('/staffing/admin/:admin_id', staffingController.getRecordByAdmin_ID)
-router.get('/staffing/team/:team_id', staffingController.getRecordByTeam_ID);
+router.get('/staffing/team/:team_id', staffingController.getRecordByTeam_ID)
 router.post('/staffing', staffingController.addRecord)
 router.patch('/staffing/:id', staffingController.updateRecord)
 router.delete('/staffing/:id', staffingController.deleteRecord)
@@ -103,6 +105,8 @@ router.use(function (req, res, next) {
   next()
 })
 
+router.get('/api/auth/invite/:token', authController.getInvite)
+
 router.post(
   '/api/auth/signup',
   [verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted],
@@ -120,12 +124,12 @@ router.post(
 // user routes
 router.use('/api/test', verifyMiddleware)
 router.get('/api/test/all', allAccess)
-router.get('/api/test/user', [authJwt.verifyToken], userBoard)
-router.get(
-  '/api/test/admin',
-  [authJwt.verifyToken, authJwt.isAdmin],
-  adminBoard,
-)
+// router.get('/api/test/user', [authJwt.verifyToken], userBoard)
+// router.get(
+//   '/api/test/admin',
+//   [authJwt.verifyToken, authJwt.isAdmin],
+//   adminBoard,
+// )
 
 // verify email routes
 router.use('/verify', verifyMiddleware)

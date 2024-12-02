@@ -217,10 +217,10 @@ const surveyJson = {
 };
 
 @Component({
-    selector: 'app-add-staffing',
-    templateUrl: './add-staffing.component.html',
-    styleUrls: ['./add-staffing.component.css'],
-    imports: [SurveyModule]
+  selector: 'app-add-staffing',
+  templateUrl: './add-staffing.component.html',
+  styleUrls: ['./add-staffing.component.css'],
+  imports: [SurveyModule],
 })
 export class AddStaffingComponent implements OnInit {
   title = 'Staffing Survery';

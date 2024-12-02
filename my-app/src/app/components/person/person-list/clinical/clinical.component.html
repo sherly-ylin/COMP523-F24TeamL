@@ -1,71 +1,97 @@
 <div class="list row">
   <div>
-    <a routerLink="/dashboard/person"><button mat-icon-button color="primary" aria-label="Return to person level">
+    <a routerLink="/dashboard/person"
+      ><button
+        mat-icon-button
+        color="primary"
+        aria-label="Return to person level"
+      >
         <mat-icon>arrow_back</mat-icon>
-      </button></a>
+      </button></a
+    >
   </div>
   <div class="center">
     <h4>Clinical Logs</h4>
 
     <table mat-table [dataSource]="dataSource">
       @for (col of columnsSchema; track col) {
-      <ng-container [matColumnDef]="col.key">
-        <th mat-header-cell *matHeaderCellDef>
-          <a routerLink="more">{{ col.label }}</a>
-        </th>
-        <td mat-cell *matCellDef="let element">
-          @if (!element.isEdit) {
-          <div>
-            @switch (col.type) {
-            <!-- Code for selecting multiple specific rows
+        <ng-container [matColumnDef]="col.key">
+          <th mat-header-cell *matHeaderCellDef>
+            <a routerLink="more">{{ col.label }}</a>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            @if (!element.isEdit) {
+              <div>
+                @switch (col.type) {
+                  <!-- Code for selecting multiple specific rows
                   <ng-container *ngSwitchCase="'isSelected'">
                     <mat-checkbox (change)="element.isSelected = $event.checked"></mat-checkbox>
                   </ng-container> -->
-            @case ("isEdit") {
-            <div>
-              <button mat-icon-button color="basic" (click)="element.isEdit = !element.isEdit">
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button mat-icon-button color="warn" (click)="deleteOne(this.element.uid)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
+                  @case ("isEdit") {
+                    <div>
+                      <button
+                        mat-icon-button
+                        color="basic"
+                        (click)="element.isEdit = !element.isEdit"
+                      >
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button
+                        mat-icon-button
+                        color="warn"
+                        (click)="deleteOne(element.uid)"
+                      >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  }
+                  @default {
+                    <span>
+                      {{ element[col.key] }}
+                    </span>
+                  }
+                }
+              </div>
             }
-            @default {
-            <span>
-              {{ element[col.key] }}
-            </span>
-            }
-            }
-          </div>
-          }
-          @if (element.isEdit) {
-          <div class="edit-table">
-            @switch (col.type) {
-            <!-- <div *ngSwitchCase="'isSelected'"></div> -->
-            @case ("isEdit") {
-            <div>
-              <button mat-icon-button (click)="
+            @if (element.isEdit) {
+              <div class="edit-table">
+                @switch (col.type) {
+                  <!-- <div *ngSwitchCase="'isSelected'"></div> -->
+                  @case ("isEdit") {
+                    <div>
+                      <button
+                        mat-icon-button
+                        (click)="
                           editEntry(element); element.isEdit = !element.isEdit
-                        ">
-                <mat-icon>done</mat-icon>
-              </button>
-              <button mat-icon-button color="warn" (click)="element.isEdit = !element.isEdit">
-                <mat-icon>clear</mat-icon>
-              </button>
-            </div>
+                        "
+                      >
+                        <mat-icon>done</mat-icon>
+                      </button>
+                      <button
+                        mat-icon-button
+                        color="warn"
+                        (click)="element.isEdit = !element.isEdit"
+                      >
+                        <mat-icon>clear</mat-icon>
+                      </button>
+                    </div>
+                  }
+                  @default {
+                    <mat-form-field class="form-input">
+                      <input
+                        matInput
+                        [required]="col.required"
+                        [pattern]="col.pattern"
+                        [type]="col.type"
+                        [(ngModel)]="element[col.key]"
+                      />
+                    </mat-form-field>
+                  }
+                }
+              </div>
             }
-            @default {
-            <mat-form-field class="form-input">
-              <input matInput [required]="col.required" [pattern]="col.pattern" [type]="col.type"
-                [(ngModel)]="element[col.key]" />
-            </mat-form-field>
-            }
-            }
-          </div>
-          }
-        </td>
-      </ng-container>
+          </td>
+        </ng-container>
       }
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

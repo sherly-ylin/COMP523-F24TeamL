@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Person, VRColumn } from 'src/app/models/person.model';
 import { PersonService } from 'src/app/services/person.service';
 import { RouterLink } from '@angular/router';
@@ -21,35 +21,35 @@ import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-person-list',
-    templateUrl: './vr.component.html',
-    styleUrls: ['./vr.component.css'],
-    imports: [
-        RouterLink,
-        MatButton,
-        MatTable,
-        MatColumnDef,
-        MatHeaderCellDef,
-        MatHeaderCell,
-        MatCellDef,
-        MatCell,
-        MatIconButton,
-        MatIcon,
-        MatFormField,
-        MatInput,
-        FormsModule,
-        MatHeaderRowDef,
-        MatHeaderRow,
-        MatRowDef,
-        MatRow,
-    ]
+  selector: 'app-vr-person-list',
+  templateUrl: './vr.component.html',
+  styleUrls: ['./vr.component.css'],
+  imports: [
+    RouterLink,
+    MatButton,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatIconButton,
+    MatIcon,
+    MatFormField,
+    MatInput,
+    FormsModule,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+  ],
 })
 export class VrComponent implements OnInit {
+  private PersonService = inject(PersonService);
+
   displayedColumns: string[] = VRColumn.map((col) => col.key);
   dataSource: any = [];
   columnsSchema: any = VRColumn;
-
-  constructor(private PersonService: PersonService) {}
 
   ngOnInit(): void {
     this.retrieveLogs();

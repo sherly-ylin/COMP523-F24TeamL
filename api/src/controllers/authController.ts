@@ -10,30 +10,35 @@ import { Invite } from '../models/inviteSchema.js'
 import { User } from '../models/userSchema.js'
 import * as verify from './emailVerifyController.js'
 
-async function isTokenValid(token: string) {
+export async function getInvite(req: Request, res: Response) {
   try {
     // Search for a document with the specified token
-    const invite = await Invite.findOne({ token })
+    const invite = await Invite.findOne({ token: req.params.token })
 
-    // Check if the document exists
-    return invite !== null
+    if (!invite) {
+      // If no invite is found, send a 404 error
+      return res.status(404).json({ message: 'Invite not found' })
+    }
+
+    return res.status(200).json(invite)
   } catch (err) {
     console.error('Error checking invite:', err)
-    return false // Return false if there's an error
+    return res
+      .status(500)
+      .json({ message: 'Internal Server Error', error: err })
   }
 }
 
+// Setting up the initial Superadmin account (username: henry passwrod: 1)
 User.findOne({ email: 'liuheng1@unc.edu' })
   .then((user) => {
+    console.log()
+    console.log('You can log in using this Superadmin account:')
+    console.log('username: "henry"')
+    console.log('password: "1"')
+    console.log()
     if (user) {
-      console.log()
-      console.log('User henry found:')
-      console.log('username: "henry"')
-      console.log('password: "1"')
-      console.log(user)
-      console.log()
     } else {
-      console.log('User henry not found')
       new User({
         email: 'liuheng1@unc.edu',
         role: 'Superadmin',
@@ -58,14 +63,14 @@ export const signUp = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Invite token is invalid.' })
     }
 
-    if(invite.role=='provider'){
+    if (invite.role == 'provider') {
       const user = new User({
-      email: invite.email,
-      role: invite.role,
-      team_id: Types.ObjectId,
-      username: req.body.username ?? invite.email,
-      password: bcrypt.hashSync(req.body.password, 8),
-    })
+        email: invite.email,
+        role: invite.role,
+        team_id: Types.ObjectId,
+        username: req.body.username ?? invite.email,
+        password: bcrypt.hashSync(req.body.password, 8),
+      })
     }
     // Save the new user
     const user = new User({
@@ -112,7 +117,7 @@ export const signIn = (req: Request, res: Response) => {
     console.log('current username:', environment.currentUsername)
     console.log('current user role:', environment.currentUserRole)
 
-    var token = jwt.sign({ id: user.id }, config.secret, {
+    const token = jwt.sign({ id: user.id }, config.secret, {
       expiresIn: 86400, // 24 hours
     })
     // TODO: based on the user's role, if provider, sent team_id and team_name as well

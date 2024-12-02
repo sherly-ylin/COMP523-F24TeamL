@@ -1,4 +1,4 @@
-import { CanActivateFn, Router, Routes, UrlTree } from '@angular/router';
+import { Routes } from '@angular/router';
 
 import { AddIpslogComponent } from './components/ips/add-ipslog/add-ipslog.component';
 import { HomeComponent } from './components/home/home.component';
@@ -19,68 +19,62 @@ import { AddStaffingComponent } from './components/staffing/add-staffing/add-sta
 import { LoginComponent } from './components/login/login.component';
 import { SignUpPageComponent } from './components/sign-up-page/sign-up-page.component';
 import { SetUpReviewPageComponent } from './components/set-up-review-page/set-up-review-page.component';
-import { AuthGuard } from './auth.guard';
 import { InviteUserComponent } from './components/invite-user/invite-user.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { inject } from '@angular/core';
+import { authGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { ProfileEditorComponent } from './components/profile-editor/profile-editor.component';
 import { RoleGuard } from './role.guard';
-
-const tokenValidGuard: CanActivateFn = (route): boolean | UrlTree => {
-  const authService = inject(AuthService);
-  const router = inject(Router);
-  return authService.checkToken(route) || router.createUrlTree(['/login']);
-};
+import { inviteResolver } from './resolvers/invite.resolver';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignUpPageComponent },
   {
     path: 'signup/:token',
-    canActivate: [tokenValidGuard],
     component: SignUpPageComponent,
+    resolve: { invite: inviteResolver },
   },
   {
     path: 'dashboard',
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
     component: DashboardComponent,
     children: [
-      { path: 'home', component: HomeComponent },
-      { path: 'set-up-review', component: SetUpReviewPageComponent },
-      { path: 'home', 
-        canActivate: [AuthGuard],
-        component: HomeComponent },
-      { path: 'profile', 
-        canActivate: [AuthGuard],
-        component: ProfileEditorComponent },
-      { path: 'setUpReview', 
-        canActivate: [AuthGuard],
-        component: SetUpReviewPageComponent },
+      { path: 'home', canActivate: [authGuard], component: HomeComponent },
+      {
+        path: 'profile',
+        canActivate: [authGuard],
+        component: ProfileEditorComponent,
+      },
+      {
+        path: 'set-up-review',
+        canActivate: [authGuard],
+        component: SetUpReviewPageComponent,
+      },
       {
         path: 'closed',
-        canActivate: [AuthGuard],
+        canActivate: [authGuard],
         component: ClosedListComponent,
       },
       {
-        path: 'addClosed',
-        canActivate: [AuthGuard],
+        path: 'add-closed',
+        canActivate: [authGuard],
         component: AddClosedComponent,
       },
       {
-        path: 'jobDev',
-        canActivate: [AuthGuard],
+        path: 'job-dev',
+        canActivate: [authGuard],
         component: JobDevListComponent,
       },
       {
-        path: 'addjobDev',
-        canActivate: [AuthGuard],
+        path: 'add-job-dev',
+        canActivate: [authGuard],
         component: AddJobDevComponent,
       },
       {
         path: 'person',
-        canActivate: [AuthGuard],
+        canActivate: [authGuard],
         component: PersonListComponent,
         children: [],
       },
@@ -89,31 +83,30 @@ export const routes: Routes = [
       { path: 'education', component: EducationComponent },
       { path: 'employment', component: EmploymentComponent },
       { path: 'vr', component: VrComponent },
-      { path: 'inviteUser', component: InviteUserComponent },
-      { path: 'setUpReview', component: SetUpReviewPageComponent },
+      { path: 'invite-user', component: InviteUserComponent },
       {
-        path: 'addPerson',
-        canActivate: [AuthGuard, ],
+        path: 'add-person',
+        canActivate: [authGuard],
         component: AddPersonComponent,
       },
       {
         path: 'ipslog',
-        canActivate: [AuthGuard],
+        canActivate: [authGuard],
         component: IpslogListComponent,
       },
       {
         path: 'addIPS',
-        canActivate: [AuthGuard],
+        canActivate: [authGuard],
         component: AddIpslogComponent,
       },
       {
         path: 'staffing',
-        canActivate: [AuthGuard],
+        canActivate: [authGuard],
         component: StaffingListComponent,
       },
       {
-        path: 'addStaffing',
-        canActivate: [AuthGuard],
+        path: 'add-staffing',
+        canActivate: [authGuard],
         component: AddStaffingComponent,
       },
     ],

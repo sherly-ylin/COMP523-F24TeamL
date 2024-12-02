@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Closed, ClosedColumns } from 'src/app/models/closed.model';
 import { ClosedService } from 'src/app/services/closed.service';
 import { RouterLink } from '@angular/router';
@@ -21,37 +21,36 @@ import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-closed-list',
-    templateUrl: './closed-list.component.html',
-    styleUrls: ['./closed-list.component.css'],
-    imports: [
-        RouterLink,
-        MatButton,
-        MatTable,
-        MatColumnDef,
-        MatHeaderCellDef,
-        MatHeaderCell,
-        MatCellDef,
-        MatCell,
-        MatIconButton,
-        MatIcon,
-        MatFormField,
-        MatInput,
-        FormsModule,
-        MatHeaderRowDef,
-        MatHeaderRow,
-        MatRowDef,
-        MatRow,
-    ]
+  selector: 'app-closed-list',
+  templateUrl: './closed-list.component.html',
+  styleUrls: ['./closed-list.component.css'],
+  imports: [
+    MatButton,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatIconButton,
+    MatIcon,
+    MatFormField,
+    MatInput,
+    FormsModule,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+  ],
 })
 export class ClosedListComponent implements OnInit {
+  private ClosedService = inject(ClosedService);
+
   displayedColumns: string[] = ClosedColumns.map((col) => col.key);
   dataSource: any = [];
   columnsSchema: any = ClosedColumns;
 
   name = '';
-
-  constructor(private ClosedService: ClosedService) {}
 
   ngOnInit(): void {
     this.retrieveLogs();

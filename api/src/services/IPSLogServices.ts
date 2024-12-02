@@ -88,35 +88,35 @@ export async function getRecordFromDB(id: string) {
 
 export async function getRecordsByAdmin_ID(admin_id: Types.ObjectId) {
   try {
-    const records = await IPSLogModel.find({ admin_id: admin_id }).exec();
+    const records = await IPSLogModel.find({ admin_id: admin_id }).exec()
 
     if (records.length > 0) {
-      console.log(`Found ${records.length} records for admin_id: ${admin_id}`);
+      console.log(`Found ${records.length} records for admin_id: ${admin_id}`)
     } else {
-      console.log(`No records found with admin_id: ${admin_id}`);
+      console.log(`No records found with admin_id: ${admin_id}`)
     }
 
-    return records;
+    return records
   } catch (err) {
-    console.error("Error fetching records by admin_id:", err);
-    throw err;
+    console.error('Error fetching records by admin_id:', err)
+    throw err
   }
 }
 
 export async function getRecordsByTeam_ID(team_id: Types.ObjectId) {
   try {
-    const records = await IPSLogModel.find({ team_id: team_id }).exec();
+    const records = await IPSLogModel.find({ team_id: team_id }).exec()
 
     if (records.length > 0) {
-      console.log(`Found ${records.length} records for team_id: ${team_id}`);
+      console.log(`Found ${records.length} records for team_id: ${team_id}`)
     } else {
-      console.log(`No records found with team_id: ${team_id}`);
+      console.log(`No records found with team_id: ${team_id}`)
     }
 
-    return records;
+    return records
   } catch (err) {
-    console.error("Error fetching records by team_id:", err);
-    throw err;
+    console.error('Error fetching records by team_id:', err)
+    throw err
   }
 }
 

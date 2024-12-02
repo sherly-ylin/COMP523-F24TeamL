@@ -1,17 +1,20 @@
-
-
 <mat-toolbar>
   <div class="topbar-container">
     <a routerLink="/dashboard" id="titlelink">
       <div id="title">eIPS Fidelity</div>
     </a>
 
-    <button id="btnProfile" mat-icon-button [matMenuTriggerFor]="menu" aria-label="profile">
+    <button
+      id="btnProfile"
+      mat-icon-button
+      [matMenuTriggerFor]="menu"
+      aria-label="profile"
+    >
       <mat-icon id="profile">account_circle</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
       <button mat-menu-item routerLink="profile">Profile</button>
-      <button mat-menu-item (click)="this.authService.signOut()">Log out</button>
+      <button mat-menu-item (click)="authService.signOut()">Log out</button>
     </mat-menu>
   </div>
 </mat-toolbar>
@@ -42,29 +45,27 @@
           <mat-icon>assignment</mat-icon> IPS Log Survey
         </span>
       </a>
-      <a mat-list-item routerLink="jobDev">
+      <a mat-list-item routerLink="job-dev">
         <span class="logo-item">
           <mat-icon>work</mat-icon> Job Development Log
         </span>
       </a>
       <!-- @if (userRole === 'admin') { -->
-        <mat-divider></mat-divider>
-        <a mat-list-item routerLink="set-up-review">
-          <span class="logo-item">
-            <mat-icon>email</mat-icon> Set Up Review
-          </span>
-        </a>
-        <a mat-list-item routerLink="inviteUser">
-          <span class="logo-item">
-            <mat-icon>email</mat-icon> Invite Provider
-          </span>
-        </a>
+      <mat-divider></mat-divider>
+      <a mat-list-item routerLink="set-up-review">
+        <span class="logo-item">
+          <mat-icon>email</mat-icon> Set Up Review
+        </span>
+      </a>
+      <a mat-list-item routerLink="invite-user">
+        <span class="logo-item">
+          <mat-icon>email</mat-icon> Invite Provider
+        </span>
+      </a>
       <!-- } -->
       <!-- @if (userRole === 'superadmin') { -->
-      <a mat-list-item routerLink="inviteUser">
-        <span class="logo-item">
-          <mat-icon>email</mat-icon> Invite User
-        </span>
+      <a mat-list-item routerLink="invite-user">
+        <span class="logo-item"> <mat-icon>email</mat-icon> Invite User </span>
       </a>
       <!-- } -->
     </mat-nav-list>

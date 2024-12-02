@@ -1,25 +1,17 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
+import { inject } from '@angular/core';
+import { AuthService } from './auth.service';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class AuthGuard {
-  constructor(private router: Router) {}
+export const authGuard: CanActivateFn = (route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-  canActivate(): boolean {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      // Token exists, user is logged in
-      // console.log("user exists, token =", token);
-      return true;
-    } else {
-      if (
-        confirm('You are not logged in. Redirecting you to the login page.')
-      ) {
-        this.router.navigate(['/login']);
-      }
-      return false;
+  if (authService.isAuthenticated()) {
+    return true;
+  } else {
+    if (confirm('You are not logged in. Redirecting you to the login page.')) {
+      router.navigate(['/login']);
     }
+    return false;
   }
-}
+};

@@ -1,7 +1,6 @@
-import { APP_ID, Component, OnInit, signal } from '@angular/core';
+import { APP_ID, Component, OnInit, signal, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from 'src/app/auth.service';
 import {
   FormBuilder,
   FormGroup,
@@ -15,17 +14,22 @@ import { MatIconModule } from '@angular/material/icon';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Component({
-    selector: 'app-sign-up-page',
-    templateUrl: './sign-up-page.component.html',
-    styleUrls: ['./sign-up-page.component.css'],
-    imports: [
-        ReactiveFormsModule,
-        MatInputModule,
-        MatButtonModule,
-        MatIconModule,
-    ]
+  selector: 'app-sign-up-page',
+  templateUrl: './sign-up-page.component.html',
+  styleUrls: ['./sign-up-page.component.css'],
+  imports: [
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
 })
 export class SignUpPageComponent implements OnInit {
+  private router = inject(Router);
+  private http = inject(HttpClient);
+  private route = inject(ActivatedRoute);
+  private formBuilder = inject(FormBuilder);
+
   readonly PASSWORD_MIN_LENGTH = 8;
   readonly PASSWORD_MIN_UPPER = 1;
   readonly PASSWORD_MIN_LOWER = 1;
@@ -34,6 +38,7 @@ export class SignUpPageComponent implements OnInit {
 
   signUpForm!: FormGroup;
   token!: string;
+  email!: string;
 
   isPasswordVisible = signal(false);
   isConfirmPasswordVisible = signal(false);
@@ -68,24 +73,19 @@ export class SignUpPageComponent implements OnInit {
   }
   setUsernameDefaultValue() {
     if (this.username?.value.trim() === '') {
-      this.username?.setValue(this.authService.getEmail());
+      this.username?.setValue(this.email);
     }
   }
 
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-    private authService: AuthService,
-    private route: ActivatedRoute,
-    private formBuilder: FormBuilder,
-  ) {}
-
   ngOnInit(): void {
     this.token = this.route.snapshot.paramMap.get('token') ?? '';
+    this.route.data.subscribe((response: any) => {
+      this.email = response.invite.email;
+    });
 
     // Initialize form with validation rules
     this.signUpForm = this.formBuilder.group({
-      username: ['', []],
+      username: [this.email, []],
       password: [
         '',
         [
@@ -115,7 +115,9 @@ export class SignUpPageComponent implements OnInit {
     return this.signUpForm.get('confirmPassword');
   }
 
-  private isLongEnoughValidator = (control: AbstractControl): ValidationErrors | null => {
+  private isLongEnoughValidator = (
+    control: AbstractControl,
+  ): ValidationErrors | null => {
     const value = control.value;
     return value != null && value.length >= this.PASSWORD_MIN_LENGTH
       ? null

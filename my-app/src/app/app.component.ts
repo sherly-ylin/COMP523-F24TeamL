@@ -1,20 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from './auth.service';
 
 @Component({
-    selector: 'app-root',
-    template: '<router-outlet></router-outlet>',
-    imports: [RouterOutlet]
+  selector: 'app-root',
+  template: '<router-outlet></router-outlet>',
+  imports: [RouterOutlet],
 })
 export class AppComponent {
+  private router = inject(Router);
+  private authService = inject(AuthService);
+
   title = 'ips';
   authenticated = false;
-  constructor(
-    private router: Router,
-    private authService: AuthService,
-  ) {
-    this.authenticated = authService.isLoggedIn();
+  constructor() {
+    const authService = this.authService;
+
+    this.authenticated = authService.isAuthenticated();
   }
 
   signOut(): void {

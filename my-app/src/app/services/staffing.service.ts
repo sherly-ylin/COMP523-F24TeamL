@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Staffing } from '../models/staffing.model';
@@ -9,7 +9,7 @@ const baseUrl = 'http://localhost:3000/staffing';
   providedIn: 'root',
 })
 export class StaffingService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getAll(): Observable<Staffing[]> {
     return this.http.get<Staffing[]>(baseUrl);

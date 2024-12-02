@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Staffing, StaffingColumns } from 'src/app/models/staffing.model';
 import { StaffingService } from 'src/app/services/staffing.service';
 import { RouterLink } from '@angular/router';
@@ -12,26 +12,25 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-staffing-list',
-    templateUrl: './staffing-list.component.html',
-    styleUrls: ['./staffing-list.component.css'],
-    imports: [
-        RouterLink,
-        MatButtonModule,
-        MatTableModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatInputModule,
-        FormsModule,
-    ]
+  selector: 'app-staffing-list',
+  templateUrl: './staffing-list.component.html',
+  styleUrls: ['./staffing-list.component.css'],
+  imports: [
+    MatButtonModule,
+    MatTableModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+  ],
 })
 export class StaffingListComponent implements OnInit {
+  private StaffingService = inject(StaffingService);
+
   displayedColumns: string[] = StaffingColumns.map((col) => col.key);
   dataSource: any = [];
   columnsSchema: any = StaffingColumns;
   name = '';
-
-  constructor(private StaffingService: StaffingService) {}
 
   ngOnInit(): void {
     this.retrieveLogs();

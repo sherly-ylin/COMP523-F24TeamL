@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IpsLog } from '../models/ips-log.model';
@@ -9,7 +9,7 @@ const baseUrl = 'http://localhost:3000/ipslog';
   providedIn: 'root',
 })
 export class IpslogService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getAll(): Observable<IpsLog[]> {
     return this.http.get<IpsLog[]>(baseUrl);

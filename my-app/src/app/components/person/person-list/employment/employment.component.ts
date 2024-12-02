@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Person, EmploymentColumn } from 'src/app/models/person.model';
 import { PersonService } from 'src/app/services/person.service';
 import { RouterLink } from '@angular/router';
@@ -21,35 +21,35 @@ import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-person-list',
-    templateUrl: './employment.component.html',
-    styleUrls: ['./employment.component.css'],
-    imports: [
-        RouterLink,
-        MatButton,
-        MatTable,
-        MatColumnDef,
-        MatHeaderCellDef,
-        MatHeaderCell,
-        MatCellDef,
-        MatCell,
-        MatIconButton,
-        MatIcon,
-        MatFormField,
-        MatInput,
-        FormsModule,
-        MatHeaderRowDef,
-        MatHeaderRow,
-        MatRowDef,
-        MatRow,
-    ]
+  selector: 'app-employment-person-list',
+  templateUrl: './employment.component.html',
+  styleUrls: ['./employment.component.css'],
+  imports: [
+    RouterLink,
+    MatButton,
+    MatTable,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatCellDef,
+    MatCell,
+    MatIconButton,
+    MatIcon,
+    MatFormField,
+    MatInput,
+    FormsModule,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+  ],
 })
 export class EmploymentComponent implements OnInit {
+  private PersonService = inject(PersonService);
+
   displayedColumns: string[] = EmploymentColumn.map((col) => col.key);
   dataSource: any = [];
   columnsSchema: any = EmploymentColumn;
-
-  constructor(private PersonService: PersonService) {}
 
   ngOnInit(): void {
     this.retrieveLogs();

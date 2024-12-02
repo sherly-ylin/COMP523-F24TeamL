@@ -1,8 +1,21 @@
-import { Injectable, Signal, WritableSignal, signal } from '@angular/core';
+import {
+  Injectable,
+  Signal,
+  WritableSignal,
+  inject,
+  signal,
+} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { catchError } from 'rxjs/operators';
-import { Observable, ReplaySubject, BehaviorSubject, Subject, tap, of } from 'rxjs';
+import {
+  Observable,
+  ReplaySubject,
+  BehaviorSubject,
+  Subject,
+  tap,
+  of,
+} from 'rxjs';
 
 interface LoginResponse {
   id: number;
@@ -13,10 +26,6 @@ interface LoginResponse {
   role: 'provider' | 'admin' | 'superadmin';
   team_name?: string;
   accessToken: string;
-}
-
-interface VerifyTokenResponse {
-  email: string;
 }
 
 export interface Profile {
@@ -33,65 +42,31 @@ export interface Profile {
   providedIn: 'root',
 })
 export class AuthService {
+  private router = inject(Router);
+  private http = inject(HttpClient);
+
   private loggedIn = new BehaviorSubject<boolean>(false);
   loggedIn$ = this.loggedIn.asObservable();
+
+  private authenticated = false;
 
   private profileSubject = new BehaviorSubject<Profile | null>(null);
   profile$ = this.profileSubject.asObservable();
 
   private baseUrl = 'http://localhost:3000/';
 
-  private email: string | null = null;
-  setEmail(email: string): void {
-    this.email = email;
-  }
-  getEmail(): string | null {
-    return this.email;
-  }
+  constructor() {}
 
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-  ) {}
-
-  async verifyTokenAndGetEmail(
-    route: ActivatedRouteSnapshot
-  ): Promise<boolean> {
-    console.log('Frontend token:', route.params['token']);
-    await this.http
-      .post<VerifyTokenResponse>(
-        'http://localhost:3000/api/auth/verify-token-get-email',
-        {
-          token: route.params['token'],
-        }
-      )
-      .pipe(
-        // Handle any errors with a fallback
-        catchError((error) => {
-          alert(
-            error?.error?.message ||
-              'An error occurred during verifying token and get email.'
-          );
-          console.error('verify token error:', error);
-          return of(null); // Return a null observable to prevent breaking the stream
-        })
-      )
-      .subscribe({
-        next: (response) => {
-          if (response && response.email) {
-            this.setEmail(response.email);
-            console.log('got email:', this.getEmail());
-          } else {
-            console.log('Invalid invite token');
-          }
-        },
-      });
-    console.log('outside:', this.getEmail());
-    return !!this.getEmail();
-  }
-
-  checkToken(route: ActivatedRouteSnapshot) {
-    return !!this.verifyTokenAndGetEmail(route);
+  isAuthenticated(): boolean {
+    // // Implement your authentication logic here
+    // const token = localStorage.getItem('token'); // get token from local storage
+    // if (token === null) {
+    //   return false;
+    // }
+    // const payload = atob(token.split('.')[1]); // decode payload of token
+    // const parsedPayload = JSON.parse(payload); // convert payload into an Object
+    // return parsedPayload.exp > Date.now() / 1000; // check if token is expired
+    return this.authenticated;
   }
 
   signIn(username: string, password: string): void {
@@ -106,7 +81,7 @@ export class AuthService {
           alert(error?.error?.message || 'An error occurred during sign-in.');
           console.error('Sign-in error:', error);
           return of(null); // Return a null observable to prevent breaking the stream
-        })
+        }),
       )
       .subscribe({
         next: (response) => {
@@ -125,6 +100,7 @@ export class AuthService {
 
             // Storing token and navigating to the dashboard
             localStorage.setItem('accessToken', response.accessToken);
+            this.authenticated = true;
             this.router.navigate(['./dashboard']);
           } else {
             alert('Invalid response or missing access token.');
@@ -133,14 +109,11 @@ export class AuthService {
       });
   }
 
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('accessToken'); //convert the result into a strict Boolean value (true or false)
-  }
-
   signOut() {
     if (confirm('Are you sure to sign out?')) {
       localStorage.removeItem('accessToken');
     }
+    this.authenticated = false;
     this.router.navigate(['/login']); // Navigate to login after sign out
   }
 
@@ -162,7 +135,7 @@ export class AuthService {
       .pipe(tap((updatedProfile) => this.profileSubject.next(updatedProfile)));
   }
 
-  manuallyUpdateProfile(profile: Profile|any) {
+  manuallyUpdateProfile(profile: Profile | any) {
     this.profileSubject.next(profile);
   }
 
