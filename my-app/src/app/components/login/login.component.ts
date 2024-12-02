@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
 
   public signInForm!: FormGroup;
+  public forgotPassword = false;
 
   ngOnInit(): void {
     // Initialize form with validation rules

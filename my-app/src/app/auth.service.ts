@@ -58,15 +58,7 @@ export class AuthService {
   constructor() {}
 
   isAuthenticated(): boolean {
-    // // Implement your authentication logic here
-    // const token = localStorage.getItem('token'); // get token from local storage
-    // if (token === null) {
-    //   return false;
-    // }
-    // const payload = atob(token.split('.')[1]); // decode payload of token
-    // const parsedPayload = JSON.parse(payload); // convert payload into an Object
-    // return parsedPayload.exp > Date.now() / 1000; // check if token is expired
-    return this.authenticated;
+    return !!localStorage.getItem('accessToken');
   }
 
   signIn(username: string, password: string): void {

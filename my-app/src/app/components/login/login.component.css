@@ -20,6 +20,7 @@
 
 h1 {
   font-size: 22px;
+  padding-bottom: 20px;
 }
 
 form {
@@ -30,4 +31,5 @@ form {
 
 .form-field {
   width: 400px; /* length of the input fields */
+  padding-bottom: 20px; /* Space below each input field */
 }
