@@ -45,8 +45,6 @@ export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
   loggedIn$ = this.loggedIn.asObservable();
 
-  private authenticated = false;
-
   private profileSubject = new BehaviorSubject<Profile | null>(null);
   profile$ = this.profileSubject.asObservable();
 
@@ -95,7 +93,6 @@ export class AuthService {
 
             // Storing token and navigating to the dashboard
             localStorage.setItem('accessToken', response.accessToken);
-            this.authenticated = true;
             this.router.navigate(['./dashboard']);
           } else {
             alert('Invalid response or missing access token.');
@@ -108,7 +105,6 @@ export class AuthService {
     if (confirm('Are you sure to sign out?')) {
       localStorage.removeItem('accessToken');
     }
-    this.authenticated = false;
     this.router.navigate(['/login']); // Navigate to login after sign out
   }
 
@@ -153,7 +149,7 @@ export class AuthService {
     return this.http.put<Profile>(`${this.baseUrl}/password`, data);
   }
 
-  isAuthenticated():boolean{
-    return this.authenticated;
+  isAuthenticated(): boolean{
+    return !!localStorage.getItem('accessToken');
   }
 }
