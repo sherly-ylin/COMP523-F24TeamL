@@ -24,7 +24,7 @@ interface LoginResponse {
   last_name: string | null;
   email: string | null;
   role: 'provider' | 'admin' | 'superadmin';
-  team_name?: string;
+  team_name: string | null;
   accessToken: string;
 }
 
@@ -34,8 +34,8 @@ export interface Profile {
   first_name: string | null;
   last_name: string | null;
   email: string | null;
-  role: 'provider' | 'admin' | 'superadmin'; //consider making it number
-  team_name?: string | null;
+  role: 'provider' | 'admin' | 'superadmin';
+  team_name: string | null;
 }
 
 @Injectable({
@@ -48,8 +48,9 @@ export class AuthService {
   private profileSubject = new BehaviorSubject<Profile | null>(null);
   profile$ = this.profileSubject.asObservable();
 
-  private baseUrl = 'http://localhost:3000/';
+  private baseUrl = 'http://localhost:3000';
 
+  //TODO: delete these, just use currentUser
   private email: string | null = null;
   setEmail(email: string): void {
     this.email = email;
@@ -58,11 +59,13 @@ export class AuthService {
     return this.email;
   }
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private http: HttpClient) {
+
+  }
 
   signIn(username: string, password: string): void {
     this.http
-      .post<LoginResponse>('http://localhost:3000/api/auth/signin', {
+      .post<LoginResponse>(`${this.baseUrl}/api/auth/signin`, {
         username,
         password,
       })
@@ -84,12 +87,11 @@ export class AuthService {
               last_name: response.last_name,
               email: response.email,
               role: response.role,
-              team_name:
-                response.role === 'provider' ? response.team_name : null,
+              team_name: response.team_name,
             };
             console.log("user logged in");
             console.log(profile);
-            this.manuallyUpdateProfile(profile);
+            this.profileSubject.next(profile);
 
             // Storing token and navigating to the dashboard
             localStorage.setItem('accessToken', response.accessToken);
@@ -104,10 +106,16 @@ export class AuthService {
   signOut() {
     if (confirm('Are you sure to sign out?')) {
       localStorage.removeItem('accessToken');
+      this.http.post(`${this.baseUrl}/auth/signout`, this.currentUser);
     }
     this.router.navigate(['/login']); // Navigate to login after sign out
   }
 
+  isAuthenticated(): boolean{
+    return !!localStorage.getItem('accessToken');
+  }
+
+  // Profile
   getProfile(): Observable<Profile> {
     return this.http
       .get<Profile>(`${this.baseUrl}/user/profile`)
@@ -149,7 +157,5 @@ export class AuthService {
     return this.http.put<Profile>(`${this.baseUrl}/password`, data);
   }
 
-  isAuthenticated(): boolean{
-    return !!localStorage.getItem('accessToken');
-  }
+
 }

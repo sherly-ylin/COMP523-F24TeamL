@@ -34,7 +34,6 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './profile-editor.component.css',
 })
 export class ProfileEditorComponent {
-  protected profile = this.authService.currentUser;
   profileForm: FormGroup;
   emailForm: FormGroup;
   passwordForm: FormGroup;
@@ -60,9 +59,9 @@ export class ProfileEditorComponent {
       last_name: ['', [Validators.required]],
     });
     this.profileForm.setValue({
-      username: this.profile?.username,
-      first_name: this.profile?.first_name,
-      last_name: this.profile?.last_name,
+      username: this.authService.currentUser?.username,
+      first_name: this.authService.currentUser?.first_name,
+      last_name: this.authService.currentUser?.last_name,
     });
     this.emailForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],

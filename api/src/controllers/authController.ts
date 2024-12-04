@@ -41,7 +41,7 @@ User.findOne({ email: 'liuheng1@unc.edu' })
     } else {
       new User({
         email: 'liuheng1@unc.edu',
-        role: 'Superadmin',
+        role: 'superadmin',
         username: 'henry',
         password: bcrypt.hashSync('1', 8),
         firstname: 'Henry',
