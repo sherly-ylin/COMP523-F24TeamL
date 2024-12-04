@@ -10,7 +10,7 @@ import * as jobDevController from '../controllers/jobDevController.js'
 import * as personLevelController from '../controllers/personLevelController.js'
 import * as staffingController from '../controllers/staffingController.js'
 import { TeamController } from '../controllers/teamController.js'
-import { allAccess } from '../controllers/userController.js'
+import { allAccess, getUserProfile } from '../controllers/userController.js'
 
 // import * as authJwt from '../middlewares/authJwt.js'
 import { getCurrentUser } from './getCurrentUserRoutes.js'
@@ -45,6 +45,9 @@ router.patch('/person_level/:id', personLevelController.updateRecord)
 // Delete record
 router.delete('/person_level/:id', personLevelController.deleteRecord)
 router.delete('/person_level', personLevelController.deleteAllRecords)
+
+// All reviews
+router.get('/review/counts', allLogsController.getRecordsCounts);
 
 /* Closed Routes */
 router.get('/closed', closedController.getAllRecords)
@@ -124,6 +127,7 @@ router.post(
 // user routes
 router.use('/api/test', verifyMiddleware)
 router.get('/api/test/all', allAccess)
+router.get('/user/profile', getUserProfile)
 // router.get('/api/test/user', [authJwt.verifyToken], userBoard)
 // router.get(
 //   '/api/test/admin',
