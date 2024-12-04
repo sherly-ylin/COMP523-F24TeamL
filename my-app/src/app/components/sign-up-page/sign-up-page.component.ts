@@ -1,17 +1,15 @@
-import { APP_ID, Component, OnInit, signal, inject } from '@angular/core';
+import { APP_ID, Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import {
   FormBuilder,
   FormGroup,
-  Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-
-import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { SetPasswordComponent } from '../set-password/set-password.component'
 
 @Component({
   selector: 'app-sign-up-page',
@@ -22,6 +20,7 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    SetPasswordComponent,
   ],
 })
 export class SignUpPageComponent implements OnInit {
@@ -30,46 +29,12 @@ export class SignUpPageComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private formBuilder = inject(FormBuilder);
 
-  readonly PASSWORD_MIN_LENGTH = 8;
-  readonly PASSWORD_MIN_UPPER = 1;
-  readonly PASSWORD_MIN_LOWER = 1;
-  readonly PASSWORD_MIN_NUMBER = 1;
-  readonly PASSWORD_MIN_SYMBOL = 1;
-
   signUpForm!: FormGroup;
   token!: string;
   email!: string;
 
-  isPasswordVisible = signal(false);
-  isConfirmPasswordVisible = signal(false);
-  togglePasswordVisibility(event: MouseEvent) {
-    this.isPasswordVisible.set(!this.isPasswordVisible());
-    event.stopPropagation();
-  }
-  toggleConfirmPasswordVisibility(event: MouseEvent) {
-    this.isConfirmPasswordVisible.set(!this.isConfirmPasswordVisible());
-    event.stopPropagation();
-  }
-
   clearUsernameField() {
     this.username?.setValue('');
-  }
-  clearPasswordField() {
-    this.password?.setValue('');
-  }
-  clearConfirmPasswordField() {
-    this.confirmPassword?.setValue('');
-  }
-  resetConfirmPasswordField() {
-    this.confirmPassword?.reset();
-  }
-  markConfirmPasswordUntouched() {
-    this.confirmPassword?.markAsUntouched();
-  }
-  markConfirmPasswordUntouchedIfPasswordInvalid() {
-    if (!this.password?.valid) {
-      this.markConfirmPasswordUntouched();
-    }
   }
   setUsernameDefaultValue() {
     if (this.username?.value.trim() === '') {
@@ -86,21 +51,6 @@ export class SignUpPageComponent implements OnInit {
     // Initialize form with validation rules
     this.signUpForm = this.formBuilder.group({
       username: [this.email, []],
-      password: [
-        '',
-        [
-          Validators.required,
-          this.isLongEnoughValidator,
-          this.hasUppercaseValidator,
-          this.hasLowercaseValidator,
-          this.hasNumberValidator,
-          this.hasSymbolValidator,
-        ],
-      ],
-      confirmPassword: [
-        '',
-        [Validators.required, this.passwordsMatchValidator],
-      ],
     });
   }
 
@@ -113,48 +63,6 @@ export class SignUpPageComponent implements OnInit {
   }
   get confirmPassword() {
     return this.signUpForm.get('confirmPassword');
-  }
-
-  private isLongEnoughValidator = (
-    control: AbstractControl,
-  ): ValidationErrors | null => {
-    const value = control.value;
-    return value != null && value.length >= this.PASSWORD_MIN_LENGTH
-      ? null
-      : { notLongEnough: true };
-  };
-  private hasUppercaseValidator(
-    control: AbstractControl,
-  ): ValidationErrors | null {
-    const value = control.value;
-    return /[A-Z]/.test(value) ? null : { noUppercase: true };
-  }
-  private hasLowercaseValidator(
-    control: AbstractControl,
-  ): ValidationErrors | null {
-    const value = control.value;
-    return /[a-z]/.test(value) ? null : { noLowercase: true };
-  }
-  private hasNumberValidator(
-    control: AbstractControl,
-  ): ValidationErrors | null {
-    const value = control.value;
-    return /\d/.test(value) ? null : { noNumber: true };
-  }
-  private hasSymbolValidator(
-    control: AbstractControl,
-  ): ValidationErrors | null {
-    const value = control.value;
-    return /[!@#$%^&*(),.?":{}|<>]/.test(value) ? null : { noSymbol: true };
-  }
-  private passwordsMatchValidator(
-    control: AbstractControl,
-  ): ValidationErrors | null {
-    const password = control.parent?.get('password');
-    const confirmPassword = control.parent?.get('confirmPassword');
-    return password?.invalid || password?.value == confirmPassword?.value
-      ? null
-      : { passwordsDontMatch: true };
   }
 
   public onSubmit() {

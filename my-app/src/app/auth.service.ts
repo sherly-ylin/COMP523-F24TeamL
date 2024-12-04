@@ -101,6 +101,47 @@ export class AuthService {
       });
   }
 
+  sendVerificationCode(username: string) {
+    this.http.post<Response>('http://localhost:3000/api/auth/sendVerificationCode', {
+      username: username,
+    })
+    .pipe(
+      catchError((error) => {
+        alert(error?.error?.message || 'An error occurred during sending verification code.');
+        return of(null); // Return a null observable to prevent breaking the stream
+      }),
+    )
+    .subscribe((response) => {
+      console.log('Response:', response);
+    });
+  }
+
+  verifyEmail(username: string, verificationCode: string) {
+    return this.http.post<boolean>('http://localhost:3000/api/auth/verifyEmail', {
+      username: username,
+      verificationCode: verificationCode,
+    })
+    .pipe(
+      catchError((error) => {
+        alert(error?.error?.message || 'An error occurred during verify email.');
+        return of(null); // Return a null observable to prevent breaking the stream
+      }),
+    )
+  }
+
+  resetPassword(username: string, password: string) {
+    return this.http.post<boolean>('http://localhost:3000/api/auth/resetPassword', {
+      username: username,
+      password: password,
+    })
+    .pipe(
+      catchError((error) => {
+        alert(error?.error?.message || 'An error occurred during reset password.');
+        return of(null); // Return a null observable to prevent breaking the stream
+      }),
+    )
+  }
+
   signOut() {
     if (confirm('Are you sure to sign out?')) {
       localStorage.removeItem('accessToken');

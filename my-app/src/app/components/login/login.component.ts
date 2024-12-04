@@ -11,6 +11,7 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { SetPasswordComponent } from '../set-password/set-password.component'
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
+    SetPasswordComponent
   ],
 })
 export class LoginComponent implements OnInit {
@@ -30,19 +32,41 @@ export class LoginComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
 
   public signInForm!: FormGroup;
+  public verifyEmailForm!: FormGroup;
+  public resetPasswordForm!: FormGroup;
   public forgotPassword = false;
+  public emailVerified = false;
 
   ngOnInit(): void {
     // Initialize form with validation rules
     this.signInForm = this.formBuilder.group({
-      username: ['', [Validators.required]], //, Validators.email
+      username: ['', [Validators.required]],
       password: ['', [Validators.required]],
     });
   }
 
+  public onForgotPasswordClick(): void {
+    this.forgotPassword = true;
+    this.emailVerified = false;
+    this.verifyEmailForm = this.formBuilder.group({
+      username: ['', [Validators.required]],
+      verificationCode: ['', [Validators.required]],
+    });
+    const username = this.signInForm.get('username')?.value;
+    this.verifyEmailForm.patchValue({ username });
+  }
+
+  onRememberPasswordClick(): void {
+    this.forgotPassword = false;
+  }
+
+  sendVerificationCode(): void {
+    this.authService.sendVerificationCode(this.verifyEmailForm.get('username')?.value);
+  }
+
   // Mark all controls as touched to show validation errors on submit
-  private markAllControlsAsTouched(): void {
-    Object.values(this.signInForm.controls).forEach((control) => {
+  private markAllControlsAsTouched(targetForm: FormGroup): void {
+    Object.values(targetForm.controls).forEach((control) => {
       control.markAsTouched();
     });
   }
@@ -57,12 +81,52 @@ export class LoginComponent implements OnInit {
   }
 
   // Form submission method
-  public onSubmit(): void {
+  public onSignIn(): void {
     if (this.signInForm.valid) {
       const { username, password } = this.signInForm.value;
       this.authService.signIn(username, password);
     } else {
-      this.markAllControlsAsTouched(); // To trigger form validation feedback on UI
+      this.markAllControlsAsTouched(this.signInForm); // To trigger form validation feedback on UI
+    }
+  }
+
+  public onVerifyEmail(): void {
+    if (this.verifyEmailForm.valid) {
+      const { username, verificationCode } = this.verifyEmailForm.value;
+      this.authService.verifyEmail(username, verificationCode).subscribe({
+        next: (response) => {
+          if (response) {
+            this.emailVerified = true;
+            this.resetPasswordForm = this.formBuilder.group({
+            });
+          } else if (response == false){
+            console.log("response", response)
+            alert('Invalid verification code.');
+          }
+        },
+      });
+    } else {
+      this.markAllControlsAsTouched(this.verifyEmailForm);
+    }
+  }
+
+  public onResetPassword() {
+    if (this.verifyEmailForm.valid) {
+      const username = this.verifyEmailForm.get('username')?.value;
+      const password = this.resetPasswordForm.get('password')?.value;
+      this.authService.resetPassword(username, password).subscribe({
+        next: (response) => {
+          if (response) {
+            this.forgotPassword = false;
+            this.signInForm.patchValue({ username });
+          } else if (response == false){
+            console.log("response", response)
+            alert('failed to reset password.');
+          }
+        },
+      });
+    } else {
+      this.markAllControlsAsTouched(this.verifyEmailForm);
     }
   }
 }
