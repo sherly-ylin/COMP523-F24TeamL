@@ -248,3 +248,57 @@ export const invite = async (req: Request, res: Response) => {
       .send({ message: 'Error during sending invite email.' })
   }
 }
+export const changePassword = async (req: Request, res: Response) => {
+  
+  if (!req.body.current_password || !req.body.new_password) {
+    return res.status(400).send({ 
+      message: 'Current password or new password is null.' 
+    })
+  }
+
+  try {
+    
+    const user = await User.findOne({ 
+      username: environment.currentUsername 
+    })
+
+    
+    if (!user) {
+      return res.status(404).send({ 
+        message: 'User Not found.' 
+      })
+    }
+
+    
+    const passwordIsValid = bcrypt.compareSync(
+      req.body.current_password, 
+      user.password
+    )
+
+    if (!passwordIsValid) {
+      return res.status(401).send({
+        message: 'Current password is incorrect!'
+      })
+    }
+
+    
+    const hashedNewPassword = bcrypt.hashSync(req.body.new_password, 8);
+
+    
+    user.password = hashedNewPassword;
+    await user.save()
+
+    
+    res.status(200).send({ 
+      message: 'Password changed successfully!' 
+    })
+
+  } catch (err) {
+    
+    console.error('Error during password change:', err);
+    res.status(500).send({ 
+      message: 'Error during password change.',
+      error: err 
+    })
+  }
+}

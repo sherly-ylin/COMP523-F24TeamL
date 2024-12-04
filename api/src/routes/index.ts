@@ -10,7 +10,7 @@ import * as jobDevController from '../controllers/jobDevController.js'
 import * as personLevelController from '../controllers/personLevelController.js'
 import * as staffingController from '../controllers/staffingController.js'
 import { TeamController } from '../controllers/teamController.js'
-import { allAccess } from '../controllers/userController.js'
+import { allAccess, userBoard, adminBoard, updateProfile } from '../controllers/userController.js'
 
 // import * as authJwt from '../middlewares/authJwt.js'
 import { getCurrentUser } from './getCurrentUserRoutes.js'
@@ -134,6 +134,12 @@ router.get('/api/test/all', allAccess)
 // verify email routes
 router.use('/verify', verifyMiddleware)
 router.get('/verify/:uniqueString', getUniqueString)
+
+//Profile edit routes
+router.get('/all', allAccess)
+router.get('/user',  userBoard)
+router.get('/admin',  adminBoard)
+router.patch('/user/profile',  updateProfile)
 
 // misc
 router.use('/userInfo', getUserInfo)
