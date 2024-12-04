@@ -10,7 +10,7 @@ import * as jobDevController from '../controllers/jobDevController.js'
 import * as personLevelController from '../controllers/personLevelController.js'
 import * as staffingController from '../controllers/staffingController.js'
 import { TeamController } from '../controllers/teamController.js'
-import { allAccess, userBoard, adminBoard, updateProfile } from '../controllers/userController.js'
+import { allAccess, getUserProfile, updateProfile} from '../controllers/userController.js'
 
 // import * as authJwt from '../middlewares/authJwt.js'
 import { getCurrentUser } from './getCurrentUserRoutes.js'
@@ -45,6 +45,9 @@ router.patch('/person_level/:id', personLevelController.updateRecord)
 // Delete record
 router.delete('/person_level/:id', personLevelController.deleteRecord)
 router.delete('/person_level', personLevelController.deleteAllRecords)
+
+// All reviews
+router.get('/review/counts', allLogsController.getRecordsCounts);
 
 /* Closed Routes */
 router.get('/closed', closedController.getAllRecords)
@@ -131,15 +134,13 @@ router.get('/api/test/all', allAccess)
 //   adminBoard,
 // )
 
+// Profile
+router.get('/user/profile', getUserProfile)
+router.patch('/user/profile',  updateProfile)
+
 // verify email routes
 router.use('/verify', verifyMiddleware)
 router.get('/verify/:uniqueString', getUniqueString)
-
-//Profile edit routes
-router.get('/all', allAccess)
-router.get('/user',  userBoard)
-router.get('/admin',  adminBoard)
-router.patch('/user/profile',  updateProfile)
 
 // misc
 router.use('/userInfo', getUserInfo)

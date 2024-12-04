@@ -6,7 +6,7 @@ import { User } from '../models/userSchema.js'
 /* Runs mongoose function to get all records from the database */
 export async function getAllRecordsFromDB() {
   var signed_in_user = await User.findOne(
-    { user_email: environment.user_email },
+    { user_email: environment.currentEmail },
     (err: Error, doc: Document) => {
       if (err) {
         throw err
@@ -15,7 +15,7 @@ export async function getAllRecordsFromDB() {
           console.log('Found ' + doc)
         } else {
           console.log(
-            'Could not find user with email: ' + environment.user_email,
+            'Could not find user with email: ' + environment.currentEmail,
           )
         }
       }
@@ -45,7 +45,7 @@ export async function getAllRecordsFromDB() {
     console.log('🍎 I am provider')
     var my_records = await staffingModel
       .find(
-        { user_email: environment.user_email },
+        { user_email: environment.currentEmail },
         (err: Error, doc: Document) => {
           if (err) {
             throw err
@@ -55,7 +55,7 @@ export async function getAllRecordsFromDB() {
             } else {
               console.log(
                 'Could not find records with user email: ' +
-                  environment.user_email,
+                  environment.currentEmail,
               )
             }
           }
@@ -141,7 +141,7 @@ export async function getMyRecordsFromDB(id: string) {
 /* Runs mongoose function to add an entire record to the database */
 export async function addRecordToDB(body: any) {
   var record = new staffingModel(body)
-  record.user_email = environment.user_email
+  record.user_email = environment.currentEmail
   var status = await staffingModel
     .findOne(body, (err: Error, doc: Document) => {
       if (err) {
@@ -223,4 +223,37 @@ export async function deleteAllRecordsFromDB() {
     .clone()
 
   return records
+}
+
+export async function getReviewCounts(user: any) {
+  try {
+    // Determine filter criteria based on user's role
+    let filter = {};
+    if (user.role === 'superadmin' || user.role === 'admin') {
+      // Superadmin/Admin can see all records
+      filter = {};
+    } else if (user.role === 'provider' && user.team_id) {
+      // Provider can only see records assigned to their team
+      filter = { team_id: user.team_id };
+    } else {
+      // Fallback for unauthorized access
+      return { completed: 0, incomplete: 0 };
+    }
+
+    // Query for completed and incomplete records
+    const completedCount = await staffingModel.countDocuments({
+      ...filter,
+      status: 'completed', // Assuming a 'status' field exists to indicate completion
+    }).exec();
+
+    const incompleteCount = await staffingModel.countDocuments({
+      ...filter,
+      status: 'incomplete', // Assuming a 'status' field exists to indicate incompletion
+    }).exec();
+
+    return { total: completedCount + incompleteCount, completed: completedCount, incomplete: incompleteCount };
+  } catch (err) {
+    console.error('Error in getReviewCounts:', err);
+    throw err;
+  }
 }

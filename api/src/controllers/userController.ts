@@ -1,7 +1,10 @@
 import { Request, Response } from 'express'
+import jwt from 'jsonwebtoken'
+import config from '../config.js'
 import { User } from '../models/userSchema.js'
+import { environment } from '../../environment.js'
 
-
+/* Useless */
 export const allAccess = (_: Request, res: Response) => {
   res.status(200).send('Public Content.')
 }
@@ -13,6 +16,49 @@ export const userBoard = (_: Request, res: Response) => {
 export const adminBoard = (_: Request, res: Response) => {
   res.status(200).send('Admin Content.')
 }
+
+
+export const getUserProfile = async (req: Request, res: Response) => {
+  try {
+    // Check if the request has the token in the Authorization header
+    const token = req.headers['authorization']?.split(' ')[1]
+    
+    if (!token) {
+      return res.status(403).json({ message: 'No token provided' })
+    }
+
+    // Verify the token
+    const decoded = jwt.verify(token, config.secret) as { id: string }
+    
+    // Find the user using the decoded token's user ID
+    const user = await User.findById(decoded.id)
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+
+    // Respond with the user profile data
+    const userProfile: any = {
+      id: user._id,
+      username: environment.currentUsername,
+      email: user.email,
+      role: environment.currentUserRole,
+      accessToken: token,
+      first_name: user.firstname,
+      last_name: user.lastname
+    }
+    //should i save this in the env too?
+    if (environment.currentUserRole === 'provider') {
+      userProfile.team_name = user.team_name || null
+    }
+
+    res.status(200).json(userProfile)
+  } catch (err) {
+    console.error('Error retrieving user profile:', err)
+    return res.status(500).json({ message: 'Internal Server Error' })
+  }
+}
+
 export const updateProfile = async (req: Request, res: Response) => {
   try {
     const { username, firstName, lastName } = req.body;

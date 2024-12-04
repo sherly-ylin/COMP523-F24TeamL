@@ -59,9 +59,7 @@ export class AuthService {
     return this.email;
   }
 
-  constructor(private router: Router, private http: HttpClient) {
-
-  }
+  constructor(private router: Router, private http: HttpClient) {}
 
   signIn(username: string, password: string): void {
     this.http
@@ -75,7 +73,7 @@ export class AuthService {
           alert(error?.error?.message || 'An error occurred during sign-in.');
           console.error('Sign-in error:', error);
           return of(null); // Return a null observable to prevent breaking the stream
-        }),
+        })
       )
       .subscribe({
         next: (response) => {
@@ -89,7 +87,7 @@ export class AuthService {
               role: response.role,
               team_name: response.team_name,
             };
-            console.log("user logged in");
+            console.log('user logged in');
             console.log(profile);
             this.profileSubject.next(profile);
 
@@ -111,15 +109,19 @@ export class AuthService {
     this.router.navigate(['/login']); // Navigate to login after sign out
   }
 
-  isAuthenticated(): boolean{
+  isAuthenticated(): boolean {
     return !!localStorage.getItem('accessToken');
   }
 
   // Profile
   getProfile(): Observable<Profile> {
-    return this.http
-      .get<Profile>(`${this.baseUrl}/user/profile`)
-      .pipe(tap((profile) => this.profileSubject.next(profile)));
+    return this.http.get<Profile>(`${this.baseUrl}/user/profile`).pipe(
+      tap((profile) => {
+        this.profileSubject.next(profile);
+        console.log("get profile");
+        console.log(this.currentUser);
+      })
+    );
   }
 
   // Get the current user synchronously
@@ -144,7 +146,7 @@ export class AuthService {
   }
 
   verifyAndUpdateEmail(email: string, code: string): Observable<any> | any {
-    return true
+    return true;
     // return this.http.post<Profile>(`${this.baseUrl}/user/email/verify`, {
     //   email,
     //   code,
@@ -156,6 +158,4 @@ export class AuthService {
   }): Observable<any> {
     return this.http.put<Profile>(`${this.baseUrl}/password`, data);
   }
-
-
 }

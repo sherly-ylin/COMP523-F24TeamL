@@ -53,16 +53,20 @@ export class ProfileEditorComponent {
     protected snackBar: MatSnackBar,
     protected dialog: MatDialog
   ) {
+    this.authService.getProfile();
     this.profileForm = this.formBuilder.group({
       username: ['', [Validators.required]],
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.required]],
     });
-    this.profileForm.setValue({
-      username: this.authService.currentUser?.username,
-      first_name: this.authService.currentUser?.first_name,
-      last_name: this.authService.currentUser?.last_name,
-    });
+    if (!!this.authService.currentUser){
+      this.profileForm.setValue({
+        username: this.authService.currentUser.username,
+        first_name: this.authService.currentUser.first_name,
+        last_name: this.authService.currentUser.last_name,
+      });
+    }
+
     this.emailForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
     });
@@ -74,7 +78,6 @@ export class ProfileEditorComponent {
       newPassword: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
     });
-    // this.token = `${localStorage.getItem('accessToken')}`;
   }
 
   ngOnInit(): void {
