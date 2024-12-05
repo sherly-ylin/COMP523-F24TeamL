@@ -27,6 +27,7 @@ import { AuthService } from './auth.service';
 import { ProfileEditorComponent } from './components/profile-editor/profile-editor.component';
 import { RoleGuard } from './role.guard';
 import { inviteResolver } from './resolvers/invite.resolver';
+import { profileResolver } from './resolvers/profile.resolver';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard/home', pathMatch: 'full' },
@@ -47,6 +48,9 @@ export const routes: Routes = [
         path: 'profile',
         canActivate: [authGuard],
         component: ProfileEditorComponent,
+        resolve:{
+          profile: profileResolver
+        }
       },
       {
         path: 'set-up-review',

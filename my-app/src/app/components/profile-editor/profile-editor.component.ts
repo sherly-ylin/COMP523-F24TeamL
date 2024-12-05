@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Profile, AuthService } from 'src/app/auth.service';
 import { HttpClient } from '@angular/common/http';
-
+import { Observable } from 'rxjs';
 import {
   FormsModule,
   ReactiveFormsModule,
@@ -34,6 +34,7 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './profile-editor.component.css',
 })
 export class ProfileEditorComponent {
+  profile$: Observable<Profile | null>;
   profileForm: FormGroup;
   emailForm: FormGroup;
   passwordForm: FormGroup;
@@ -45,7 +46,7 @@ export class ProfileEditorComponent {
   // public showToken: boolean = false;
 
   constructor(
-    route: ActivatedRoute,
+    private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
     protected formBuilder: FormBuilder,
@@ -53,20 +54,18 @@ export class ProfileEditorComponent {
     protected snackBar: MatSnackBar,
     protected dialog: MatDialog
   ) {
-    this.authService.getProfile();
+    this.profile$ = this.authService.profile$;
     this.profileForm = this.formBuilder.group({
       username: ['', [Validators.required]],
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.required]],
     });
-    if (!!this.authService.currentUser){
-      this.profileForm.setValue({
-        username: this.authService.currentUser.username,
-        first_name: this.authService.currentUser.first_name,
-        last_name: this.authService.currentUser.last_name,
-      });
-    }
+    const profileData = this.route.snapshot.data['profile'];
+    console.log(profileData);
 
+    if (profileData) {
+      this.profileForm.patchValue(profileData);
+    }
     this.emailForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
     });

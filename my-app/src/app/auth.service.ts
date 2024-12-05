@@ -1,21 +1,8 @@
-import {
-  Injectable,
-  Signal,
-  WritableSignal,
-  inject,
-  signal,
-} from '@angular/core';
+import { Injectable, Signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { catchError } from 'rxjs/operators';
-import {
-  Observable,
-  ReplaySubject,
-  BehaviorSubject,
-  Subject,
-  tap,
-  of,
-} from 'rxjs';
+import { Observable, BehaviorSubject, tap, of } from 'rxjs';
 
 interface LoginResponse {
   id: number;
@@ -68,11 +55,10 @@ export class AuthService {
         password,
       })
       .pipe(
-        // Handle any errors with a fallback
         catchError((error) => {
           alert(error?.error?.message || 'An error occurred during sign-in.');
           console.error('Sign-in error:', error);
-          return of(null); // Return a null observable to prevent breaking the stream
+          return of(null); 
         })
       )
       .subscribe({
@@ -90,7 +76,7 @@ export class AuthService {
             console.log('user logged in');
             console.log(profile);
             this.profileSubject.next(profile);
-
+            console.log('access token:', response.accessToken);
             // Storing token and navigating to the dashboard
             localStorage.setItem('accessToken', response.accessToken);
             this.router.navigate(['./dashboard']);
@@ -110,23 +96,24 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('accessToken');
+    let result = !!localStorage.getItem('accessToken');
+    this.loggedIn.next(result);
+    return result;
   }
 
   // Profile
+  get currentUser(): Profile | null {
+    return this.profileSubject.value;
+  }
+
   getProfile(): Observable<Profile> {
     return this.http.get<Profile>(`${this.baseUrl}/user/profile`).pipe(
       tap((profile) => {
         this.profileSubject.next(profile);
-        console.log("get profile");
+        console.log('get profile');
         console.log(this.currentUser);
       })
     );
-  }
-
-  // Get the current user synchronously
-  get currentUser(): Profile | null {
-    return this.profileSubject.value;
   }
 
   // Update the user's basic info
