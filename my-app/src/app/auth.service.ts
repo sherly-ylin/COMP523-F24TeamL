@@ -58,7 +58,7 @@ export class AuthService {
         catchError((error) => {
           alert(error?.error?.message || 'An error occurred during sign-in.');
           console.error('Sign-in error:', error);
-          return of(null); 
+          return of(null);
         })
       )
       .subscribe({
@@ -111,16 +111,20 @@ export class AuthService {
       tap((profile) => {
         this.profileSubject.next(profile);
         console.log('get profile');
-        console.log(this.currentUser);
+        console.log(profile);
       })
     );
   }
 
   // Update the user's basic info
   updateProfile(profile: Partial<Profile>): Observable<Profile> {
-    return this.http
+    console.log("authservice.updateprofile:");
+    console.log(profile);
+    let res = this.http
       .patch<Profile>(`${this.baseUrl}/user/profile`, profile)
       .pipe(tap((updatedProfile) => this.profileSubject.next(updatedProfile)));
+    this.getProfile();
+    return res;
   }
 
   manuallyUpdateProfile(profile: Profile | any) {

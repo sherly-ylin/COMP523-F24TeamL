@@ -60,12 +60,7 @@ export class ProfileEditorComponent {
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.required]],
     });
-    const profileData = this.route.snapshot.data['profile'];
-    console.log(profileData);
 
-    if (profileData) {
-      this.profileForm.patchValue(profileData);
-    }
     this.emailForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
     });
@@ -80,6 +75,12 @@ export class ProfileEditorComponent {
   }
 
   ngOnInit(): void {
+    const profileData = this.route.snapshot.data['profile'];
+    console.log(profileData);
+
+    if (profileData) {
+      this.profileForm.patchValue(profileData);
+    }
     // this.authService.getProfile().subscribe({
     //   next: (profile: Profile) => {
     //     this.profileForm.patchValue(profile);
@@ -93,6 +94,8 @@ export class ProfileEditorComponent {
   }
   public updateProfile() {
     if (this.profileForm.valid) {
+      console.log("profileForm:");
+      console.log(this.profileForm.value)
       this.authService.updateProfile(this.profileForm.value).subscribe({
         next: () => alert('Profile updated successfully!'),
         error: () => alert('Failed to update profile. Please try again.'),

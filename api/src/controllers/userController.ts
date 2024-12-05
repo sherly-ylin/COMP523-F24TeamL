@@ -68,26 +68,35 @@ export const getUserProfile = async (req: Request, res: Response) => {
 
 export const updateProfile = async (req: Request, res: Response) => {
   try {
-    const { username, firstName, lastName } = req.body;
+    const { username, first_name, last_name } = req.body;
 
-    // Add a type guard to check if user exists
-    if (!req.body.user || !req.body.user.id) {
-      return res.status(401).json({ message: 'Unauthorized' })
+    // Check if the request has the token in the Authorization header
+    const token = req.headers['authorization']?.split(' ')[1]
+        
+    if (!token) {
+      return res.status(403).json({ message: 'No token provided' })
     }
 
-    const userId = req.body.user.id;
-    const user = await User.findById(userId);
+    // Verify the token
+    const decoded = jwt.verify(token, config.secret) as { id: string }
+
+    // Find the user using the decoded token's user ID
+    const user = await User.findById(decoded.id)
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
 
     user.username = username;
-    user.firstname = firstName;
-    user.lastname = lastName;
+    user.firstname = first_name;
+    user.lastname = last_name;
     await user.save();
 
-    return res.status(200).json({ message: 'Profile updated successfully' })
+
+    return res.status(200).json({ message: 'Profile updated successfully'})
   } catch (error) {
     console.error('Error updating profile:', error);
     return res.status(500).json({ message: 'Error updating profile' })
