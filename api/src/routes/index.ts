@@ -47,7 +47,8 @@ router.delete('/person_level/:id', personLevelController.deleteRecord)
 router.delete('/person_level', personLevelController.deleteAllRecords)
 
 // All reviews
-router.get('/review/counts', allLogsController.getRecordsCounts);
+router.get('/review/counts', allLogsController.getRecordsCounts)
+router.get('/reviews/pending', allLogsController.getPendingRecordsCounts)
 
 /* Closed Routes */
 router.get('/closed', closedController.getAllRecords)

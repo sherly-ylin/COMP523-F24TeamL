@@ -253,3 +253,19 @@ export async function getReviewCounts(user: any) {
     throw err;
   }
 }
+
+export async function getPendingReviews(team_id: Types.ObjectId) {
+  try {
+    const pendingReviews = await personLevelModel
+      .find({
+        team_id: team_id,
+        status: 'pending', 
+      })
+      .exec();
+
+    return pendingReviews;
+  } catch (err) {
+    console.error('Error fetching pending reviews:', err)
+    throw err
+  }
+}
