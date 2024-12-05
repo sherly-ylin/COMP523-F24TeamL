@@ -135,7 +135,6 @@ export const signIn = (req: Request, res: Response) => {
     environment.currentId = responseData.id
     environment.currentUsername = responseData.username
     environment.currentEmail = responseData.email
-    environment.currentUsername = responseData.username
     environment.currentUserRole = responseData.role
     environment.currentAccessToken = responseData.accessToken
     environment.currentFirstName = responseData.first_name

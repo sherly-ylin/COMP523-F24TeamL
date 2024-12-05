@@ -40,17 +40,24 @@ export const getUserProfile = async (req: Request, res: Response) => {
     // Respond with the user profile data
     const userProfile: any = {
       id: user._id,
+      username: user.username,
       first_name: user.firstname,
       last_name: user.lastname,
-      username: environment.currentUsername,
       email: user.email,
-      role: environment.currentUserRole,
+      role: user.role,
       team_name: null
     }
-    //should i save this in the env too?
-    if (environment.currentUserRole === 'provider') {
+    
+    if (user.role === 'provider') {
       userProfile.team_name = user.team_name
     }
+
+    environment.currentId = user.id
+    environment.currentUsername = user.username
+    environment.currentFirstName = user.firstname
+    environment.currentLastName = user.lastname
+    environment.currentEmail = user.email
+    environment.currentUserRole = user.role
 
     res.status(200).json(userProfile)
   } catch (err) {
