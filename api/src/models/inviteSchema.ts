@@ -4,7 +4,7 @@ export interface IInvite extends Document {
   email: string
   role: string
   token: string
-  timespan: { value: number; unit: 'day' | 'week' | 'month' | 'year ' } // Flexible duration
+  timespan: { value: number; unit: 'day' | 'week' | 'month' | 'year' } // Flexible duration
   expiresAt: Date
   inviter: mongoose.Schema.Types.ObjectId
 }

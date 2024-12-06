@@ -6,28 +6,10 @@ import { Error, Types } from 'mongoose'
 import crypto from 'crypto'
 import { environment } from '../../environment.js'
 import config from '../config.js'
+import { EmailVerification } from '../models/emailVerificationSchema.js'
 import { Invite } from '../models/inviteSchema.js'
 import { User } from '../models/userSchema.js'
 import * as verify from './emailVerifyController.js'
-
-export async function getInvite(req: Request, res: Response) {
-  try {
-    // Search for a document with the specified token
-    const invite = await Invite.findOne({ token: req.params.token })
-
-    if (!invite) {
-      // If no invite is found, send a 404 error
-      return res.status(404).json({ message: 'Invite not found' })
-    }
-
-    return res.status(200).json(invite)
-  } catch (err) {
-    console.error('Error checking invite:', err)
-    return res
-      .status(500)
-      .json({ message: 'Internal Server Error', error: err })
-  }
-}
 
 // Setting up the initial Superadmin account (username: henry passwrod: 1)
 User.findOne({ email: 'liuheng1@unc.edu' })
@@ -52,6 +34,25 @@ User.findOne({ email: 'liuheng1@unc.edu' })
   .catch((error) => {
     console.error('Error occurred while finding user henry:', error)
   })
+
+export async function getInvite(req: Request, res: Response) {
+  try {
+    // Search for a document with the specified token
+    const invite = await Invite.findOne({ token: req.params.token })
+
+    if (!invite) {
+      // If no invite is found, send a 404 error
+      return res.status(404).json({ message: 'Invite not found' })
+    }
+
+    return res.status(200).json(invite)
+  } catch (err) {
+    console.error('Error checking invite:', err)
+    return res
+      .status(500)
+      .json({ message: 'Internal Server Error', error: err })
+  }
+}
 
 export const signUp = async (req: Request, res: Response) => {
   if (!req.body.token || !req.body.password) {
@@ -131,6 +132,66 @@ export const signIn = (req: Request, res: Response) => {
       last_name: user.lastname,
     })
   })
+}
+
+function generateRandomEmailVerificationCode(): string {
+  return Math.floor(Math.random() * 1000000).toString().padStart(6, "0");
+}
+
+async function generateUniqueEmailVerificationCode() {
+  let verificationCode, existingDoc
+
+  // Keep generating a new code until it is unique
+  do {
+    verificationCode = generateRandomEmailVerificationCode()
+    existingDoc = await EmailVerification.findOne({ verificationCode })
+  } while (existingDoc)
+
+  return verificationCode
+}
+
+export const sendVerificationCode = async (req: Request, res: Response) => {
+  try {
+    const expiresAt = new Date()
+    expiresAt.setTime(expiresAt.getTime() + 1000 * 60 * 15) // Expires in 15 minutes
+
+    // Create and store the new Email Verification
+    const emailVerification = new EmailVerification({
+      email: req.body.email,
+      verificationCode: await generateUniqueEmailVerificationCode(),
+      status: 'pending',
+      expiresAt: expiresAt,
+    })
+    await emailVerification.save()
+
+    // Send the email verification code
+    await verify.sendEmailVerificationCode(emailVerification)
+
+    // Send a success response
+    return res.status(200).send({
+      message: 'Successfully sent email verification code.',
+    })
+  } catch (err) {
+    // Handle error
+    console.error('Error during sending email verification code:', err)
+    return res
+      .status(500)
+      .send({ message: 'Error during sending email verification code.' })
+  }
+}
+
+export const verifyEmail = async (req: Request, res: Response) => {
+  const verificationRecord = await EmailVerification.findOne({ email: req.body.email })
+  if (!verificationRecord) {
+    return res.status(404).send({ message: 'Verification record not found.' })
+  }
+
+  return res
+    .status(200)
+    .json(
+      req.body.verificationCode.toString() ==
+        verificationRecord.verificationCode,
+    )
 }
 
 function generateSecureRandomString(length: number): string {

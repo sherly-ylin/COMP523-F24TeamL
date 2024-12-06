@@ -1,5 +1,12 @@
-import { Component, inject, signal, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import {
+  Component,
+  inject,
+  signal,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,12 +17,14 @@ import { AbstractControl, ValidationErrors } from '@angular/forms';
   selector: 'set-password',
   imports: [MatInputModule, MatButtonModule, MatIconModule],
   templateUrl: './set-password.component.html',
-  styleUrl: './set-password.component.css'
+  styleUrl: './set-password.component.css',
 })
 export class SetPasswordComponent {
   private fb = inject(FormBuilder);
 
   @Input() formGroup!: FormGroup;
+
+  @Output() formGroupChange = new EventEmitter<FormGroup>();
 
   readonly PASSWORD_MIN_LENGTH = 8;
   readonly PASSWORD_MIN_UPPER = 1;
@@ -25,6 +34,7 @@ export class SetPasswordComponent {
 
   isPasswordVisible = signal(false);
   isConfirmPasswordVisible = signal(false);
+
   togglePasswordVisibility(event: MouseEvent) {
     this.isPasswordVisible.set(!this.isPasswordVisible());
     event.stopPropagation();
@@ -33,7 +43,7 @@ export class SetPasswordComponent {
     this.isConfirmPasswordVisible.set(!this.isConfirmPasswordVisible());
     event.stopPropagation();
   }
-  
+
   clearPasswordField() {
     this.password?.setValue('');
   }
@@ -55,15 +65,26 @@ export class SetPasswordComponent {
   constructor() {}
 
   ngOnInit() {
-    console.log("formGroup:", this.formGroup);
+    console.log('formGroup:', this.formGroup);
     if (this.formGroup) {
-      this.formGroup.addControl('password', this.fb.control('', [Validators.required,
-        this.isLongEnoughValidator,
-        this.hasUppercaseValidator,
-        this.hasLowercaseValidator,
-        this.hasNumberValidator,
-        this.hasSymbolValidator,]));
-      this.formGroup.addControl('confirmPassword', this.fb.control('', [Validators.required, this.passwordsMatchValidator]))
+      this.formGroup.addControl(
+        'password',
+        this.fb.control('', [
+          Validators.required,
+          this.isLongEnoughValidator,
+          this.hasUppercaseValidator,
+          this.hasLowercaseValidator,
+          this.hasNumberValidator,
+          this.hasSymbolValidator,
+        ]),
+      );
+      this.formGroup.addControl(
+        'confirmPassword',
+        this.fb.control('', [
+          Validators.required,
+          this.passwordsMatchValidator,
+        ]),
+      );
     }
   }
 
@@ -115,5 +136,4 @@ export class SetPasswordComponent {
       ? null
       : { passwordsDontMatch: true };
   }
-  
 }

@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer'
 import config from '../config.js' // Assuming environment variables are stored here
 import { IInvite } from '../models/inviteSchema.js'
+import { IEmailVerification } from '../models/emailVerificationSchema.js'
 
 // Create a reusable transporter outside the function to avoid repeated initialization
 const transporter = nodemailer.createTransport({
@@ -36,5 +37,25 @@ export const sendEmail = async (invite: IInvite) => {
     // Handle error appropriately, could rethrow or log to a monitoring service
     console.error('Error sending email:', error)
     throw new Error('Failed to send email')
+  }
+}
+
+export const sendEmailVerificationCode = async (emailVerification: IEmailVerification) => {
+  const mailOptions = {
+    from: '"UNC Department of Psychiatry" <hello@psychiatry.unc.edu>',
+    to: emailVerification.email,
+    subject: `Code: ${emailVerification.verificationCode} - eIPS Reset Password`,
+    html: `
+      <p>Don't share this code with anyone. Your verification code for resetting eIPS password is ${emailVerification.verificationCode}.</p>
+      <p>This code expires in 15 minutes.<\p>
+      <p>If you didn't request this code, then someone has entered your username or email on eIPS reset password page at ${emailVerification.createdAt}.</p>
+      <p>Don't need to worry, they don't know your password. You can safely ignore this email.</p>
+    `,
+  }
+
+  try {
+    await transporter.sendMail(mailOptions)
+  } catch (error) {
+    throw new Error('Failed to send verification email')
   }
 }

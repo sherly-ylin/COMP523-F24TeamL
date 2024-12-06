@@ -98,6 +98,8 @@ export class LoginComponent implements OnInit {
           if (response) {
             this.emailVerified = true;
             this.resetPasswordForm = this.formBuilder.group({
+              password: ['', [Validators.required]],
+              confirmPassword: ['', [Validators.required]],
             });
           } else if (response == false){
             console.log("response", response)
@@ -111,7 +113,7 @@ export class LoginComponent implements OnInit {
   }
 
   public onResetPassword() {
-    if (this.verifyEmailForm.valid) {
+    if (this.resetPasswordForm.valid) {
       const username = this.verifyEmailForm.get('username')?.value;
       const password = this.resetPasswordForm.get('password')?.value;
       this.authService.resetPassword(username, password).subscribe({
@@ -121,12 +123,12 @@ export class LoginComponent implements OnInit {
             this.signInForm.patchValue({ username });
           } else if (response == false){
             console.log("response", response)
-            alert('failed to reset password.');
+            alert('Failed to reset password.');
           }
         },
       });
     } else {
-      this.markAllControlsAsTouched(this.verifyEmailForm);
+      this.markAllControlsAsTouched(this.resetPasswordForm);
     }
   }
 }

@@ -10,9 +10,13 @@ import * as jobDevController from '../controllers/jobDevController.js'
 import * as personLevelController from '../controllers/personLevelController.js'
 import * as staffingController from '../controllers/staffingController.js'
 import { TeamController } from '../controllers/teamController.js'
-import { allAccess } from '../controllers/userController.js'
+import {
+  adminBoard,
+  allAccess,
+  userBoard,
+} from '../controllers/userController.js'
 
-// import * as authJwt from '../middlewares/authJwt.js'
+import * as authJwt from '../middlewares/authJwt.js'
 import { getCurrentUser } from './getCurrentUserRoutes.js'
 import { getUserInfo } from './getUserInfoRoutes.js'
 import { setUserInfo } from './setUserInfoRoutes.js'
@@ -114,6 +118,16 @@ router.post(
 )
 
 router.post('/api/auth/signin', authController.signIn)
+router.post(
+  '/api/auth/sendVerificationCode',
+  [verifySignUp.transformUsernameToEmail],
+  authController.sendVerificationCode,
+)
+router.post(
+  '/api/auth/verifyEmail',
+  [verifySignUp.transformUsernameToEmail],
+  authController.verifyEmail,
+)
 
 router.post(
   '/api/auth/invite',
@@ -124,12 +138,12 @@ router.post(
 // user routes
 router.use('/api/test', verifyMiddleware)
 router.get('/api/test/all', allAccess)
-// router.get('/api/test/user', [authJwt.verifyToken], userBoard)
-// router.get(
-//   '/api/test/admin',
-//   [authJwt.verifyToken, authJwt.isAdmin],
-//   adminBoard,
-// )
+router.get('/api/test/user', [authJwt.verifyToken], userBoard)
+router.get(
+  '/api/test/admin',
+  [authJwt.verifyToken, authJwt.isAdmin],
+  adminBoard,
+)
 
 // verify email routes
 router.use('/verify', verifyMiddleware)
