@@ -152,7 +152,7 @@ export async function deleteAllRecords(req: Request, res: Response) {
   try {
     var result = await closedServices.deleteAllRecordsFromDB()
     if (result) {
-      res.status(200).jsonp(result)
+      res.status(200).json(result)
     } else {
       res.status(200).json({ success: true, msg: 'No records found.' })
     }
@@ -162,3 +162,4 @@ export async function deleteAllRecords(req: Request, res: Response) {
     res.status(500).json({ success: false, msg: 'Failed to delete records.' })
   }
 }
+

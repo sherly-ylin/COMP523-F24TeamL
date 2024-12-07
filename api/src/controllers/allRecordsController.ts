@@ -87,3 +87,37 @@ export async function getRecordsCounts(req: Request, res: Response) {
     res.status(500).json({ success: false, msg: 'Failed to retrieve review counts.' });
   }
 }
+
+export async function getPendingRecordsCounts(req: Request, res: Response) {
+  try {
+    const currentUser = req.body.user // Assuming `req.user` contains logged-in user info
+    if (!currentUser || currentUser.role !== 'provider') {
+      return res.status(403).json({ success: false, msg: 'Unauthorized or invalid role' })
+    }
+
+    const team_id = currentUser.team_id // Team ID for the provider
+    if (!team_id) {
+      return res.status(400).json({ success: false, msg: 'Team ID is required' })
+    }
+
+    // Fetch pending reviews from each service
+    const closedPendingReviews = await closedServices.getPendingReviews(team_id)
+    const IPSLogPendingReviews = await IPSLogServices.getPendingReviews(team_id)
+    const jobDevPendingReviews = await jobDevServices.getPendingReviews(team_id)
+    const personLevelPendingReviews = await personLevelServices.getPendingReviews(team_id)
+    const staffingPendingReviews = await staffingServices.getPendingReviews(team_id)
+
+    // Return 
+    res.status(200).json({
+      success: true,
+      closedPendingReviews,
+      IPSLogPendingReviews,
+      jobDevPendingReviews,
+      personLevelPendingReviews,
+      staffingPendingReviews
+    })
+  } catch (err) {
+    console.error('Error retrieving pending records counts:', err)
+    res.status(500).json({ success: false, msg: 'Failed to retrieve pending reviews.' })
+  }
+}

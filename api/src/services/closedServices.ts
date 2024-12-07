@@ -205,6 +205,8 @@ export async function deleteAllRecordsFromDB() {
   return records
 }
 
+
+
 export async function getReviewCounts(user: any) {
   try {
     // Determine filter criteria based on user's role
@@ -235,5 +237,21 @@ export async function getReviewCounts(user: any) {
   } catch (err) {
     console.error('Error in getReviewCounts:', err);
     throw err;
+  }
+}
+
+export async function getPendingReviews(team_id: Types.ObjectId) {
+  try {
+    const pendingReviews = await closedModel
+      .find({
+        team_id: team_id,
+        status: 'pending', 
+      })
+      .exec();
+
+    return pendingReviews;
+  } catch (err) {
+    console.error('Error fetching pending reviews:', err)
+    throw err
   }
 }
