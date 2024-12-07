@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Profile, AuthService } from 'src/app/auth.service';
 import { HttpClient } from '@angular/common/http';
-
+import { Observable } from 'rxjs';
 import {
   FormsModule,
   ReactiveFormsModule,
   FormBuilder,
   Validators,
   FormGroup,
-  AbstractControl
+  AbstractControl,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
@@ -34,6 +34,7 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './profile-editor.component.css',
 })
 export class ProfileEditorComponent {
+  profile$: Observable<Profile | null>;
   profileForm: FormGroup;
   emailForm: FormGroup;
   passwordForm: FormGroup;
@@ -45,35 +46,41 @@ export class ProfileEditorComponent {
   // public showToken: boolean = false;
 
   constructor(
-    route: ActivatedRoute,
+    private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
     protected formBuilder: FormBuilder,
     protected authService: AuthService,
     protected snackBar: MatSnackBar,
-    protected dialog: MatDialog,
+    protected dialog: MatDialog
   ) {
+    this.profile$ = this.authService.profile$;
     this.profileForm = this.formBuilder.group({
       username: ['', [Validators.required]],
       first_name: ['', [Validators.required]],
       last_name: ['', [Validators.required]],
     });
+
     this.emailForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
     });
     this.verificationForm = this.formBuilder.group({
-      code: ['', [Validators.required, Validators.minLength(6)]],
+      code: ['', [Validators.required, Validators.minLength(8)]],
     });
     this.passwordForm = this.formBuilder.group({
       currentPassword: ['', Validators.required],
       newPassword: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
-
     });
-    // this.token = `${localStorage.getItem('accessToken')}`;
   }
 
   ngOnInit(): void {
+    const profileData = this.route.snapshot.data['profile'];
+    console.log(profileData);
+
+    if (profileData) {
+      this.profileForm.patchValue(profileData);
+    }
     // this.authService.getProfile().subscribe({
     //   next: (profile: Profile) => {
     //     this.profileForm.patchValue(profile);
@@ -87,6 +94,8 @@ export class ProfileEditorComponent {
   }
   public updateProfile() {
     if (this.profileForm.valid) {
+      console.log("profileForm:");
+      console.log(this.profileForm.value)
       this.authService.updateProfile(this.profileForm.value).subscribe({
         next: () => alert('Profile updated successfully!'),
         error: () => alert('Failed to update profile. Please try again.'),
@@ -114,10 +123,7 @@ export class ProfileEditorComponent {
           this.verificationForm.value.code
         )
         .subscribe({
-          next: () =>
-            alert(
-              'Email update complete.'
-            ),
+          next: () => alert('Email update complete.'),
           error: () => alert('Failed to update email'),
         });
     }
@@ -132,8 +138,7 @@ export class ProfileEditorComponent {
     }
   }
 
-
-  cancelEmailUpdate(){
-    this.emailForm.setValue({email: ''});
+  cancelEmailUpdate() {
+    this.emailForm.setValue({ email: '' });
   }
 }

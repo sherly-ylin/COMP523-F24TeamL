@@ -13,19 +13,19 @@
     </mat-form-field>
 
     <mat-form-field class="form-field">
-      <mat-label>Select team(s) (if exists)</mat-label>
+      <mat-label>Select team(s)</mat-label>
       <mat-select [(value)]="team">
         <mat-option>empty</mat-option>
-        @for (team of teams; track team.name) {
-          <mat-option [value]="team.name">{{ team.name }}</mat-option>
+        @for (team of teams; track team.team_name) {
+          <mat-option [value]="team.id">{{ team.team_name }}</mat-option>
         }
       </mat-select>
     </mat-form-field>
-
+<!-- 
     <mat-form-field class="form-field">
       <mat-label>Invite user by email</mat-label>
       <input matInput [(ngModel)]="email" name="email" />
-    </mat-form-field>
+    </mat-form-field> -->
 
     <button mat-flat-button type="submit">Submit</button>
   </form>

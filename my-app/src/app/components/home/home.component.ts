@@ -13,7 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
   standalone: true,
 })
 export class HomeComponent implements OnInit {
-  displayName: string | null = null;
+  displayName: string | null | undefined = "";
 
   reviewsToComplete = 3;
   reviewsCompleted = 5;
@@ -24,17 +24,20 @@ export class HomeComponent implements OnInit {
     { id: 3, title: 'Review 3' },
   ];
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+    this.displayName = 'User'; // Replace with actual user data
+
+    this.authService.profile$.subscribe((profile: Profile | null) => {
+      if (profile) {
+        console.log(profile);
+        this.displayName = profile.role === 'provider' ? profile.team_name : profile.username;
+      } else {
+        this.displayName = null;
+      }
+    });
+  }
 
   ngOnInit(): void {
-    this.displayName = 'Sherly'; // Replace with actual user data
-
-    // this.authService.profile$.subscribe((profile: Profile | null) => {
-    //   if (profile) {
-    //     this.displayName = profile.team_name || profile.username;
-    //   } else {
-    //     this.displayName = null;
-    //   }
-    // });
+    
   }
 }

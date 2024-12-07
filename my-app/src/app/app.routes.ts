@@ -27,9 +27,10 @@ import { AuthService } from './auth.service';
 import { ProfileEditorComponent } from './components/profile-editor/profile-editor.component';
 import { RoleGuard } from './role.guard';
 import { inviteResolver } from './resolvers/invite.resolver';
+import { profileResolver } from './resolvers/profile.resolver';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: 'dashboard/home', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   {
     path: 'signup/:token',
@@ -41,11 +42,15 @@ export const routes: Routes = [
     canActivate: [authGuard],
     component: DashboardComponent,
     children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', canActivate: [authGuard], component: HomeComponent },
       {
         path: 'profile',
         canActivate: [authGuard],
         component: ProfileEditorComponent,
+        resolve:{
+          profile: profileResolver
+        }
       },
       {
         path: 'set-up-review',

@@ -1,9 +1,9 @@
 export const environment = {
   currentId: '',
   currentUsername: '',
+  currentFirstName: '',
+  currentLastName: '',
   currentEmail: '',
   currentUserRole: '',
-  currentAccessToken: '',
-  currentFirstName: '',
-  currentLastName: ''
+  currentAccessToken: ''
 }

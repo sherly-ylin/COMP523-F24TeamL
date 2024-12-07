@@ -32,21 +32,30 @@ export async function getInvite(req: Request, res: Response) {
 // Setting up the initial Superadmin account (username: henry passwrod: 1)
 User.findOne({ email: 'liuheng1@unc.edu' })
   .then((user) => {
-    console.log()
-    console.log('You can log in using this Superadmin account:')
-    console.log('username: "henry"')
-    console.log('password: "1"')
-    console.log()
     if (user) {
+      console.log('You can log in using this account:')
+      console.log('username: "' + user.username + '"')
+      user.password = bcrypt.hashSync('1', 8);
+      user.save()
+      console.log('password: "1"')
+      console.log('role: "' + user.role + '"')
+      console.log()
+    
     } else {
       new User({
         email: 'liuheng1@unc.edu',
-        role: 'Superadmin',
+        role: 'superadmin',
         username: 'henry',
         password: bcrypt.hashSync('1', 8),
         firstname: 'Henry',
         lastname: 'Liu',
       }).save()
+
+      console.log()
+      console.log('You can log in using this superadmin account:')
+      console.log('username: "henry"')
+      console.log('password: "1"')
+      console.log()
     }
   })
   .catch((error) => {
@@ -135,7 +144,6 @@ export const signIn = (req: Request, res: Response) => {
     environment.currentId = responseData.id
     environment.currentUsername = responseData.username
     environment.currentEmail = responseData.email
-    environment.currentUsername = responseData.username
     environment.currentUserRole = responseData.role
     environment.currentAccessToken = responseData.accessToken
     environment.currentFirstName = responseData.first_name
@@ -256,5 +264,50 @@ export const invite = async (req: Request, res: Response) => {
     return res
       .status(500)
       .send({ message: 'Error during sending invite email.' })
+  }
+}
+export const changePassword = async (req: Request, res: Response) => {
+  if (!req.body.current_password || !req.body.new_password) {
+    return res.status(400).send({
+      message: 'Current password or new password is null.',
+    })
+  }
+
+  try {
+    const user = await User.findOne({
+      username: environment.currentUsername,
+    })
+
+    if (!user) {
+      return res.status(404).send({
+        message: 'User Not found.',
+      })
+    }
+
+    const passwordIsValid = bcrypt.compareSync(
+      req.body.current_password,
+      user.password,
+    )
+
+    if (!passwordIsValid) {
+      return res.status(401).send({
+        message: 'Current password is incorrect!',
+      })
+    }
+
+    const hashedNewPassword = bcrypt.hashSync(req.body.new_password, 8)
+
+    user.password = hashedNewPassword
+    await user.save()
+
+    res.status(200).send({
+      message: 'Password changed successfully!',
+    })
+  } catch (err) {
+    console.error('Error during password change:', err)
+    res.status(500).send({
+      message: 'Error during password change.',
+      error: err,
+    })
   }
 }
