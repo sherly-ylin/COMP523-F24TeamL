@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
 import { AbstractControl, ValidationErrors } from '@angular/forms';
+import { stringify } from 'flatted';
 
 @Component({
   selector: 'app-sign-up-page',
@@ -116,7 +117,7 @@ export class SignUpPageComponent implements OnInit {
   }
 
   private isLongEnoughValidator = (
-    control: AbstractControl,
+    control: AbstractControl
   ): ValidationErrors | null => {
     const value = control.value;
     return value != null && value.length >= this.PASSWORD_MIN_LENGTH
@@ -124,31 +125,31 @@ export class SignUpPageComponent implements OnInit {
       : { notLongEnough: true };
   };
   private hasUppercaseValidator(
-    control: AbstractControl,
+    control: AbstractControl
   ): ValidationErrors | null {
     const value = control.value;
     return /[A-Z]/.test(value) ? null : { noUppercase: true };
   }
   private hasLowercaseValidator(
-    control: AbstractControl,
+    control: AbstractControl
   ): ValidationErrors | null {
     const value = control.value;
     return /[a-z]/.test(value) ? null : { noLowercase: true };
   }
   private hasNumberValidator(
-    control: AbstractControl,
+    control: AbstractControl
   ): ValidationErrors | null {
     const value = control.value;
     return /\d/.test(value) ? null : { noNumber: true };
   }
   private hasSymbolValidator(
-    control: AbstractControl,
+    control: AbstractControl
   ): ValidationErrors | null {
     const value = control.value;
     return /[!@#$%^&*(),.?":{}|<>]/.test(value) ? null : { noSymbol: true };
   }
   private passwordsMatchValidator(
-    control: AbstractControl,
+    control: AbstractControl
   ): ValidationErrors | null {
     const password = control.parent?.get('password');
     const confirmPassword = control.parent?.get('confirmPassword');
@@ -158,6 +159,7 @@ export class SignUpPageComponent implements OnInit {
   }
 
   public onSubmit() {
+    console.log("token:", this.token)
     this.http
       .post('http://localhost:3000/api/auth/signup', {
         token: this.token,
@@ -168,11 +170,14 @@ export class SignUpPageComponent implements OnInit {
         next: (response) => {
           console.log(response);
           alert('Verification email sent. Please check your inbox.');
-          this.router.navigate(['']);
+          this.router.navigate(['/login']);
         },
         error: (error) => {
-          alert(error.error.message);
-          console.error(error);
+          const errorMessage =
+            error.error?.message ||
+            'An error occurred. Please try again later.';
+          alert(errorMessage);
+          console.error('Error:', stringify(error));
         },
       });
   }
