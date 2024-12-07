@@ -4,7 +4,12 @@ import { Profile, AuthService } from 'src/app/auth.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
-import { ReviewService } from 'src/app/review.service';
+import {
+  ReviewService,
+  ReviewTypes,
+  PendingReviewResponse,
+} from 'src/app/review.service';
+
 @Component({
   selector: 'app-home',
   imports: [MatButtonModule, MatCardModule, MatListModule],
@@ -14,14 +19,14 @@ import { ReviewService } from 'src/app/review.service';
 })
 export class HomeComponent implements OnInit {
   displayName: string | null | undefined = '';
-
-  pendingReviewCount!: number;
-  completedReviewCount!: number;
   totalReviewCount!: number;
+  completedReviewCount!: number;
+  incompleteReviewCount!: number;
+
   pendingReviews = [
-    { id: 1, title: 'Review 1' },
-    { id: 2, title: 'Review 2' },
-    { id: 3, title: 'Review 3' },
+    { type: 'closed', title: 'Review 1' },
+    { type: 'closed', title: 'Review 2' },
+    { type: 'closed', title: 'Review 3' },
   ];
 
   constructor(
@@ -39,20 +44,15 @@ export class HomeComponent implements OnInit {
         this.displayName = null;
       }
     });
-    this.reviewService.getAllReviewCounts();
-    this.reviewService.getPendingReviewCounts();
-    this.reviewService.allReviewCount$.subscribe(
-      (total) => (this.totalReviewCount = total)
-    );
-    this.reviewService.pendingReviewCount$.subscribe(
-      (pending) => (this.pendingReviewCount = pending)
-    );
-    this.completedReviewCount = this.reviewService.getCompletedReviewCounts();
+    this.reviewService.getReviewCounts();
+    this.reviewService.ReviewCounts$.subscribe((counts) => {
+      this.totalReviewCount = counts.total;
+      this.completedReviewCount = counts.complete;
+      this.incompleteReviewCount = counts.incomplete;
+    });
   }
 
   ngOnInit(): void {}
 
-  goToReview(review_id: number){
-    
-  }
+  goToReview(review_id: number) {}
 }

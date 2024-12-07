@@ -10,7 +10,7 @@ import * as jobDevController from '../controllers/jobDevController.js'
 import * as personLevelController from '../controllers/personLevelController.js'
 import * as staffingController from '../controllers/staffingController.js'
 import { TeamController } from '../controllers/teamController.js'
-import { allAccess, userBoard, adminBoard, getUserProfile, updateProfile} from '../controllers/userController.js'
+import * as userController from '../controllers/userController.js'
 
 import * as authJwt from '../middlewares/authJwt.js'
 import { getCurrentUser } from './getCurrentUserRoutes.js'
@@ -126,18 +126,18 @@ router.post(
 )
 
 // user routes
-router.use('/api/test', verifyMiddleware)
-router.get('/api/test/all', allAccess)
-router.get('/api/test/user', [authJwt.verifyToken], userBoard)
-router.get(
-  '/api/test/admin',
-  [authJwt.verifyToken, authJwt.isAdmin],
-  adminBoard,
-)
+// router.use('/api/test', verifyMiddleware)
+// router.get('/api/test/all', allAccess)
+// router.get('/api/test/user', [authJwt.authVerifyToken], userBoard)
+// router.get(
+//   '/api/test/admin',
+//   [authJwt.verifyToken, authJwt.isAdmin],
+//   adminBoard,
+// )
 
-// Profile
-router.get('/user/profile', getUserProfile)
-router.patch('/user/profile',  updateProfile)
+// User 
+router.get('/user/profile', [authJwt.authVerifyToken], userController.getUserById)
+router.patch('/user/profile', [authJwt.authVerifyToken],  userController.updateUser)
 
 // verify email routes
 router.use('/verify', verifyMiddleware)

@@ -15,7 +15,7 @@ export async function getAllRecordsFromDB() {
           console.log('Found ' + doc)
         } else {
           console.log(
-            'Could not find user with email: ' + environment.currentEmail,
+            'No records found for user with email: ' + environment.currentEmail,
           )
         }
       }

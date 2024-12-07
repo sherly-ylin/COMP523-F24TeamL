@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./my-app  # Path to the Angular app
+    ports:
+      - "4200:4200"  # Map Angular's dev server port to your host
+    volumes:
+      - ./my-app:/app  # Mount the local code to the container
+      - /app/node_modules  # Ignore node_modules for better performance
+    environment:
+      - CHOKIDAR_USEPOLLING=true  # Optional: Fix for file changes not detected in some systems
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./api  # Path to the backend
+    ports:
+      - "3000:3000"  # Expose backend API
+    volumes:
+      - ./api:/app  # Mount the backend code for live updates
+      - /app/node_modules
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/yourdb  # Connect to the Dockerized MongoDB
+    depends_on:
+      - mongodb  # Ensure MongoDB starts first
+
+  mongodb:
+    image: mongo:latest  # Use the latest MongoDB image
+    container_name: mongodb  # Name the container for clarity
+    ports:
+      - "27017:27017"  # Expose MongoDB's default port
+    volumes:
+      - mongodb-data:/data/db  # Persist MongoDB data
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root  # Optional: Set a root username
+      MONGO_INITDB_ROOT_PASSWORD: password  # Optional: Set
+
+  mongodb-data:

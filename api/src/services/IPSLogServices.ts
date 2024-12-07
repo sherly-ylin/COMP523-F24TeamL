@@ -6,6 +6,7 @@ import { User } from '../models/userSchema.js'
 
 /* Runs mongoose function to get all records from the database */
 export async function getAllRecordsFromDB() {
+  
   var signed_in_user = await User.findOne(
     { user_email: environment.currentEmail },
     (err: Error, doc: Document) => {
@@ -16,7 +17,7 @@ export async function getAllRecordsFromDB() {
           console.log('Found ' + doc)
         } else {
           console.log(
-            'Could not find user with email: ' + environment.currentEmail,
+            'No records found for user with email: ' + environment.currentEmail,
           )
         }
       }

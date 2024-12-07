@@ -10,9 +10,9 @@ export const getUserInfo = (req: Request, res: Response) => {
       return
     } else {
       res.json({
-        firstName: result[0].user_fname,
-        lastName: result[0].user_lname,
-        email: result[0].user_email,
+        first_name: result[0].first_name,
+        last_name: result[0].last_name,
+        email: result[0].email,
       })
     }
   })

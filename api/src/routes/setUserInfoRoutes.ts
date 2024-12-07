@@ -8,8 +8,8 @@ export const setUserInfo = async (req: Request, res: Response) => {
     const filter = { user_email: email }
     const replacementDocument = {
       $set: {
-        user_fname: req.body.firstName,
-        user_lname: req.body.lastName,
+        user_fname: req.body.first_name,
+        user_lname: req.body.last_name,
       },
     }
     const result = await User.updateOne(filter, replacementDocument)

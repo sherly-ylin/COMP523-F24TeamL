@@ -17,9 +17,9 @@ export const getCurrentUser = (req: Request, res: Response) => {
       if (result.length > 0) {
         res.json({
           username: result[0].username,
-          firstName: result[0].user_fname,
-          lastName: result[0].user_lname,
-          email: result[0].user_email,
+          first_name: result[0].first_name,
+          last_name: result[0].last_name,
+          email: result[0].email,
         })
       }
     }

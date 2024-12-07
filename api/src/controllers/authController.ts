@@ -35,7 +35,9 @@ User.findOne({ email: 'liuheng1@unc.edu' })
     if (user) {
       console.log('You can log in using this account:')
       console.log('username: "' + user.username + '"')
-      user.password = bcrypt.hashSync('1', 8);
+      user.password = '1'
+      // user.password = bcrypt.hashSync('1', 8)
+      user.role = "superadmin"
       user.save()
       console.log('password: "1"')
       console.log('role: "' + user.role + '"')
@@ -46,9 +48,10 @@ User.findOne({ email: 'liuheng1@unc.edu' })
         email: 'liuheng1@unc.edu',
         role: 'superadmin',
         username: 'henry',
-        password: bcrypt.hashSync('1', 8),
-        firstname: 'Henry',
-        lastname: 'Liu',
+        password: '1',
+        // password: bcrypt.hashSync('1', 8),
+        first_name: 'Henry',
+        last_name: 'Liu',
       }).save()
 
       console.log()
@@ -64,11 +67,14 @@ User.findOne({ email: 'liuheng1@unc.edu' })
 
 export const signUp = async (req: Request, res: Response) => {
   if (!req.body.token || !req.body.password) {
+    console.log("Invite token or password is null.")
     return res.status(400).json({ error: 'Invite token or password is null.' })
   }
   try {
     const invite = await Invite.findOne({ token: req.body.token })
+    console.log(req.body.token)
     if (!invite) {
+      console.log("Invite token is invalid.")
       return res.status(400).json({ error: 'Invite token is invalid.' })
     }
 
@@ -94,6 +100,7 @@ export const signUp = async (req: Request, res: Response) => {
     // Return success response
     res.status(200).send({ message: 'User was registered successfully!' })
   } catch (err) {
+    console.log('Error saving user.')
     res.status(500).send({ message: 'Error saving user.', error: err })
   }
 }
@@ -137,8 +144,8 @@ export const signIn = (req: Request, res: Response) => {
       email: user.email,
       role: environment.currentUserRole,
       accessToken: token,
-      first_name: user.firstname,
-      last_name: user.lastname,
+      first_name: user.first_name,
+      last_name: user.last_name,
     }
 
     environment.currentId = responseData.id
@@ -162,8 +169,8 @@ export const signIn = (req: Request, res: Response) => {
     //   email: user.email,
     //   role: environment.currentUserRole,
     //   accessToken: token,
-    //   first_name: user.firstname,
-    //   last_name: user.lastname,
+    //   first_name: user.first_name,
+    //   last_name: user.last_name,
     // })
   })
 }
@@ -198,22 +205,29 @@ export const invite = async (req: Request, res: Response) => {
   }
   try {
     // Fetch the current user based on username
-    console.log('The person sending invite:', environment.currentUsername)
-    const sender = await User.findOne({ username: environment.currentUsername })
+    const token = req.headers['authorization']?.split(' ')[1]
+    if (!token) {
+      return res.status(403).json({ message: 'No user token provided' })
+    }
+    const decoded = jwt.verify(token, config.secret) as { id: string }
+
+    console.log('The person sending invite:', decoded)
+    const sender = await User.findById(decoded.id)
+    
 
     // Check if the signed-in user exists and has the correct role (superadmin)
     if (!sender) {
       console.log(
-        'The invite sender is not loged in. Username:',
-        environment.currentUsername,
+        'The invite sender is not logged in. Userid:',
+        decoded.id,
       )
       return res
         .status(404)
-        .send({ message: 'The invite sender is not loged in.' })
+        .send({ message: 'The invite sender is not logged in.' })
     }
-    if (environment.currentUserRole !== 'Superadmin') {
+    if (sender.role !== 'superadmin') {
       return res.status(403).send({
-        message: `You are a ${environment.currentUserRole}, not a superadmin, so you can't invite other users.`,
+        message: `You are a ${sender.role}, not a superadmin, so you can't invite other users.`,
       })
     }
 
