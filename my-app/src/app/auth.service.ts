@@ -29,6 +29,9 @@ export interface Profile {
   providedIn: 'root',
 })
 export class AuthService {
+  private router = inject(Router);
+  private http = inject(HttpClient);
+
   private loggedIn = new BehaviorSubject<boolean>(false);
   loggedIn$ = this.loggedIn.asObservable();
 
@@ -37,6 +40,11 @@ export class AuthService {
 
   private baseUrl = 'http://localhost:3000';
 
+  constructor() {}
+
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem('accessToken');
+  }
   //TODO: delete these, just use currentUser
   private email: string | null = null;
   setEmail(email: string): void {
@@ -85,6 +93,47 @@ export class AuthService {
           }
         },
       });
+  }
+
+  sendVerificationCode(username: string) {
+    this.http.post<Response>('http://localhost:3000/api/auth/sendVerificationCode', {
+      username: username,
+    })
+    .pipe(
+      catchError((error) => {
+        alert(error?.error?.message || 'An error occurred during sending verification code.');
+        return of(null); // Return a null observable to prevent breaking the stream
+      }),
+    )
+    .subscribe((response) => {
+      console.log('Response:', response);
+    });
+  }
+
+  verifyEmail(username: string, verificationCode: string) {
+    return this.http.post<boolean>('http://localhost:3000/api/auth/verifyEmail', {
+      username: username,
+      verificationCode: verificationCode,
+    })
+    .pipe(
+      catchError((error) => {
+        alert(error?.error?.message || 'An error occurred during verify email.');
+        return of(null); // Return a null observable to prevent breaking the stream
+      }),
+    )
+  }
+
+  resetPassword(username: string, password: string) {
+    return this.http.post<boolean>('http://localhost:3000/api/auth/resetPassword', {
+      username: username,
+      password: password,
+    })
+    .pipe(
+      catchError((error) => {
+        alert(error?.error?.message || 'An error occurred during reset password.');
+        return of(null); // Return a null observable to prevent breaking the stream
+      }),
+    )
   }
 
   signOut() {
@@ -149,4 +198,8 @@ export class AuthService {
   }): Observable<any> {
     return this.http.put<Profile>(`${this.baseUrl}/password`, data);
   }
+
+  // isAuthenticated():boolean{
+  //   return this.authenticated;
+  // }
 }

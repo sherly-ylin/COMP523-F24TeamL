@@ -1,32 +1,79 @@
-<div class="login-page">
-  <img
-    src="https://www.med.unc.edu/psych/wp-content/uploads/sites/839/2020/03/psychiatry.png"
-    style="width: 100%; padding: 30px; max-width: 400px"
-  />
+@if (!forgotPassword) {
+  <div class="login-page">
+    <img
+      src="https://www.med.unc.edu/psych/wp-content/uploads/sites/839/2020/03/psychiatry.png"
+      style="width: 100%; padding: 30px; max-width: 400px"
+    />
 
-  <h1>Sign In</h1>
-  <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
-    <mat-form-field class="form-field">
-      <mat-label>Username</mat-label>
-      <input matInput formControlName="username" required />
-      @if (
-        username?.touched && username?.invalid && username?.hasError("required")
-      ) {
-        <mat-error>Username is required.</mat-error>
-      }
-    </mat-form-field>
+    <h1>Sign In</h1>
+    <form [formGroup]="signInForm" (ngSubmit)="onSignIn()">
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" required />
+        @if (
+          username?.touched && username?.invalid && username?.hasError("required")
+        ) {
+          <mat-error>Username is required.</mat-error>
+        }
+      </mat-form-field>
 
-    <mat-form-field class="form-field">
-      <mat-label>Password</mat-label>
-      <input matInput type="password" formControlName="password" required />
-      @if (
-        password?.touched && password?.invalid && password?.hasError("required")
-      ) {
-        <mat-error>Password is required.</mat-error>
-      }
-    </mat-form-field>
-    <button mat-flat-button type="submit" [disabled]="!signInForm.valid">
-      Sign In
-    </button>
-  </form>
-</div>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" required />
+        @if (
+          password?.touched && password?.invalid && password?.hasError("required")
+        ) {
+          <mat-error>Password is required.</mat-error>
+        }
+      </mat-form-field>
+      <button mat-button type="button" (click)="onForgotPasswordClick()">Forgot Password?</button>
+
+      <button mat-flat-button type="submit" [disabled]="!signInForm.valid">
+        Sign In
+      </button>
+    </form>
+  </div>
+}
+@if (forgotPassword && !emailVerified) {
+  <div class="reset-password-page">
+    <h1>Verify Email</h1>
+    <form [formGroup]="verifyEmailForm" (ngSubmit)="onVerifyEmail()">
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Username or Email</mat-label>
+        <input matInput formControlName="username" required />
+        @if (
+          username?.touched && username?.invalid && username?.hasError("required")
+        ) {
+          <mat-error>Username is required.</mat-error>
+        }
+      </mat-form-field>
+
+      <button mat-flat-button type="button" (click)="sendVerificationCode()" [disabled]="!username">send verification code</button>
+
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Verification Code</mat-label>
+        <input matInput type="number" formControlName="verificationCode" required />
+        @if (
+          verificationCode?.touched && verificationCode?.invalid && verificationCode?.hasError("required")
+        ) {
+          <mat-error>Verification code is required.</mat-error>
+        }
+      </mat-form-field>
+      <button mat-button type="button" (click)="onRememberPasswordClick()">I remember my password!</button>
+
+      <button mat-flat-button type="submit" [disabled]="!verifyEmailForm.valid">
+        Verify
+      </button>
+    </form>
+  </div>
+}
+@if (forgotPassword && emailVerified) {
+  <div class="reset-password-page">
+    <h1>Reset Password</h1>
+    <form [formGroup]="resetPasswordForm" (ngSubmit)="onResetPassword()">
+      <set-password [formGroup]="resetPasswordForm"></set-password>
+      <button mat-flat-button type="submit" [disabled]="!resetPasswordForm.valid">Reset Password</button>
+    </form>
+    
+  </div>
+}

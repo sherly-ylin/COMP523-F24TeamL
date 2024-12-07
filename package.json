@@ -3,6 +3,9 @@
     "dotenv": "^16.4.5"
   },
   "devDependencies": {
-    "prettier-plugin-organize-imports": "^4.1.0"
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "ts-jest": "^29.2.5"
   }
 }

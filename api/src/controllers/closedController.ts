@@ -1,16 +1,31 @@
 import { Request, Response } from 'express'
 import mongoose from 'mongoose'
 import * as closedServices from '../services/closedServices.js'
+import jwt from 'jsonwebtoken' 
 
 /* Get all controller to retrieve all records. Result variable checks for success. */
 export async function getAllRecords(req: Request, res: Response) {
   try {
-    var result = await closedServices.getAllRecordsFromDB()
-    if (result) {
-      res.status(200).jsonp(result)
-    } else {
-      res.status(200).json({ success: true, msg: 'No records found.' })
+    const token = req.headers.authorization?.split(' ')[1]; // Extract token from Authorization header
+    if (!token) {
+      return res.status(401).json({ message: 'Unauthorized' });
     }
+
+    // Decode the JWT to extract user info
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET!); // Replace with your JWT secret
+    const {userId} = decodedToken as {
+      userId: string;
+    };
+
+    // Pass extracted info to the service layer
+    const records = await closedServices.getAllRecordsFromDB(userId);
+    res.status(200).json(records);
+    // var result = await closedServices.getAllRecordsFromDB()
+    // if (result) {
+    //   res.status(200).jsonp(result)
+    // } else {
+    //   res.status(200).json({ success: true, msg: 'No records found.' })
+    // }
   } catch (e) {
     const err = e as Error
     console.error(err.message)

@@ -14,8 +14,8 @@ const jobDevSchema = new mongoose.Schema({
   user_email: String,
   team_id: { type: Schema.Types.ObjectId, ref: 'Team' },
   admin_id: { type: Schema.Types.ObjectId, ref: 'User' },
-  login: { type: String, required: true },
-  password: { type: String, required: true },
+  login: { type: String},
+  password: { type: String},
   status: {
     type: String,
     enum: ['PENDING', 'IN_PROGRESS', 'COMPLETED'],

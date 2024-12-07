@@ -9,10 +9,16 @@ import * as closedController from '../controllers/closedController.js'
 import * as jobDevController from '../controllers/jobDevController.js'
 import * as personLevelController from '../controllers/personLevelController.js'
 import * as staffingController from '../controllers/staffingController.js'
-import { TeamController } from '../controllers/teamController.js'
-import { allAccess, userBoard, adminBoard, getUserProfile, updateProfile} from '../controllers/userController.js'
+import {TeamController} from '../controllers/teamController.js'
+import {
+  adminBoard,
+  allAccess,
+  userBoard,
+  getUserProfile,
+  updateProfile
+} from '../controllers/userController.js'
 
-import * as authJwt from '../middlewares/authJwt.js'
+import {verifyToken, isAdmin} from '../middlewares/authJwt.js'
 import { getCurrentUser } from './getCurrentUserRoutes.js'
 import { getUserInfo } from './getUserInfoRoutes.js'
 import { setUserInfo } from './setUserInfoRoutes.js'
@@ -26,11 +32,11 @@ router.get('/', (req, res) => {
 })
 
 /* Person Level Routes */
-router.get('/person_level', personLevelController.getAllRecords)
+router.get('/person_level', verifyToken, personLevelController.getAllRecords)
 // Get record
-router.get('/person_level/:id', personLevelController.getRecord)
+router.get('/person_level/:id', verifyToken, personLevelController.getRecord)
 router.get(
-  '/person_level/admin/:admin_id',
+  '/person_level/admin/:admin_id', isAdmin, 
   personLevelController.getRecordByAdmin_ID,
 )
 router.get(
@@ -38,57 +44,57 @@ router.get(
   personLevelController.getRecordByTeam_ID,
 )
 // Add record
-router.post('/person_level', personLevelController.addRecord)
+router.post('/person_level', verifyToken, personLevelController.addRecord)
 // router.post('/person_level/csv/:id', personLevelController.uploadCSVFile)
 // Update record
-router.patch('/person_level/:id', personLevelController.updateRecord)
+router.patch('/person_level/:id', verifyToken, personLevelController.updateRecord)
 // Delete record
-router.delete('/person_level/:id', personLevelController.deleteRecord)
-router.delete('/person_level', personLevelController.deleteAllRecords)
+router.delete('/person_level/:id', verifyToken,  personLevelController.deleteRecord)
+router.delete('/person_level', [verifyToken, isAdmin],  personLevelController.deleteAllRecords)
 
 // All reviews
 router.get('/review/counts', allLogsController.getRecordsCounts)
 router.get('/reviews/pending', allLogsController.getPendingRecordsCounts)
 
 /* Closed Routes */
-router.get('/closed', closedController.getAllRecords)
-router.get('/closed/:id', closedController.getRecord)
-router.get('/closed/admin/:admin_id', closedController.getRecordByAdmin_ID)
+router.get('/closed', verifyToken, closedController.getAllRecords)
+router.get('/closed/:id', verifyToken, closedController.getRecord)
+router.get('/closed/admin/:admin_id', isAdmin, closedController.getRecordByAdmin_ID)
 router.get('/closed/team/:team_id', closedController.getRecordByTeam_ID)
-router.post('/closed', closedController.addRecord)
-router.patch('/closed/:id', closedController.updateRecord)
-router.delete('/closed/:id', closedController.deleteRecord)
-router.delete('/closed', closedController.deleteAllRecords)
+router.post('/closed', verifyToken, closedController.addRecord)
+router.patch('/closed/:id', verifyToken, closedController.updateRecord)
+router.delete('/closed/:id', verifyToken, closedController.deleteRecord)
+router.delete('/closed', [verifyToken, isAdmin], closedController.deleteAllRecords)
 
 /* Staffing Routes */
-router.get('/staffing', staffingController.getAllRecords)
-router.get('/staffing/:id', staffingController.getMyRecords)
-router.get('/staffing/admin/:admin_id', staffingController.getRecordByAdmin_ID)
+router.get('/staffing', verifyToken, staffingController.getAllRecords)
+router.get('/staffing/:id', verifyToken, staffingController.getMyRecords)
+router.get('/staffing/admin/:admin_id', isAdmin, staffingController.getRecordByAdmin_ID)
 router.get('/staffing/team/:team_id', staffingController.getRecordByTeam_ID)
-router.post('/staffing', staffingController.addRecord)
-router.patch('/staffing/:id', staffingController.updateRecord)
-router.delete('/staffing/:id', staffingController.deleteRecord)
-router.delete('/staffing', staffingController.deleteAllRecords)
+router.post('/staffing', verifyToken, staffingController.addRecord)
+router.patch('/staffing/:id', verifyToken, staffingController.updateRecord)
+router.delete('/staffing/:id', verifyToken, staffingController.deleteRecord)
+router.delete('/staffing', [verifyToken, isAdmin], staffingController.deleteAllRecords)
 
 /* JobDev Routes */
-router.get('/jobdev', jobDevController.getAllRecords)
-router.get('/jobdev/:id', jobDevController.getRecord)
-router.get('/jobdev/admin/:admin_id', jobDevController.getRecordByAdmin_ID)
+router.get('/jobdev', verifyToken, jobDevController.getAllRecords)
+router.get('/jobdev/:id', verifyToken, jobDevController.getRecord)
+router.get('/jobdev/admin/:admin_id', isAdmin, jobDevController.getRecordByAdmin_ID)
 router.get('/jobdev/team/:team_id', jobDevController.getRecordByTeam_ID)
-router.post('/jobdev', jobDevController.addRecord)
-router.patch('/jobdev/:id', jobDevController.updateRecord)
-router.delete('/jobdev/:id', jobDevController.deleteRecord)
-router.delete('/jobdev', jobDevController.deleteAllRecords)
+router.post('/jobdev', verifyToken, jobDevController.addRecord)
+router.patch('/jobdev/:id', verifyToken, jobDevController.updateRecord)
+router.delete('/jobdev/:id', verifyToken, jobDevController.deleteRecord)
+router.delete('/jobdev', [verifyToken, isAdmin], jobDevController.deleteAllRecords)
 
 /* IPSLog Routes */
-router.get('/ipslog', IPSLogController.getAllRecords)
-router.get('/ipslog/:id', IPSLogController.getRecord)
-router.get('/ipslog/admin/:admin_id', IPSLogController.getRecordByAdmin_ID)
+router.get('/ipslog', verifyToken, IPSLogController.getAllRecords)
+router.get('/ipslog/:id', verifyToken, IPSLogController.getRecord)
+router.get('/ipslog/admin/:admin_id', isAdmin, IPSLogController.getRecordByAdmin_ID)
 router.get('/ipslog/team/:team_id', IPSLogController.getRecordByTeam_ID)
-router.post('/ipslog', IPSLogController.addRecord)
-router.patch('/ipslog/:id', IPSLogController.updateRecord)
-router.delete('/ipslog/:id', IPSLogController.deleteRecord)
-router.delete('/ipslog', IPSLogController.deleteAllRecords)
+router.post('/ipslog', verifyToken, IPSLogController.addRecord)
+router.patch('/ipslog/:id', verifyToken, IPSLogController.updateRecord)
+router.delete('/ipslog/:id', verifyToken, IPSLogController.deleteRecord)
+router.delete('/ipslog', [verifyToken, isAdmin], IPSLogController.deleteAllRecords)
 
 router.get('/alllog', allLogsController.getAllRecordsFromAllServices)
 
@@ -118,6 +124,16 @@ router.post(
 )
 
 router.post('/api/auth/signin', authController.signIn)
+router.post(
+  '/api/auth/sendVerificationCode',
+  [verifySignUp.transformUsernameToEmail],
+  authController.sendVerificationCode,
+)
+router.post(
+  '/api/auth/verifyEmail',
+  [verifySignUp.transformUsernameToEmail],
+  authController.verifyEmail,
+)
 
 router.post(
   '/api/auth/invite',

@@ -5,6 +5,7 @@ import * as jobDevServices from '../services/jobDevServices.js'
 import * as personLevelServices from '../services/personLevelServices.js'
 import * as staffingServices from '../services/staffingServices.js'
 import * as closedServices from '../services/closedServices.js'
+import { environment } from '../../environment.js'
 
 // New controller function to aggregate all records
 export async function getAllRecordsFromAllServices(
@@ -119,5 +120,56 @@ export async function getPendingRecordsCounts(req: Request, res: Response) {
   } catch (err) {
     console.error('Error retrieving pending records counts:', err)
     res.status(500).json({ success: false, msg: 'Failed to retrieve pending reviews.' })
+  }
+}
+
+export async function setupReview(req: Request, res: Response) {
+  try {
+    const { review_type, team_id } = req.body;
+
+    // Validate input
+    if (!review_type || !team_id) {
+      return res.status(400).json({ success: false, msg: 'Review type and team_id are required' });
+    }
+
+    const admin_id = environment.currentId; // Assuming `req.user` contains logged-in user info
+    if (!admin_id) {
+      return res.status(403).json({ success: false, msg: 'Unauthorized' });
+    }
+
+    const non_review: any = {
+      admin_id: admin_id,
+      team_id: team_id,
+      assigned_date: new Date().toLocaleString(),
+      status: 'PENDING',
+      // login: String,
+      // password: String
+    }
+
+    // Call service function to create the review
+    if(review_type == "closed") {
+      await closedServices.addRecordToDB(non_review)
+    }
+    else if(review_type == "ips") {
+      await IPSLogServices.addRecordToDB(non_review)
+    }
+    else if(review_type == "person") {
+      await personLevelServices.addRecordToDB(non_review)
+    }
+    else if(review_type == "jobdev") {
+      await jobDevServices.addRecordToDB(non_review)
+    }
+    else if(review_type == "staffing") {
+      await staffingServices.addRecordToDB(non_review)
+    }
+
+    // Respond with the newly created review
+    res.status(201).json({
+      success: true,
+      msg: 'Review successfully created'
+    });
+  } catch (err) {
+    console.error('Error setting up review:', err);
+    res.status(500).json({ success: false, msg: 'Failed to set up review.' });
   }
 }

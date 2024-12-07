@@ -1,32 +1,30 @@
-import { APP_ID, Component, OnInit, signal, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import {
-  FormBuilder,
-  FormGroup,
-  ReactiveFormsModule,
-} from '@angular/forms';
+  Component,
+  inject,
+  signal,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { SetPasswordComponent } from '../set-password/set-password.component'
+
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Component({
-  selector: 'app-sign-up-page',
-  templateUrl: './sign-up-page.component.html',
-  styleUrls: ['./sign-up-page.component.css'],
-  imports: [
-    ReactiveFormsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-  ],
+  selector: 'set-password',
+  imports: [MatInputModule, MatButtonModule, MatIconModule],
+  templateUrl: './set-password.component.html',
+  styleUrl: './set-password.component.css',
 })
-export class SignUpPageComponent implements OnInit {
-  private router = inject(Router);
-  private http = inject(HttpClient);
-  private route = inject(ActivatedRoute);
-  private formBuilder = inject(FormBuilder);
+export class SetPasswordComponent {
+  private fb = inject(FormBuilder);
+
+  @Input() formGroup!: FormGroup;
+
+  @Output() formGroupChange = new EventEmitter<FormGroup>();
 
   readonly PASSWORD_MIN_LENGTH = 8;
   readonly PASSWORD_MIN_UPPER = 1;
@@ -34,12 +32,9 @@ export class SignUpPageComponent implements OnInit {
   readonly PASSWORD_MIN_NUMBER = 1;
   readonly PASSWORD_MIN_SYMBOL = 1;
 
-  signUpForm!: FormGroup;
-  token!: string;
-  email!: string;
-
   isPasswordVisible = signal(false);
   isConfirmPasswordVisible = signal(false);
+
   togglePasswordVisibility(event: MouseEvent) {
     this.isPasswordVisible.set(!this.isPasswordVisible());
     event.stopPropagation();
@@ -49,55 +44,55 @@ export class SignUpPageComponent implements OnInit {
     event.stopPropagation();
   }
 
-  clearUsernameField() {
-    this.username?.setValue('');
+  clearPasswordField() {
+    this.password?.setValue('');
   }
-  setUsernameDefaultValue() {
-    if (this.username?.value.trim() === '') {
-      this.username?.setValue(this.email);
-      this.username?.setValue(this.email);
+  clearConfirmPasswordField() {
+    this.confirmPassword?.setValue('');
+  }
+  resetConfirmPasswordField() {
+    this.confirmPassword?.reset();
+  }
+  markConfirmPasswordUntouched() {
+    this.confirmPassword?.markAsUntouched();
+  }
+  markConfirmPasswordUntouchedIfPasswordInvalid() {
+    if (!this.password?.valid) {
+      this.markConfirmPasswordUntouched();
     }
   }
 
-  ngOnInit(): void {
-    this.token = this.route.snapshot.paramMap.get('token') ?? '';
-    this.route.data.subscribe((response: any) => {
-      this.email = response.invite.email;
-    });
-    this.route.data.subscribe((response: any) => {
-      this.email = response.invite.email;
-    });
+  constructor() {}
 
-    // Initialize form with validation rules
-    this.signUpForm = this.formBuilder.group({
-      username: [this.email, []],
-      password: [
-        '',
-        [
+  ngOnInit() {
+    console.log('formGroup:', this.formGroup);
+    if (this.formGroup) {
+      this.formGroup.addControl(
+        'password',
+        this.fb.control('', [
           Validators.required,
           this.isLongEnoughValidator,
           this.hasUppercaseValidator,
           this.hasLowercaseValidator,
           this.hasNumberValidator,
           this.hasSymbolValidator,
-        ],
-      ],
-      confirmPassword: [
-        '',
-        [Validators.required, this.passwordsMatchValidator],
-      ],
-    });
+        ]),
+      );
+      this.formGroup.addControl(
+        'confirmPassword',
+        this.fb.control('', [
+          Validators.required,
+          this.passwordsMatchValidator,
+        ]),
+      );
+    }
   }
 
-  // Getters for easy access in template
-  get username() {
-    return this.signUpForm.get('username');
-  }
   get password() {
-    return this.signUpForm.get('password');
+    return this.formGroup.get('password');
   }
   get confirmPassword() {
-    return this.signUpForm.get('confirmPassword');
+    return this.formGroup.get('confirmPassword');
   }
 
   private isLongEnoughValidator = (
@@ -140,25 +135,5 @@ export class SignUpPageComponent implements OnInit {
     return password?.invalid || password?.value == confirmPassword?.value
       ? null
       : { passwordsDontMatch: true };
-  }
-
-  public onSubmit() {
-    this.http
-      .post('http://localhost:3000/api/auth/signup', {
-        token: this.token,
-        username: this.username,
-        password: this.password,
-      })
-      .subscribe({
-        next: (response) => {
-          console.log(response);
-          alert('Verification email sent. Please check your inbox.');
-          this.router.navigate(['']);
-        },
-        error: (error) => {
-          alert(error.error.message);
-          console.error(error);
-        },
-      });
   }
 }

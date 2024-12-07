@@ -6,9 +6,39 @@ import { Error, Types } from 'mongoose'
 import crypto from 'crypto'
 import { environment } from '../../environment.js'
 import config from '../config.js'
+import { EmailVerification } from '../models/emailVerificationSchema.js'
 import { Invite } from '../models/inviteSchema.js'
 import { User } from '../models/userSchema.js'
 import * as verify from './emailVerifyController.js'
+
+// Setting up the initial Superadmin account (username: henry passwrod: 1)
+User.findOne({ email: 'liuheng1@unc.edu' })
+  .then((user) => {
+    console.log()
+    console.log('You can log in using this Superadmin account:')
+    console.log('username: "henry"')
+    console.log('password: "1"')
+    console.log()
+    if (user) {
+    console.log()
+    console.log('You can log in using this Superadmin account:')
+    console.log('username: "henry"')
+    console.log('password: "1"')
+    console.log()
+    } else {
+      new User({
+        email: 'liuheng1@unc.edu',
+        role: 'Superadmin',
+        username: 'henry',
+        password: bcrypt.hashSync('1', 8),
+        firstname: 'Henry',
+        lastname: 'Liu',
+      }).save()
+    }
+  })
+  .catch((error) => {
+    console.error('Error occurred while finding user henry:', error)
+  })
 
 export async function getInvite(req: Request, res: Response) {
   try {
@@ -30,37 +60,37 @@ export async function getInvite(req: Request, res: Response) {
 }
 
 // Setting up the initial Superadmin account (username: henry passwrod: 1)
-User.findOne({ email: 'liuheng1@unc.edu' })
-  .then((user) => {
-    if (user) {
-      console.log('You can log in using this account:')
-      console.log('username: "' + user.username + '"')
-      user.password = bcrypt.hashSync('1', 8);
-      user.save()
-      console.log('password: "1"')
-      console.log('role: "' + user.role + '"')
-      console.log()
+// User.findOne({ email: 'liuheng1@unc.edu' })
+//   .then((user) => {
+//     if (user) {
+//       console.log('You can log in using this account:')
+//       console.log('username: "' + user.username + '"')
+//       user.password = bcrypt.hashSync('1', 8);
+//       user.save()
+//       console.log('password: "1"')
+//       console.log('role: "' + user.role + '"')
+//       console.log()
     
-    } else {
-      new User({
-        email: 'liuheng1@unc.edu',
-        role: 'superadmin',
-        username: 'henry',
-        password: bcrypt.hashSync('1', 8),
-        firstname: 'Henry',
-        lastname: 'Liu',
-      }).save()
+//     } else {
+//       new User({
+//         email: 'liuheng1@unc.edu',
+//         role: 'superadmin',
+//         username: 'henry',
+//         password: bcrypt.hashSync('1', 8),
+//         firstname: 'Henry',
+//         lastname: 'Liu',
+//       }).save()
 
-      console.log()
-      console.log('You can log in using this superadmin account:')
-      console.log('username: "henry"')
-      console.log('password: "1"')
-      console.log()
-    }
-  })
-  .catch((error) => {
-    console.error('Error occurred while finding user henry:', error)
-  })
+//       console.log()
+//       console.log('You can log in using this superadmin account:')
+//       console.log('username: "henry"')
+//       console.log('password: "1"')
+//       console.log()
+//     }
+//   })
+//   .catch((error) => {
+//     console.error('Error occurred while finding user henry:', error)
+//   })
 
 export const signUp = async (req: Request, res: Response) => {
   if (!req.body.token || !req.body.password) {
@@ -140,7 +170,7 @@ export const signIn = (req: Request, res: Response) => {
       first_name: user.firstname,
       last_name: user.lastname,
     }
-
+    
     environment.currentId = responseData.id
     environment.currentUsername = responseData.username
     environment.currentEmail = responseData.email
@@ -149,7 +179,6 @@ export const signIn = (req: Request, res: Response) => {
     environment.currentFirstName = responseData.first_name
     environment.currentLastName = responseData.last_name
 
-    // Add team_name if the user is a provider
     if (environment.currentUserRole === 'provider') {
       responseData.team_name = user.team_name || null
     }
@@ -167,6 +196,64 @@ export const signIn = (req: Request, res: Response) => {
     // })
   })
 }
+
+function generateRandomEmailVerificationCode(): string {
+  return Math.floor(Math.random() * 1000000).toString().padStart(6, "0");
+}
+
+async function generateUniqueEmailVerificationCode() {
+  let verificationCode, existingDoc
+
+  // Keep generating a new code until it is unique
+  do {
+    verificationCode = generateRandomEmailVerificationCode()
+    existingDoc = await EmailVerification.findOne({ verificationCode })
+  } while (existingDoc)
+
+  return verificationCode
+}
+
+export const sendVerificationCode = async (req: Request, res: Response) => {
+  try {
+    const expiresAt = new Date()
+    expiresAt.setTime(expiresAt.getTime() + 1000 * 60 * 15) // Expires in 15 minutes
+
+    // Create and store the new Email Verification
+    const emailVerification = new EmailVerification({
+      email: req.body.email,
+      verificationCode: await generateUniqueEmailVerificationCode(),
+      status: 'pending',
+      expiresAt: expiresAt,
+    })
+    await emailVerification.save()
+
+    // Send the email verification code
+    await verify.sendEmailVerificationCode(emailVerification)
+
+    // Send a success response
+    return res.status(200).send({
+      message: 'Successfully sent email verification code.',
+    })
+  } catch (err) {
+    // Handle error
+    console.error('Error during sending email verification code:', err)
+    return res
+      .status(500)
+      .send({ message: 'Error during sending email verification code.' })
+  }
+}
+
+export const verifyEmail = async (req: Request, res: Response) => {
+  const verificationRecord = await EmailVerification.findOne({ email: req.body.email })
+  if (!verificationRecord) {
+    return res.status(404).send({ message: 'Verification record not found.' })
+  }
+
+  const isValid = req.body.verificationCode.toString() === verificationRecord.verificationCode
+
+  return res.status(200).json({ isValid })
+}
+    // Add team_name if the user is a provide
 
 function generateSecureRandomString(length: number): string {
   return crypto.randomBytes(length).toString('hex').slice(0, length)

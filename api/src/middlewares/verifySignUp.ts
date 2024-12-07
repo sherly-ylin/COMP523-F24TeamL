@@ -73,3 +73,40 @@ export const checkRolesExisted = async (
       .send({ message: 'An error occurred while checking roles', error: err })
   }
 }
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+export const transformUsernameToEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    if (req.body && req.body.username) {
+      const usernameOrEmail = req.body.username
+      if (emailRegex.test(usernameOrEmail)) {
+        req.body.email = usernameOrEmail
+      } else {
+        const user = await User.findOne({ username: usernameOrEmail })
+        if (!user) {
+          return res.status(400).send({
+            message: 'Invalid username.',
+          })
+        }
+        req.body.email = user.email
+      }
+    } else {
+      return res.status(400).send({
+        message: 'Username is null.',
+      })
+    }
+    next()
+  } catch (err) {
+    res
+      .status(500)
+      .send({
+        message: 'An error occurred while transforming username to email.',
+        error: err,
+      })
+  }
+}

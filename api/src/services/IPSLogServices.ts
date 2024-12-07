@@ -5,9 +5,9 @@ import { IPSLogModel } from '../models/IPSLogSchema.js'
 import { User } from '../models/userSchema.js'
 
 /* Runs mongoose function to get all records from the database */
-export async function getAllRecordsFromDB() {
+export async function getAllRecordsFromDB(userId: String) {
   var signed_in_user = await User.findOne(
-    { user_email: environment.currentEmail },
+    {userId},
     (err: Error, doc: Document) => {
       if (err) {
         throw err
@@ -45,7 +45,7 @@ export async function getAllRecordsFromDB() {
   } else if (signed_in_user != null && signed_in_user.role == 'provider') {
     console.log('🍎 I am provider')
     var my_records = await IPSLogModel.find(
-      { user_email: environment.currentEmail },
+      {userId},
       (err: Error, doc: Document) => {
         if (err) {
           throw err
@@ -54,8 +54,7 @@ export async function getAllRecordsFromDB() {
             console.log('Found ' + doc)
           } else {
             console.log(
-              'Could not find records with user email: ' +
-                environment.currentEmail,
+              'Could not find records with user email: '
             )
           }
         }
@@ -123,7 +122,7 @@ export async function getRecordsByTeam_ID(team_id: Types.ObjectId) {
 /* Runs mongoose function to add an entire record to the database */
 export async function addRecordToDB(body: object) {
   var record = new IPSLogModel(body)
-  record.user_email = environment.currentEmail
+  // record.user_email = environment.currentEmail
   var status = await IPSLogModel.findOne(body, (err: Error, doc: Document) => {
     if (err) {
       throw err

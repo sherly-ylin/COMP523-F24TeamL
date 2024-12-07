@@ -257,3 +257,145 @@ test('delete a record', async () => {
   })
   mongoose.disconnect()
 })
+
+
+test('retrieve records by admin_id', async () => {
+  try {
+    await mongoose.connect(DATABASE_URI);
+    console.log('Successfully connected to the server');
+  } catch (e) {
+    const err = e as Error;
+    console.error(err.message);
+  }
+  
+  const adminId = new mongoose.Types.ObjectId();
+  const testRecords = [
+    { admin_id: adminId, staff_name: 'admin record 1', status: 'completed' },
+    { admin_id: adminId, staff_name: 'admin record 2', status: 'incomplete' },
+  ];
+
+  await staffingModel.insertMany(testRecords);
+  const records = await staffingServices.getRecordsByAdmin_ID(adminId);
+  
+  expect(records).toHaveLength(2);
+  expect(records[0].staff_name).toBe('admin record 1');
+  expect(records[1].staff_name).toBe('admin record 2');
+  
+  mongoose.disconnect();
+});
+
+
+test('retrieve records by team_id', async () => {
+  try {
+    await mongoose.connect(DATABASE_URI);
+    console.log('Successfully connected to the server');
+  } catch (e) {
+    const err = e as Error;
+    console.error(err.message);
+  }
+  
+  const teamId = new mongoose.Types.ObjectId();
+  const testRecords = [
+    { team_id: teamId, staff_name: 'team record 1', status: 'pending' },
+    { team_id: teamId, staff_name: 'team record 2', status: 'completed' },
+  ];
+
+  await staffingModel.insertMany(testRecords);
+  const records = await staffingServices.getRecordsByTeam_ID(teamId);
+  
+  expect(records).toHaveLength(2);
+  expect(records[0].staff_name).toBe('team record 1');
+  expect(records[1].status).toBe('completed');
+  
+  mongoose.disconnect();
+});
+
+
+test('retrieve review counts', async () => {
+  try {
+    await mongoose.connect(DATABASE_URI);
+    console.log('Successfully connected to the server');
+  } catch (e) {
+    const err = e as Error;
+    console.error(err.message);
+  }
+  
+  const testRecords = [
+    { status: 'completed', staff_name: 'record 1' },
+    { status: 'completed', staff_name: 'record 2' },
+    { status: 'incomplete', staff_name: 'record 3' },
+  ];
+
+  await staffingModel.insertMany(testRecords);
+  const counts = await staffingServices.getReviewCounts({ role: 'superadmin' });
+  
+  expect(counts.total).toBe(3);
+  expect(counts.completed).toBe(2);
+  expect(counts.incomplete).toBe(1);
+  
+  mongoose.disconnect();
+});
+
+
+test('retrieve records by admin_id with no results', async () => {
+  try {
+    await mongoose.connect(DATABASE_URI);
+    console.log('Successfully connected to the server');
+  } catch (e) {
+    const err = e as Error;
+    console.error(err.message);
+  }
+
+  const adminId = new mongoose.Types.ObjectId();
+  const records = await staffingServices.getRecordsByAdmin_ID(adminId);
+  
+  expect(records).toHaveLength(0);
+  
+  mongoose.disconnect();
+});
+
+
+test('retrieve pending reviews', async () => {
+  try {
+    await mongoose.connect(DATABASE_URI);
+    console.log('Successfully connected to the server');
+  } catch (e) {
+    const err = e as Error;
+    console.error(err.message);
+  }
+  
+  const teamId = new mongoose.Types.ObjectId();
+  const testRecords = [
+    { team_id: teamId, staff_name: 'pending record 1', status: 'pending' },
+    { team_id: teamId, staff_name: 'pending record 2', status: 'pending' },
+  ];
+
+  await staffingModel.insertMany(testRecords);
+  const pendingReviews = await staffingServices.getPendingReviews(teamId);
+  
+  expect(pendingReviews).toHaveLength(2);
+  expect(pendingReviews[0].status).toBe('pending');
+  
+  mongoose.disconnect();
+});
+
+
+test('unauthorized user retrieves no records', async () => {
+  try {
+    await mongoose.connect(DATABASE_URI);
+    console.log('Successfully connected to the server');
+  } catch (e) {
+    const err = e as Error;
+    console.error(err.message);
+  }
+  
+  const user = { role: 'unauthorized', team_id: null };
+  const counts = await staffingServices.getReviewCounts(user);
+  
+  expect(counts.completed).toBe(0);
+  expect(counts.incomplete).toBe(0);
+  
+  mongoose.disconnect();
+});
+
+

@@ -4,27 +4,32 @@ import { closedModel } from '../models/closedSchema.js'
 import { User } from '../models/userSchema.js'
 
 /* Runs mongoose function to get all records from the database */
-export async function getAllRecordsFromDB() {
-  var signed_in_user = await User.findOne(
-    { user_email: environment.currentEmail },
-    (err: Error, doc: Document) => {
-      if (err) {
-        throw err
-      } else {
-        if (doc) {
-          console.log('Found ' + doc)
-        } else {
-          console.log(
-            'Could not find user with email: ' + environment.currentEmail,
-          )
-        }
-      }
-    },
-  ).clone()
+export async function getAllRecordsFromDB(userId: String) {
+  // var signed_in_user = await User.findOne(
+  //   { user_email: environment.currentEmail },
+  //   (err: Error, doc: Document) => {
+  //     if (err) {
+  //       throw err
+  //     } else {
+  //       if (doc) {
+  //         console.log('Found ' + doc)
+  //       } else {
+  //         console.log(
+  //           'Could not find user with email: ' + environment.currentEmail,
+  //         )
+  //       }
+  //     }
+  //   },
+  // ).clone()
+
+  const user = await User.findById(userId).exec();
+  if (!user) {
+    throw new Error('User not found.');
+  }
 
   if (
-    signed_in_user != null &&
-    (signed_in_user.role == 'superadmin' || signed_in_user.role == 'admin')
+    user != null &&
+    (user.role == 'superadmin' || user.role == 'admin')
   ) {
     console.log('🍎 I am superadmin/admin')
     var records = await closedModel
@@ -41,11 +46,11 @@ export async function getAllRecordsFromDB() {
       })
       .clone()
     return records
-  } else if (signed_in_user != null && signed_in_user.role == 'provider') {
+  } else if (user != null && user.role == 'provider') {
     console.log('🍎 I am provider')
     var my_records = await closedModel
       .find(
-        { user_email: environment.currentEmail },
+        {uid: userId},
         (err: Error, doc: Document) => {
           if (err) {
             throw err
@@ -54,8 +59,7 @@ export async function getAllRecordsFromDB() {
               console.log('Found ' + doc)
             } else {
               console.log(
-                'Could not find records with user email: ' +
-                  environment.currentEmail,
+                'Could not find records with user email: '
               )
             }
           }
@@ -122,7 +126,7 @@ export async function getRecordsByTeam_ID(team_id: Types.ObjectId) {
 /* Runs mongoose function to add an entire record to the database */
 export async function addRecordToDB(body: any) {
   var record = new closedModel(body)
-  record.user_email = environment.currentEmail
+  // record.user_email = environment.currentEmail
   var status = await closedModel
     .findOne(body, (err: Error, doc: Document) => {
       if (err) {
@@ -204,8 +208,6 @@ export async function deleteAllRecordsFromDB() {
 
   return records
 }
-
-
 
 export async function getReviewCounts(user: any) {
   try {
