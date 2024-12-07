@@ -8,6 +8,8 @@ import { environment } from '../../environment.js'
 import config from '../config.js'
 import { Invite } from '../models/inviteSchema.js'
 import { User } from '../models/userSchema.js'
+import { Team } from '../models/teamSchema.js';
+
 import * as verify from './emailVerifyController.js'
 
 export async function getInvite(req: Request, res: Response) {
@@ -72,24 +74,23 @@ export const signUp = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Invite token is invalid.' })
     }
 
-    if (invite.role == 'provider') {
-      const user = new User({
-        email: invite.email,
-        role: invite.role,
-        team_id: Types.ObjectId,
-        team_name: String,
-        username: req.body.username ?? invite.email,
-        password: bcrypt.hashSync(req.body.password, 8),
-      })
-    }
-    // Save the new user
     const user = new User({
       email: invite.email,
       role: invite.role,
       username: req.body.username ?? invite.email,
       password: bcrypt.hashSync(req.body.password, 8),
-    })
-    await user.save()
+    });
+
+    await user.save();
+
+    // Add user to the team's users[] list
+    if (invite.role === 'provider' && invite.team_id) {
+      const team = await Team.findById(invite.team_id);
+      if (team) {
+        team.users.push(user.id);
+        await team.save();
+      }
+    }
 
     // Return success response
     res.status(200).send({ message: 'User was registered successfully!' })
@@ -249,6 +250,10 @@ export const invite = async (req: Request, res: Response) => {
       expiresAt: expiresAt,
       inviter: sender._id,
     })
+    // Add team_id if the invitee is a provider
+    if (req.body.role === 'provider' && req.body.team_id) {
+      invite.team_id = req.body.team_id;
+    }
     await invite.save()
 
     // Send the corresponding invitation email based on the user's role

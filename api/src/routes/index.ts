@@ -98,6 +98,9 @@ router.post('/team', teamController.createTeam)
 router.put('/team/:id', teamController.updateTeam)
 router.get('/team/:id', teamController.getTeam)
 router.delete('/team/:id', teamController.deleteTeam)
+router.post('/team/add-user', teamController.addUserToTeam);
+router.get('/team/user/:user_id', teamController.getTeamByUser);
+
 
 // auth routes
 router.use(function (req, res, next) {
