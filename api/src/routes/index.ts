@@ -16,7 +16,7 @@ import * as authJwt from '../middlewares/authJwt.js'
 import { getCurrentUser } from './getCurrentUserRoutes.js'
 import { getUserInfo } from './getUserInfoRoutes.js'
 import { setUserInfo } from './setUserInfoRoutes.js'
-import { getUniqueString, verifyMiddleware } from './verifyEmailRoutes.js'
+// import { getUniqueString, verifyMiddleware } from './verifyEmailRoutes.js'
 
 const router = express.Router()
 
@@ -140,8 +140,8 @@ router.get('/user/profile', [authJwt.authVerifyToken], userController.getUserByI
 router.patch('/user/profile', [authJwt.authVerifyToken],  userController.updateUser)
 
 // verify email routes
-router.use('/verify', verifyMiddleware)
-router.get('/verify/:uniqueString', getUniqueString)
+// router.use('/verify', verifyMiddleware)
+// router.get('/verify/:uniqueString', getUniqueString)
 
 // misc
 router.use('/userInfo', getUserInfo)

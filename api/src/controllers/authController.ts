@@ -9,6 +9,7 @@ import config from '../config.js'
 import { Invite } from '../models/inviteSchema.js'
 import { User } from '../models/userSchema.js'
 import * as verify from './emailVerifyController.js'
+import * as userService from '../services/userService.js'
 
 export async function getInvite(req: Request, res: Response) {
   try {
@@ -35,30 +36,31 @@ User.findOne({ email: 'liuheng1@unc.edu' })
     if (user) {
       console.log('You can log in using this account:')
       console.log('username: "' + user.username + '"')
-      user.password = '1'
-      // user.password = bcrypt.hashSync('1', 8)
-      user.role = "superadmin"
-      user.save()
-      console.log('password: "1"')
-      console.log('role: "' + user.role + '"')
-      console.log()
-    
+      user.password = '1';
+      user.role = "superadmin";
+      console.log('is this the problem?')
+      user.save();
+      console.log('password: "1"');
+      console.log('role: "' + user.role + '"');
+      console.log();
     } else {
-      new User({
+      const user = userService.createUserFromDB({
         email: 'liuheng1@unc.edu',
         role: 'superadmin',
         username: 'henry',
         password: '1',
-        // password: bcrypt.hashSync('1', 8),
         first_name: 'Henry',
         last_name: 'Liu',
-      }).save()
-
-      console.log()
-      console.log('You can log in using this superadmin account:')
-      console.log('username: "henry"')
-      console.log('password: "1"')
-      console.log()
+      })
+      if (!user) {
+        console.log('Failed to insert superadmin user')
+      }else{
+        console.log()
+        console.log('You can log in using this superadmin account:')
+        console.log('username: "henry"')
+        console.log('password: "1"')
+        console.log()
+      }
     }
   })
   .catch((error) => {
