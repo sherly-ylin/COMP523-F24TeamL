@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Profile, AuthService } from 'src/app/auth.service';
 import {
   MatSidenavContainer,
@@ -35,17 +35,27 @@ import { MatCardModule } from '@angular/material/card';
   ],
 })
 export class DashboardComponent implements OnInit {
-  private router = inject(Router);
-  public authService = inject(AuthService);
+  userRole: string;
 
-  userRole: string | null = null;
-
-  constructor() {}
+  constructor(private router: Router,
+    private route: ActivatedRoute,
+     protected authService: AuthService) {
+    this.userRole = this.authService.currentUser?.role ?? '';
+    this.authService.profile$.subscribe((profile: Profile | null) => {
+      if (profile) {
+        this.userRole = profile.role;
+        console.log(this.userRole);
+      }
+    });
+  }
 
   ngOnInit(): void {
-    const user = this.authService.currentUser;
-    if (user) {
-      this.userRole = user.role;
+    const profileData = this.route.snapshot.data['profile'];
+    console.log("dashboard:", profileData);
+
+    if (profileData) {
+      this.userRole = profileData.role
     }
+  
   }
 }

@@ -1,47 +1,65 @@
 <div class="invite-user-page">
-  <h1>Invite User</h1>
   <form (ngSubmit)="onSubmit()">
-    <mat-form-field class="form-field">
-      <mat-label>Email</mat-label>
-      <input matInput [(ngModel)]="email" name="email" />
-      @if (submitted && !email) {
-        <mat-error>A valid email address is required!</mat-error>
-      }
-    </mat-form-field>
+    <mat-card class="container-card" appearance="outlined">
+      <mat-card-header class="header">
+        <mat-card-title>
+          @if (user_role === 'superadmin'){
+            Invite User
+          }
+          @else{
+            Invite Provider
+          }
+        
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="fields">
+          <mat-form-field class="form-field">
+            <mat-label>Email</mat-label>
+            <input matInput [(ngModel)]="email" name="email" />
+            @if (submitted && !email) {
+            <mat-error>A valid email address is required!</mat-error>
+            }
+          </mat-form-field>
+          @if (user_role === 'superadmin'){
+          <div>
+            <label id="role-radio-group-label">Invite as a:</label>
+            <mat-radio-group aria-labelledby="radio-group-label" [(ngModel)]="role" name="role">
+              <mat-radio-button value="Provider">Provider</mat-radio-button>
+              <mat-radio-button value="Admin">Admin</mat-radio-button>
+              <mat-radio-button value="Superadmin">Superadmin</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          }
+          @if( role === 'Provider'){
+            <mat-form-field class="form-field">
+              <mat-label>Select team(s)</mat-label>
+              <mat-select [(value)]="team">
+                <mat-option>empty</mat-option>
+                @for (team of teams; track team.team_name) {
+                <mat-option [value]="team.id">{{ team.team_name }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          }
+          <div>
+            <label id="timespan-radio-group-label">Expires after:</label>
+            <mat-radio-group aria-labelledby="timespan-radio-group-label" [(ngModel)]="timespanString" name="timespan"
+              (change)="onTimespanChange()">
+              <mat-radio-button value="3 day">3 days</mat-radio-button>
+              <mat-radio-button value="7 day">7 days</mat-radio-button>
+              <mat-radio-button value="1 month">1 month</mat-radio-button>
+            </mat-radio-group>
+          </div>
 
-    <div>
-      <label id="role-radio-group-label">Invite as a:</label>
-      <mat-radio-group
-        aria-labelledby="radio-group-label"
-        [(ngModel)]="role"
-        name="role"
-      >
-        <mat-radio-button value="provider">Provider</mat-radio-button>
-        <mat-radio-button value="admin">Admin</mat-radio-button>
-        <mat-radio-button value="superadmin">Superadmin</mat-radio-button>
-      </mat-radio-group>
-    </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-flat-button type="submit" [disabled]="!email || !role || !timespanString">
+          Send Invite Email
+        </button>
+      </mat-card-actions>
+    </mat-card>
 
-    <div>
-      <label id="timespan-radio-group-label">Expires after:</label>
-      <mat-radio-group
-        aria-labelledby="timespan-radio-group-label"
-        [(ngModel)]="timespanString"
-        name="timespan"
-        (change)="onTimespanChange()"
-      >
-        <mat-radio-button value="3 day">3 days</mat-radio-button>
-        <mat-radio-button value="7 day">7 days</mat-radio-button>
-        <mat-radio-button value="1 month">1 month</mat-radio-button>
-      </mat-radio-group>
-    </div>
-
-    <button
-      mat-flat-button
-      type="submit"
-      [disabled]="!email || !role || !timespanString"
-    >
-      Send Invite Email
-    </button>
   </form>
 </div>

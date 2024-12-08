@@ -25,6 +25,10 @@ export class TeamService {
       .get<Team[]>(this.baseUrl)
       .pipe(tap((teams) => this.teamsSubject.next(teams)));
   }
+  get currentTeams(): Team[]{
+    return this.teamsSubject.value;
+  }
+
   createTeam(team_name: String) {
     return this.http.post<any>(`${this.baseUrl}/new`, team_name);
   }
