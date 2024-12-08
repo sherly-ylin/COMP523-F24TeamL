@@ -59,20 +59,7 @@ export class AuthService {
       .subscribe({
         next: (response) => {
           if (response && response.accessToken) {
-            const profile: Profile = {
-              id: response.id,
-              username: response.username,
-              first_name: response.first_name,
-              last_name: response.last_name,
-              email: response.email,
-              role: response.role,
-              team_name: response.team_name,
-            };
-            console.log('user logged in');
-            console.log(profile);
-            this.profileSubject.next(profile);
             console.log('access token:', response.accessToken);
-            // Storing token and navigating to the dashboard
             localStorage.setItem('accessToken', response.accessToken);
             this.authenticated = true;
             this.router.navigate(['./dashboard']);
@@ -80,6 +67,9 @@ export class AuthService {
             alert('Invalid response or missing access token.');
           }
         },
+        error: (error)=>{
+          console.log(error);
+        }
       });
   }
 

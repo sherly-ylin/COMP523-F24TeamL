@@ -171,7 +171,6 @@ export class SignUpPageComponent implements OnInit {
       .subscribe({
         next: (response) => {
           console.log(response);
-          alert('Verification email sent. Please check your inbox.');
           this.router.navigate(['/login']);
         },
         error: (error) => {

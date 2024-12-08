@@ -1,5 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300&family=Manrope:wght@500&display=swap");
 
+app-set-up-review-page{
+  background-color: #e9ecef;
+}
 .invite-user-page {
   height: 100%;
   display: flex; 
@@ -10,7 +13,6 @@
 mat-card {
   width: 100%;
   display: flex;
-  background-color: #e9ecef;
   /* flex-direction: row; */
 }
 .header {

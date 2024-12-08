@@ -28,18 +28,16 @@ export const UserSchema: Schema<IUser> = new Schema({
 UserSchema.pre('save', async function (next) {
   console.log("Inside save middleware")
   const user = this as IUser;
-  if (!user.isModified('password')) return next();
-  console.log("Modified")
   const salt = await bcrypt.genSalt(10);
-  console.log("salt assigned")
-  user.password = await bcrypt.hash(user.password, salt);
-  console.log("password hashed")
+  const hashedPassword = await bcrypt.hash(user.password, salt);
+  user.password = hashedPassword;
   next();
 });
 
 // Method to compare passwords
 UserSchema.methods.comparePassword = async function (inputPassword: string) {
-  return await bcrypt.compare(inputPassword, this.password);
+  const valid = await bcrypt.compare(inputPassword, this.password);
+  return valid
 };
 
 

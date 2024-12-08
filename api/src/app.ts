@@ -5,6 +5,7 @@ import config from './config.js'
 import { Team } from './models/teamSchema.js'
 import { User } from './models/userSchema.js'
 import routes from './routes/index.js'
+import bcrypt from 'bcryptjs';
 
 async function connectToDatabase() {
   try {
@@ -49,7 +50,7 @@ async function insertUsers() {
         email: 'provider1@example.com',
         password: 'provider1',
         role: 'provider',
-        team_id: 'team001',
+        team_id: 'alpha',
       },
       {
         username: 'admin1',
@@ -69,8 +70,12 @@ async function insertUsers() {
       },
     ]
 
-    await User.insertMany(users)
-    console.log('Database seeded successfully!')
+    for (const userData of users) {
+      const user = new User(userData);
+      await user.save(); // Triggers pre('save') middleware
+  }
+
+    console.log('User inserted successfully!')
     console.log('You can log in using one of the following accounts:', users)
   } catch (err) {
     console.error('Error inserting initial users:', err)
@@ -93,7 +98,7 @@ async function insertTeams() {
       },
     ]
 
-    let inserted = await Team.insertMany(teams)
+    let inserted = await Team.create(teams)
     console.log('teams:', inserted)
   } catch (err) {
     console.error('Error inserting initial teams:', err)
@@ -111,9 +116,64 @@ async function seedDatabase() {
     process.exit(1)
   }
 }
+
+
+const testPasswordHashing = async () => {
+    const plainPassword = 'mypassword123';
+    const wrongPassword = 'wrongpassword';
+
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(plainPassword, salt);
+    console.log('Hashed Password:', hashedPassword);
+
+    // Compare with correct password
+    const isCorrect = await bcrypt.compare(plainPassword, hashedPassword);
+    console.log('Correct Password Match:', isCorrect); // Should log true
+
+    // Compare with incorrect password
+    const isWrong = await bcrypt.compare(wrongPassword, hashedPassword);
+    console.log('Wrong Password Match:', isWrong); // Should log false
+};
+
+
+const testComparePassword = async () => {
+    try {
+        // Create a new user with a plaintext password
+        const user = new User({
+            username: 'testuser',
+            first_name: 'John',
+            last_name: 'Doe',
+            email: 'testuser@example.com',
+            password: 'mypassword123', // Plaintext password
+            role: 'admin',
+        });
+        await user.save();
+
+        // Check the hashed password in the database
+        console.log('Stored Password Hash:', user.password);
+
+        // Fetch the user from the database
+        const fetchedUser = await User.findOne({ email: 'testuser@example.com' });
+
+        // Call comparePassword
+        const isMatchCorrect = await fetchedUser?.comparePassword('mypassword123');
+        console.log('Correct Password Match:', isMatchCorrect); // Should log true
+
+        const isMatchIncorrect = await fetchedUser?.comparePassword('wrongpassword');
+        console.log('Incorrect Password Match:', isMatchIncorrect); // Should log false
+    } catch (error) {
+        console.error('Error during password comparison test:', error);
+    }
+};
+
+
 // Main
 ;(async () => {
   await connectToDatabase()
   await startServer()
+  // testPasswordHashing();
+  // await testComparePassword()
   await seedDatabase()
+
 })()

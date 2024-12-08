@@ -1,6 +1,6 @@
 import { IUser, User } from '../models/userSchema'
 
-export const createUserFromDB = async (
+export const createUser = async (
   userData: Partial<IUser>,
 ): Promise<Record<string, any>> => {
   if (userData.role === 'provider' && !userData.team_id) {
@@ -19,7 +19,7 @@ export const createUserFromDB = async (
   return userInfo
 }
 
-export const getUserByIdFromDB = async (
+export const getUserById = async (
   id: string,
 ): Promise<Record<string, any> | null> => {
   if (!id) throw new Error('User ID is required.')
@@ -30,7 +30,7 @@ export const getUserByIdFromDB = async (
   return userInfo
 }
 
-export const getUserProfileByIdFromDB = async (
+export const getUserProfileById = async (
   id: string,
 ): Promise<Record<string, any> | null> => {
   if (!id) throw new Error('User ID is required.')
@@ -45,7 +45,7 @@ export const getUserProfileByIdFromDB = async (
   delete userInfo.team_id
   return userInfo
 }
-export const getAllUsersFromDB = async (): Promise<Record<string, any>[]> => {
+export const getAllUsers = async (): Promise<Record<string, any>[]> => {
   const users = await User.find()
   return users.map((user) => {
     const userInfo = user.toObject()
@@ -54,7 +54,7 @@ export const getAllUsersFromDB = async (): Promise<Record<string, any>[]> => {
   })
 }
 
-export const updateUserFromDB = async (
+export const updateUser = async (
   id: string,
   userData: Partial<IUser>,
 ): Promise<Record<string, any> | null> => {
@@ -72,7 +72,7 @@ export const updateUserFromDB = async (
   return userInfo
 }
 
-export const deleteUserFromDB = async (
+export const deleteUser = async (
   id: string,
 ): Promise<Record<string, any> | null> => {
   if (!id) throw new Error('User ID is required.')

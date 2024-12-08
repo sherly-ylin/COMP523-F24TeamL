@@ -1,6 +1,6 @@
 <div class="set-up-review-page">
 
-  <form (ngSubmit)="onSubmit()" class="form-container">
+  <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()" class="form-container">
     <mat-card class="container-card" appearance="outlined">
       <mat-card-header class="header">
         <mat-card-title>Set Up Review</mat-card-title>
@@ -9,31 +9,26 @@
         <div class="fields">
           <mat-form-field class="form-field">
             <mat-label>Select a review type</mat-label>
-            <mat-select [(value)]="review">
-              <mat-option>empty</mat-option>
-              <mat-option value="person">Person level survey</mat-option>
-              <mat-option value="staff">Staffing level survey</mat-option>
-              <mat-option value="ipsLog">IPS log survey</mat-option>
-              <mat-option value="jobdev">Job development log</mat-option>
+            <mat-select formControlName="review">
+              <mat-option value="closed">Closed</mat-option>
+              <mat-option value="person">Person Level</mat-option>
+              <mat-option value="staff">Staffing Level</mat-option>
+              <mat-option value="ipsLog">IPS Log </mat-option>
+              <mat-option value="jobdev">Job Development Log</mat-option>
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field class="form-field">
-            <mat-label>Select team(s)</mat-label>
-            <mat-select [(value)]="team">
-              <mat-option>empty</mat-option>
-              @for (team of teams; track team.team_name) {
-              <mat-option [value]="team.id">{{ team.team_name }}</mat-option>
-              }
+          <mat-form-field class="form-field" appearance="fill">
+            <mat-label>Select a team</mat-label>
+            <mat-select formControlName="selectedTeam">
+              <!-- Dynamic options from the `teams` array -->
+              <mat-option *ngFor="let team of teams" [value]="team.team_id">
+                {{ team.team_name }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
+          
         </div>
-
-        <!-- 
-    <mat-form-field class="form-field">
-      <mat-label>Invite user by email</mat-label>
-      <input matInput [(ngModel)]="email" name="email" />
-    </mat-form-field> -->
       </mat-card-content>
       <mat-card-actions>
         <button mat-flat-button type="submit">Submit</button>
