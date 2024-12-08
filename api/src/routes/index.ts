@@ -9,7 +9,7 @@ import * as closedController from '../controllers/closedController.js'
 import * as jobDevController from '../controllers/jobDevController.js'
 import * as personLevelController from '../controllers/personLevelController.js'
 import * as staffingController from '../controllers/staffingController.js'
-import { TeamController } from '../controllers/teamController.js'
+import * as TeamController from '../controllers/teamController.js'
 import * as userController from '../controllers/userController.js'
 
 import * as authJwt from '../middlewares/authJwt.js'
@@ -93,12 +93,11 @@ router.delete('/ipslog', IPSLogController.deleteAllRecords)
 router.get('/alllog', allLogsController.getAllRecordsFromAllServices)
 
 // team routes
-const teamController = new TeamController()
-
-router.post('/team', teamController.createTeam)
-router.put('/team/:id', teamController.updateTeam)
-router.get('/team/:id', teamController.getTeam)
-router.delete('/team/:id', teamController.deleteTeam)
+router.get('/team/', TeamController.getAllTeams)
+router.get('/team/:id', TeamController.getTeamById)
+router.post('/team', TeamController.createTeam)
+router.put('/team/:id', TeamController.updateTeam)
+router.delete('/team/:id', TeamController.deleteTeam)
 
 // auth routes
 router.use(function (req, res, next) {

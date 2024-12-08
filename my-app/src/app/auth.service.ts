@@ -37,14 +37,6 @@ export class AuthService {
 
   private baseUrl = 'http://localhost:3000';
 
-  //TODO: delete these, just use currentUser
-  private email: string | null = null;
-  setEmail(email: string): void {
-    this.email = email;
-  }
-  getEmail(): string | null {
-    return this.email;
-  }
 
   constructor(private router: Router, private http: HttpClient) {}
 
@@ -71,6 +63,9 @@ export class AuthService {
             alert('Invalid response or missing access token.');
           }
         },
+        error: (error)=>{
+          console.log(error);
+        }
       });
   }
 
