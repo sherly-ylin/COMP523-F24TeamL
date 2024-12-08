@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Profile, AuthService } from 'src/app/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';

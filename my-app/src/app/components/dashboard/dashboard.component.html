@@ -4,12 +4,7 @@
       <div id="title">eIPS Fidelity</div>
     </a>
 
-    <button
-      id="btnProfile"
-      mat-icon-button
-      [matMenuTriggerFor]="menu"
-      aria-label="profile"
-    >
+    <button id="btnProfile" mat-icon-button [matMenuTriggerFor]="menu" aria-label="profile">
       <mat-icon id="profile">account_circle</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
@@ -58,15 +53,12 @@
       </a>
       <a mat-list-item routerLink="invite-user">
         <span class="logo-item">
-          <mat-icon>email</mat-icon> Invite Provider
+          <mat-icon>email</mat-icon>
+          @if (userRole === 'superadmin') { Invite User }
+          @else { Invite Provider}
         </span>
       </a>
-      <!-- } -->
-      <!-- @if (userRole === 'superadmin') { -->
-      <a mat-list-item routerLink="invite-user">
-        <span class="logo-item"> <mat-icon>email</mat-icon> Invite User </span>
-      </a>
-      <!-- } -->
+
     </mat-nav-list>
     <!-- <mat-divider></mat-divider> -->
     <!-- <div class="bottom-section">
@@ -81,9 +73,6 @@
     </div> -->
   </mat-sidenav>
   <mat-sidenav-content class="sidenav-content">
-    <!-- <div> -->
     <router-outlet></router-outlet>
-    <!-- </div> -->
   </mat-sidenav-content>
 </mat-sidenav-container>
-<!-- </div> -->

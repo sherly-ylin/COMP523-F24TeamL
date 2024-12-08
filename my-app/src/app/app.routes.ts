@@ -23,7 +23,6 @@ import { InviteUserComponent } from './components/invite-user/invite-user.compon
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { inject } from '@angular/core';
 import { authGuard } from './auth.guard';
-import { AuthService } from './auth.service';
 import { ProfileEditorComponent } from './components/profile-editor/profile-editor.component';
 import { RoleGuard } from './role.guard';
 import { inviteResolver } from './resolvers/invite.resolver';
@@ -41,6 +40,9 @@ export const routes: Routes = [
     path: 'dashboard',
     canActivate: [authGuard],
     component: DashboardComponent,
+    resolve: {
+      profile: profileResolver,
+    },
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', canActivate: [authGuard], component: HomeComponent },
@@ -48,14 +50,19 @@ export const routes: Routes = [
         path: 'profile',
         canActivate: [authGuard],
         component: ProfileEditorComponent,
-        resolve:{
-          profile: profileResolver
-        }
+        resolve: {
+          profile: profileResolver,
+        },
       },
       {
         path: 'set-up-review',
         canActivate: [authGuard],
         component: SetUpReviewPageComponent,
+      },
+      {
+        path: 'invite-user',
+        component: InviteUserComponent,
+        canActivate: [authGuard],
       },
       {
         path: 'closed',
@@ -88,7 +95,7 @@ export const routes: Routes = [
       { path: 'education', component: EducationComponent },
       { path: 'employment', component: EmploymentComponent },
       { path: 'vr', component: VrComponent },
-      { path: 'invite-user', component: InviteUserComponent },
+
       {
         path: 'add-person',
         canActivate: [authGuard],

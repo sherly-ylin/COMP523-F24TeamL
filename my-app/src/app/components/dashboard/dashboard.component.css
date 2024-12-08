@@ -108,6 +108,7 @@ mat-toolbar {
 .sidenav-content {
   margin: 0px !important;
   width: calc(100% - 300px);
+  height: max-content;
   padding: 20px;
   overflow-y: auto;
 }
@@ -124,10 +125,6 @@ mat-toolbar {
   align-items: center;
   padding: 15px 20px;
 }
-
-/* .mat-nav-list a {
-  border-radius: 4px; 
-} */
 
 .mat-nav-list a.mat-list-item {
   transition: color 0.3s;
