@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Profile, AuthService } from 'src/app/auth.service';
 import { HttpClient } from '@angular/common/http';
@@ -10,6 +10,7 @@ import {
   Validators,
   FormGroup,
   AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,6 +19,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+
 
 @Component({
   selector: 'app-profile-editor',
@@ -29,6 +32,7 @@ import { MatButtonModule } from '@angular/material/button';
     ReactiveFormsModule,
     MatInputModule,
     MatButtonModule,
+    MatIconModule,
   ],
   templateUrl: './profile-editor.component.html',
   styleUrl: './profile-editor.component.css',
@@ -69,9 +73,57 @@ export class ProfileEditorComponent {
     });
     this.passwordForm = this.formBuilder.group({
       currentPassword: ['', Validators.required],
-      newPassword: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(8)]],
+      newPassword: [
+        '',
+        [
+          Validators.required,
+          this.isLongEnoughValidator,
+          this.hasUppercaseValidator,
+          this.hasLowercaseValidator,
+          this.hasNumberValidator,
+          this.hasSymbolValidator,
+        ],
+      ],
+      confirmPassword: [
+        '',
+        [Validators.required, this.passwordsMatchValidator],
+      ],
     });
+  }
+
+  readonly PASSWORD_MIN_LENGTH = 8;
+  readonly PASSWORD_MIN_UPPER = 1;
+  readonly PASSWORD_MIN_LOWER = 1;
+  readonly PASSWORD_MIN_NUMBER = 1;
+  readonly PASSWORD_MIN_SYMBOL = 1;
+
+  isPasswordVisible = signal(false);
+  isConfirmPasswordVisible = signal(false);
+  togglePasswordVisibility(event: MouseEvent) {
+    this.isPasswordVisible.set(!this.isPasswordVisible());
+    event.stopPropagation();
+  }
+  toggleConfirmPasswordVisibility(event: MouseEvent) {
+    this.isConfirmPasswordVisible.set(!this.isConfirmPasswordVisible());
+    event.stopPropagation();
+  }
+
+  clearPasswordField() {
+    this.password?.setValue('');
+  }
+  clearConfirmPasswordField() {
+    this.confirmPassword?.setValue('');
+  }
+  resetConfirmPasswordField() {
+    this.confirmPassword?.reset();
+  }
+  markConfirmPasswordUntouched() {
+    this.confirmPassword?.markAsUntouched();
+  }
+  markConfirmPasswordUntouchedIfPasswordInvalid() {
+    if (!this.password?.valid) {
+      this.markConfirmPasswordUntouched();
+    }
   }
 
   ngOnInit(): void {
@@ -92,6 +144,57 @@ export class ProfileEditorComponent {
     //   },
     // });
   }
+
+  // Getters for easy access in template
+  get password() {
+    return this.passwordForm.get('newPassword');
+  }
+  get confirmPassword() {
+    return this.passwordForm.get('confirmPassword');
+  }
+
+  private isLongEnoughValidator = (
+    control: AbstractControl
+  ): ValidationErrors | null => {
+    const value = control.value;
+    return value != null && value.length >= this.PASSWORD_MIN_LENGTH
+      ? null
+      : { notLongEnough: true };
+  };
+  private hasUppercaseValidator(
+    control: AbstractControl
+  ): ValidationErrors | null {
+    const value = control.value;
+    return /[A-Z]/.test(value) ? null : { noUppercase: true };
+  }
+  private hasLowercaseValidator(
+    control: AbstractControl
+  ): ValidationErrors | null {
+    const value = control.value;
+    return /[a-z]/.test(value) ? null : { noLowercase: true };
+  }
+  private hasNumberValidator(
+    control: AbstractControl
+  ): ValidationErrors | null {
+    const value = control.value;
+    return /\d/.test(value) ? null : { noNumber: true };
+  }
+  private hasSymbolValidator(
+    control: AbstractControl
+  ): ValidationErrors | null {
+    const value = control.value;
+    return /[!@#$%^&*(),.?":{}|<>]/.test(value) ? null : { noSymbol: true };
+  }
+  private passwordsMatchValidator(
+    control: AbstractControl
+  ): ValidationErrors | null {
+    const password = control.parent?.get('newPassword');
+    const confirmPassword = control.parent?.get('confirmPassword');
+    return password?.invalid || password?.value == confirmPassword?.value
+      ? null
+      : { passwordsDontMatch: true };
+  }
+
   public updateProfile() {
     if (this.profileForm.valid) {
       console.log("profileForm:");
@@ -128,6 +231,20 @@ export class ProfileEditorComponent {
         });
     }
   }
+  // public onVerifyEmail(): void {
+  //   if (this.emailForm.valid) {
+  //     const { username, verificationCode } = this.emailForm.value;
+  //     this.authService.verifyEmail(username, verificationCode).subscribe({
+  //       next: (response: boolean | null) => {
+  //         if (response) {
+  //           this.emailVerified = true;
+  //         } else if (response == false){
+  //           console.log("response", response)
+  //           alert('Invalid verification code.');
+  //         }
+  //       },
+  //     });
+  // }
 
   updatePassword(): void {
     if (this.passwordForm.valid) {

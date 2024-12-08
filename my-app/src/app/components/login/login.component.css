@@ -43,3 +43,7 @@ form {
   width: 400px; /* length of the input fields */
   padding-bottom: 20px; /* Space below each input field */
 }
+
+.green-message {
+  color: green !important;
+}

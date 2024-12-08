@@ -47,3 +47,7 @@ mat-expansion-panel {
 .mat-mdc-card-outlined {
   /* border-color: transparent !important; */
 }
+
+.green-message {
+  color: green !important;
+}
