@@ -30,43 +30,6 @@ export async function getInvite(req: Request, res: Response) {
   }
 }
 
-// Setting up the initial Superadmin account (username: henry passwrod: 1)
-User.findOne({ email: 'liuheng1@unc.edu' })
-  .then((user) => {
-    if (user) {
-      console.log('You can log in using this account:')
-      console.log('username: "' + user.username + '"')
-      user.password = '1';
-      user.role = "superadmin";
-      console.log('is this the problem?')
-      user.save();
-      console.log('password: "1"');
-      console.log('role: "' + user.role + '"');
-      console.log();
-    } else {
-      const user = userService.createUserFromDB({
-        email: 'liuheng1@unc.edu',
-        role: 'superadmin',
-        username: 'henry',
-        password: '1',
-        first_name: 'Henry',
-        last_name: 'Liu',
-      })
-      if (!user) {
-        console.log('Failed to insert superadmin user')
-      }else{
-        console.log()
-        console.log('You can log in using this superadmin account:')
-        console.log('username: "henry"')
-        console.log('password: "1"')
-        console.log()
-      }
-    }
-  })
-  .catch((error) => {
-    console.error('Error occurred while finding user henry:', error)
-  })
-
 export const signUp = async (req: Request, res: Response) => {
   if (!req.body.token || !req.body.password) {
     console.log("Invite token or password is null.")
@@ -124,7 +87,8 @@ export const signIn = (req: Request, res: Response) => {
       return res.status(404).send({ message: 'User Not found.' })
     }
 
-    const passwordIsValid = bcrypt.compareSync(req.body.password, user.password)
+    const passwordIsValid = user.comparePassword(req.body.password)
+    console.log('passwordIsValid:', passwordIsValid)
     if (!passwordIsValid) {
       return res.status(401).send({
         accessToken: null,
@@ -165,15 +129,6 @@ export const signIn = (req: Request, res: Response) => {
 
     res.status(200).send(responseData)
 
-    // res.status(200).send({
-    //   id: user._id,
-    //   username: environment.currentUsername,
-    //   email: user.email,
-    //   role: environment.currentUserRole,
-    //   accessToken: token,
-    //   first_name: user.first_name,
-    //   last_name: user.last_name,
-    // })
   })
 }
 

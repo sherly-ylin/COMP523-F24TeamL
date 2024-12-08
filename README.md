@@ -71,6 +71,18 @@ cd api
 npm install
 ```
 
+> ???To seed the database with initial data, first install ts-node if it’s not already installed:
+
+```shell
+npm install -g ts-node
+```
+
+> ???Then run the script using ts-node:
+
+```shell
+ts-node src/scripts/seedDatabase.ts
+```
+
 > Upon completion, open a terminal and run the following to start the backend server:
 
 ```shell

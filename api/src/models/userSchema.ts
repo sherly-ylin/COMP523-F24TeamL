@@ -8,8 +8,8 @@ export interface IUser extends Document {
   email: string
   role: 'provider' | 'admin' | 'superadmin';
   password: string
-  team_id?: string
-  team_name?: string
+  team_id?: string | null
+  team_name?: string | null
   comparePassword: (inputPassword: string) => Promise<boolean>;
 }
 
