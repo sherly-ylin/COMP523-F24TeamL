@@ -14,21 +14,33 @@ import * as verify from './emailVerifyController.js'
 // Setting up the initial Superadmin account (username: henry passwrod: 1)
 User.findOne({ email: 'liuheng1@unc.edu' })
   .then((user) => {
-    console.log()
-    console.log('You can log in using this Superadmin account:')
-    console.log('username: "henry"')
-    console.log('password: "1"')
-    console.log()
     if (user) {
+      console.log('You can log in using this account:')
+      console.log('username: "' + user.username + '"')
+      user.password = '1'
+      // user.password = bcrypt.hashSync('1', 8)
+      user.role = "superadmin"
+      user.save()
+      console.log('password: "1"')
+      console.log('role: "' + user.role + '"')
+      console.log()
+    
     } else {
       new User({
         email: 'liuheng1@unc.edu',
-        role: 'Superadmin',
+        role: 'superadmin',
         username: 'henry',
-        password: bcrypt.hashSync('1', 8),
-        firstname: 'Henry',
-        lastname: 'Liu',
+        password: '1',
+        // password: bcrypt.hashSync('1', 8),
+        first_name: 'Henry',
+        last_name: 'Liu',
       }).save()
+
+      console.log()
+      console.log('You can log in using this superadmin account:')
+      console.log('username: "henry"')
+      console.log('password: "1"')
+      console.log()
     }
   })
   .catch((error) => {
@@ -56,11 +68,14 @@ export async function getInvite(req: Request, res: Response) {
 
 export const signUp = async (req: Request, res: Response) => {
   if (!req.body.token || !req.body.password) {
+    console.log("Invite token or password is null.")
     return res.status(400).json({ error: 'Invite token or password is null.' })
   }
   try {
     const invite = await Invite.findOne({ token: req.body.token })
+    console.log(req.body.token)
     if (!invite) {
+      console.log("Invite token is invalid.")
       return res.status(400).json({ error: 'Invite token is invalid.' })
     }
 
@@ -85,6 +100,7 @@ export const signUp = async (req: Request, res: Response) => {
     // Return success response
     res.status(200).send({ message: 'User was registered successfully!' })
   } catch (err) {
+    console.log('Error saving user.')
     res.status(500).send({ message: 'Error saving user.', error: err })
   }
 }
@@ -122,15 +138,32 @@ export const signIn = (req: Request, res: Response) => {
       expiresIn: 86400, // 24 hours
     })
     // TODO: based on the user's role, if provider, sent team_id and team_name as well
-    res.status(200).send({
+    const responseData: any = {
       id: user._id,
       username: environment.currentUsername,
       email: user.email,
       role: environment.currentUserRole,
       accessToken: token,
-      first_name: user.firstname,
-      last_name: user.lastname,
-    })
+      first_name: user.first_name,
+      last_name: user.last_name,
+    }
+
+    // Add team_name if the user is a provider
+    if (environment.currentUserRole === 'provider') {
+      responseData.team_name = user.team_name || null
+    }
+
+    res.status(200).send(responseData)
+
+    // res.status(200).send({
+    //   id: user._id,
+    //   username: environment.currentUsername,
+    //   email: user.email,
+    //   role: environment.currentUserRole,
+    //   accessToken: token,
+    //   first_name: user.first_name,
+    //   last_name: user.last_name,
+    // })
   })
 }
 
@@ -224,22 +257,29 @@ export const invite = async (req: Request, res: Response) => {
   }
   try {
     // Fetch the current user based on username
-    console.log('The person sending invite:', environment.currentUsername)
-    const sender = await User.findOne({ username: environment.currentUsername })
+    const token = req.headers['authorization']?.split(' ')[1]
+    if (!token) {
+      return res.status(403).json({ message: 'No user token provided' })
+    }
+    const decoded = jwt.verify(token, config.secret) as { id: string }
+
+    console.log('The person sending invite:', decoded)
+    const sender = await User.findById(decoded.id)
+    
 
     // Check if the signed-in user exists and has the correct role (superadmin)
     if (!sender) {
       console.log(
-        'The invite sender is not loged in. Username:',
-        environment.currentUsername,
+        'The invite sender is not logged in. Userid:',
+        decoded.id,
       )
       return res
         .status(404)
-        .send({ message: 'The invite sender is not loged in.' })
+        .send({ message: 'The invite sender is not logged in.' })
     }
-    if (environment.currentUserRole !== 'Superadmin') {
+    if (sender.role !== 'superadmin') {
       return res.status(403).send({
-        message: `You are a ${environment.currentUserRole}, not a superadmin, so you can't invite other users.`,
+        message: `You are a ${sender.role}, not a superadmin, so you can't invite other users.`,
       })
     }
 
@@ -290,5 +330,50 @@ export const invite = async (req: Request, res: Response) => {
     return res
       .status(500)
       .send({ message: 'Error during sending invite email.' })
+  }
+}
+export const changePassword = async (req: Request, res: Response) => {
+  if (!req.body.current_password || !req.body.new_password) {
+    return res.status(400).send({
+      message: 'Current password or new password is null.',
+    })
+  }
+
+  try {
+    const user = await User.findOne({
+      username: environment.currentUsername,
+    })
+
+    if (!user) {
+      return res.status(404).send({
+        message: 'User Not found.',
+      })
+    }
+
+    const passwordIsValid = bcrypt.compareSync(
+      req.body.current_password,
+      user.password,
+    )
+
+    if (!passwordIsValid) {
+      return res.status(401).send({
+        message: 'Current password is incorrect!',
+      })
+    }
+
+    const hashedNewPassword = bcrypt.hashSync(req.body.new_password, 8)
+
+    user.password = hashedNewPassword
+    await user.save()
+
+    res.status(200).send({
+      message: 'Password changed successfully!',
+    })
+  } catch (err) {
+    console.error('Error during password change:', err)
+    res.status(500).send({
+      message: 'Error during password change.',
+      error: err,
+    })
   }
 }

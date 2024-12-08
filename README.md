@@ -13,12 +13,12 @@ The intended goal of "The Beast" is to make the data collection more streamline 
 - Angular
 - Node.js
 
-The frontend web application is built up using Angular and Survey.js.  
-The backend API is built up using Node.js, Express.js, and mongoose for database connection.  
+The frontend web application is built up using Angular and Survey.js.
+The backend API is built up using Node.js, Express.js, and mongoose for database connection.
 The database is MongoDB.
 
-**Programming Languages**  
-Frontend: HTML/CSS, Typescript  
+**Programming Languages**
+Frontend: HTML/CSS, Typescript
 Backend: TypeScript
 
 ![IMG_0156](https://github.com/QianqianHong/COMP523-TeamC/assets/77793476/dc771ff6-b763-4511-b8c4-2ae760c6ceed)
@@ -31,7 +31,7 @@ There is also a model folder, with instances that relate to each survey for data
 
 Resources used for the frontend:
 
-> [Connecting Angular to a Node.js application](https://www.bezkoder.com/mean-stack-crud-example-angular-14/)  
+> [Connecting Angular to a Node.js application](https://www.bezkoder.com/mean-stack-crud-example-angular-14/)
 > [Creating a dynamic Angular Mat Table](https://muhimasri.com/blogs/create-an-editable-dynamic-table-using-angular-material/)
 
 ## Backend Structure
@@ -40,12 +40,12 @@ The backend follows a RESTful API structure.
 
 Resources used for the backend:
 
-> [RESTful API structure](https://www.coreycleary.me/project-structure-for-an-express-rest-api-when-there-is-no-standard-way)  
+> [RESTful API structure](https://www.coreycleary.me/project-structure-for-an-express-rest-api-when-there-is-no-standard-way)
 > [Express Routing](https://expressjs.com/en/guide/routing.html#express-router)
 
-Note: Please include your gmail address and app password in .env file in the root folder:
-EMAIL_PASSWORD=#####
-EMAIL_USERNAME=#####
+Note: Please include your gmail address and app password in `.env` file in the `api` folder:
+`EMAIL_PASSWORD=#####`
+`EMAIL_USERNAME=#####`
 
 ## Starting the application
 

@@ -41,6 +41,7 @@ export const sendEmail = async (invite: IInvite) => {
 }
 
 export const sendEmailVerificationCode = async (emailVerification: IEmailVerification) => {
+  console.log("sendEmailVerificationCode");
   const mailOptions = {
     from: '"UNC Department of Psychiatry" <hello@psychiatry.unc.edu>',
     to: emailVerification.email,
@@ -55,6 +56,7 @@ export const sendEmailVerificationCode = async (emailVerification: IEmailVerific
 
   try {
     await transporter.sendMail(mailOptions)
+    console.log("Success");
   } catch (error) {
     throw new Error('Failed to send verification email')
   }

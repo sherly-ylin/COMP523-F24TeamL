@@ -1,21 +1,8 @@
-import {
-  Injectable,
-  Signal,
-  WritableSignal,
-  inject,
-  signal,
-} from '@angular/core';
+import { Injectable, Signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { catchError } from 'rxjs/operators';
-import {
-  Observable,
-  ReplaySubject,
-  BehaviorSubject,
-  Subject,
-  tap,
-  of,
-} from 'rxjs';
+import { Observable, BehaviorSubject, tap, of } from 'rxjs';
 
 interface LoginResponse {
   id: number;
@@ -24,7 +11,7 @@ interface LoginResponse {
   last_name: string | null;
   email: string | null;
   role: 'provider' | 'admin' | 'superadmin';
-  team_name?: string;
+  team_name: string | null;
   accessToken: string;
 }
 
@@ -34,16 +21,14 @@ export interface Profile {
   first_name: string | null;
   last_name: string | null;
   email: string | null;
-  role: 'provider' | 'admin' | 'superadmin'; //consider making it number
-  team_name?: string | null;
+  role: 'provider' | 'admin' | 'superadmin';
+  team_name: string | null;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private router = inject(Router);
-  private http = inject(HttpClient);
 
   private loggedIn = new BehaviorSubject<boolean>(false);
   loggedIn$ = this.loggedIn.asObservable();
@@ -53,27 +38,23 @@ export class AuthService {
   private profileSubject = new BehaviorSubject<Profile | null>(null);
   profile$ = this.profileSubject.asObservable();
 
-  private baseUrl = 'http://localhost:3000/';
+  private baseUrl = 'http://localhost:3000';
 
-  constructor() {}
 
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem('accessToken');
-  }
+  constructor(private router: Router, private http: HttpClient) {}
 
   signIn(username: string, password: string): void {
     this.http
-      .post<LoginResponse>('http://localhost:3000/api/auth/signin', {
+      .post<LoginResponse>(`${this.baseUrl}/api/auth/signin`, {
         username,
         password,
       })
       .pipe(
-        // Handle any errors with a fallback
         catchError((error) => {
           alert(error?.error?.message || 'An error occurred during sign-in.');
           console.error('Sign-in error:', error);
-          return of(null); // Return a null observable to prevent breaking the stream
-        }),
+          return of(null);
+        })
       )
       .subscribe({
         next: (response) => {
@@ -85,11 +66,12 @@ export class AuthService {
               last_name: response.last_name,
               email: response.email,
               role: response.role,
-              team_name:
-                response.role === 'provider' ? response.team_name : null,
+              team_name: response.team_name,
             };
-            this.manuallyUpdateProfile(profile);
-
+            console.log('user logged in');
+            console.log(profile);
+            this.profileSubject.next(profile);
+            console.log('access token:', response.accessToken);
             // Storing token and navigating to the dashboard
             localStorage.setItem('accessToken', response.accessToken);
             this.authenticated = true;
@@ -111,12 +93,12 @@ export class AuthService {
         return of(null); // Return a null observable to prevent breaking the stream
       }),
     )
-    .subscribe((response) => {
+    .subscribe((response: any) => {
       console.log('Response:', response);
     });
   }
 
-  verifyEmail(username: string, verificationCode: string) {
+  verifyEmail(username: string, verificationCode: string): Observable<boolean | null> {
     return this.http.post<boolean>('http://localhost:3000/api/auth/verifyEmail', {
       username: username,
       verificationCode: verificationCode,
@@ -145,35 +127,59 @@ export class AuthService {
   signOut() {
     if (confirm('Are you sure to sign out?')) {
       localStorage.removeItem('accessToken');
+      this.http.post(`${this.baseUrl}/auth/signout`, this.currentUser);
     }
     this.authenticated = false;
     this.router.navigate(['/login']); // Navigate to login after sign out
   }
 
-  getProfile(): Observable<Profile> {
-    return this.http
-      .get<Profile>(`${this.baseUrl}/user/profile`)
-      .pipe(tap((profile) => this.profileSubject.next(profile)));
+  isAuthenticated(): boolean {
+    let result = !!localStorage.getItem('accessToken');
+    this.loggedIn.next(result);
+    return result;
   }
 
-  // Get the current user synchronously
+  // Profile
   get currentUser(): Profile | null {
     return this.profileSubject.value;
   }
 
+  getProfile(): Observable<Profile> {
+    return this.http.get<Profile>(`${this.baseUrl}/user/profile`).pipe(
+      tap((profile: Profile) => {
+        this.profileSubject.next(profile);
+        console.log('get profile');
+        console.log(profile);
+      })
+    );
+  }
+
   // Update the user's basic info
   updateProfile(profile: Partial<Profile>): Observable<Profile> {
-    return this.http
+    console.log("authservice.updateprofile:");
+    console.log(profile);
+    let res = this.http
       .patch<Profile>(`${this.baseUrl}/user/profile`, profile)
       .pipe(tap((updatedProfile) => this.profileSubject.next(updatedProfile)));
+    this.getProfile();
+    return res;
   }
 
   manuallyUpdateProfile(profile: Profile | any) {
     this.profileSubject.next(profile);
   }
 
-  updateEmail(email: string): Observable<any> {
-    return this.http.post<Profile>(`${this.baseUrl}/user/email`, { email });
+  requestEmailChange(email: string): Observable<any> | any {
+    return true;
+    // return this.http.post<Profile>(`${this.baseUrl}/user/email`, { email });
+  }
+
+  verifyAndUpdateEmail(email: string, code: string): Observable<any> | any {
+    return true;
+    // return this.http.post<Profile>(`${this.baseUrl}/user/email/verify`, {
+    //   email,
+    //   code,
+    // });
   }
   updatePassword(data: {
     currentPassword: string;

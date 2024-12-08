@@ -19,12 +19,15 @@ export const checkDuplicateUsernameOrEmail = async (
     if (user) {
       // Check which field is causing the conflict
       if (user.username === req.body.username) {
+        console.log('Failed! Username is already in use!');
         return res
           .status(400)
           .send({ message: 'Failed! Username is already in use!' })
       }
 
       if (user.email === req.body.email) {
+        console.log('Failed! This email is already in use!');
+        
         return res
           .status(400)
           .send({ message: 'Failed! This email is already in use!' })
@@ -35,6 +38,8 @@ export const checkDuplicateUsernameOrEmail = async (
     next()
   } catch (err) {
     // Handle errors gracefully
+    console.log('An error occurred while checking for duplicates');
+
     res.status(500).send({
       message: 'An error occurred while checking for duplicates',
       error: err,
@@ -58,8 +63,9 @@ export const checkRolesExisted = async (
       // Check if all the roles in the request body exist
       for (const role of req.body.roles) {
         if (!existingRoles.has(role)) {
+          console.log('Failed! Role ${role} does not exist!')
           return res.status(400).send({
-            message: `Failed! Role ${role} does not exist!`,
+            message: 'Failed! Role ${role} does not exist!',
           })
         }
       }
@@ -68,6 +74,7 @@ export const checkRolesExisted = async (
     // If no roles are provided, or all roles exist, continue to the next middleware
     next()
   } catch (err) {
+    console.log('An error occurred while checking roles')
     res
       .status(500)
       .send({ message: 'An error occurred while checking roles', error: err })

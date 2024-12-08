@@ -71,7 +71,7 @@
   <div class="reset-password-page">
     <h1>Reset Password</h1>
     <form [formGroup]="resetPasswordForm" (ngSubmit)="onResetPassword()">
-      <set-password [formGroup]="resetPasswordForm"></set-password>
+      <!-- <set-password [formGroup]="resetPasswordForm"></set-password> -->
       <button mat-flat-button type="submit" [disabled]="!resetPasswordForm.valid">Reset Password</button>
     </form>
     

@@ -3,32 +3,34 @@ import jwt from 'jsonwebtoken'
 import config from '../config.js'
 import { User } from '../models/userSchema.js'
 
-export const verifyToken = (
+export const authVerifyToken = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  let token = req.headers['x-access-token']
-
+  const token = req.headers['authorization']?.split(' ')[1]
+  console.log('token:', token)
   if (!token) {
-    return res.status(403).send({ message: 'No token provided!' })
+    return res.status(403).json({ message: 'No token provided' })
   }
 
-  if (Array.isArray(token)) {
-    token = token[0]
-  }
-
-  jwt.verify(token, config.secret, (err, decoded) => {
-    if (err) {
-      return res.status(401).send({ message: 'Unauthorized!' })
-    }
+  try {
+    const decoded = jwt.verify(token, config.secret)
     req.params.userId =
       typeof decoded === 'string' ? JSON.parse(decoded).id : decoded?.id
+    console.log('req.params.userid: ', req.params.userId)
     next()
-  })
+  } catch (err) {
+    console.error(err)
+    res.status(401).json({ message: 'Invalid or expired token' })
+  }
 }
 
-export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+export const isSuperadmin = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   User.findById(req.params.userId).exec((err, user) => {
     if (err) {
       res.status(500).send({ message: err })
@@ -36,7 +38,7 @@ export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
     }
 
     if (user?.role != 'superadmin') {
-      res.status(403).send({ message: 'Require Admin Role!' })
+      res.status(403).send({ message: 'Require Superadmin Role!' })
       return
     }
 

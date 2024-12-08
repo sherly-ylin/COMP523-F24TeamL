@@ -11,7 +11,6 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-import { SetPasswordComponent } from '../set-password/set-password.component'
 
 @Component({
   selector: 'app-login',
@@ -22,7 +21,6 @@ import { SetPasswordComponent } from '../set-password/set-password.component'
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    SetPasswordComponent
   ],
 })
 export class LoginComponent implements OnInit {
@@ -94,7 +92,7 @@ export class LoginComponent implements OnInit {
     if (this.verifyEmailForm.valid) {
       const { username, verificationCode } = this.verifyEmailForm.value;
       this.authService.verifyEmail(username, verificationCode).subscribe({
-        next: (response) => {
+        next: (response: boolean | null) => {
           if (response) {
             this.emailVerified = true;
             this.resetPasswordForm = this.formBuilder.group({

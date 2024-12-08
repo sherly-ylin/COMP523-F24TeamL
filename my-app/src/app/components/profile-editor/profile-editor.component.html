@@ -16,120 +16,133 @@
             <mat-card-subtitle>Basic Information</mat-card-subtitle>
           </mat-card-header>
 
-          <mat-card-content>
-            <mat-form-field appearance="outline">
-              <mat-label>Username</mat-label>
-              <input
-                matInput
-                placeholder="Username"
-                formControlName="username"
-                name="username"
-                required
-              />
+        <mat-card-content>
+          <mat-form-field appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput placeholder="Username" formControlName="username" name="username" required />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>First Name</mat-label>
+            <input matInput placeholder="First Name" formControlName="first_name" name="first_name" required />
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Last Name</mat-label>
+            <input matInput placeholder="Last Name" formControlName="last_name" name="last_name" required />
+          </mat-form-field>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-stroked-button routerLink="/profile">Cancel</button>
+          <button mat-flat-button color="primary" type="submit" [disabled]="profileForm.invalid">
+            Save
+          </button>
+        </mat-card-actions>
+      </form>
+      <!-- Section 2: Email Update -->
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title> Change Email </mat-panel-title>
+        </mat-expansion-panel-header>
+        <form [formGroup]="emailForm" (ngSubmit)="requestEmailChange()">
+          <div>
+            <mat-form-field appearance="fill">
+              <mat-label>New Email</mat-label>
+              <input matInput type="email" formControlName="email" [disabled]="verificationSent" />
+              @if(emailForm.get('email')?.hasError('required')){
+              <mat-error>
+                Email is required.
+              </mat-error>
+              }
+              @if(emailForm.get('email')?.hasError('email')){
+              <mat-error>
+                Enter a valid email.
+              </mat-error>
+              }
+
             </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>First Name</mat-label>
-              <input
-                matInput
-                placeholder="First Name"
-                formControlName="first_name"
-                name="first_name"
-                required
-              />
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Last Name</mat-label>
-              <input
-                matInput
-                placeholder="Last Name"
-                formControlName="last_name"
-                name="last_name"
-                required
-              />
-            </mat-form-field>
-            <!-- <mat-form-field appearance="outline">
-            <mat-label>Email</mat-label>
-            <input matInput type="email" placeholder="" formControlName="email" name="email" required />
-          </mat-form-field> -->
-          </mat-card-content>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!emailForm.valid || verificationSent">
+              @if(verificationSent){
+              Sent
+              }@else{
+              Verify
+              }
+            </button>
+          </div>
+        </form>
+        <form (ngSubmit)="verifyEmail()" [formGroup]="verificationForm">
+          <mat-form-field appearance="fill">
+            <mat-label>Verification Code</mat-label>
+            <input matInput type="text" formControlName="code" />
+            @if(verificationForm.get('code')?.hasError('required')){
+            <mat-error>
+              Verification code is required.
+            </mat-error>
+            }
+
+          </mat-form-field>
+          <!-- <div style="justify-items: end;"> -->
           <mat-card-actions>
-            <button mat-stroked-button routerLink="/profile">Cancel</button>
-            <button
-              mat-flat-button
-              color="primary"
-              type="submit"
-              [disabled]="profileForm.invalid"
-            >
-              Save
+
+            <button mat-raised-button color="primary" (click)="cancelEmailUpdate">
+              Cancel
+            </button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!verificationForm.valid">
+              Submit
             </button>
           </mat-card-actions>
-        </form>
-        <!-- Section 2: Email Update -->
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title> Change Email </mat-panel-title>
-          </mat-expansion-panel-header>
-          <form (ngSubmit)="updateEmail()" [formGroup]="emailForm">
-            <mat-form-field appearance="outline">
-              <mat-label for="email">New Email</mat-label>
-              <input matInput id="email" type="email" formControlName="email" />
-            </mat-form-field>
-            <div style="display: flex; justify-content: end">
-              <button
-                mat-flat-button
-                color="primary"
-                type="submit"
-                [disabled]="!emailForm.valid"
-              >
-                Change Email
-              </button>
-              @if (email_sent) {
-                <mat-error
-                  >A verification email has been sent to this email
-                  address.</mat-error
-                >
-              }
-            </div>
-          </form>
-        </mat-expansion-panel>
-        <!-- Section 3: Password Update -->
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title> Change Password </mat-panel-title>
-          </mat-expansion-panel-header>
 
-          <form (ngSubmit)="updatePassword()" [formGroup]="passwordForm">
-            <mat-form-field appearance="outline">
-              <mat-label for="currentPassword">Current Password</mat-label>
-              <input
-                matInput
-                id="currentPassword"
-                type="password"
-                formControlName="currentPassword"
-              />
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label for="newPassword">New Password</mat-label>
-              <input
-                matInput
-                id="newPassword"
-                type="password"
-                formControlName="newPassword"
-              />
-            </mat-form-field>
-            <div style="display: flex; justify-content: end">
-              <button
-                mat-flat-button
-                color="primary"
-                type="submit"
-                [disabled]="!passwordForm.valid"
-              >
-                Change Password
-              </button>
-            </div>
-          </form>
-        </mat-expansion-panel>
-      </div>
-    </mat-card>
-  </div>
+          <!-- </div> -->
+
+        </form>
+
+
+      </mat-expansion-panel>
+      <!-- Section 3: Password Update -->
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title> Change Password </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <form (ngSubmit)="updatePassword()" [formGroup]="passwordForm">
+          <mat-form-field appearance="outline">
+            <mat-label for="currentPassword">Current Password</mat-label>
+            <input matInput id="currentPassword" type="password" formControlName="currentPassword" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label for="newPassword">New Password</mat-label>
+            <input matInput id="newPassword" type="password" formControlName="newPassword" />
+          </mat-form-field>
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>Confirm Password</mat-label>
+            <input matInput type="text" formControlName="confirmPassword"/>
+<!-- 
+            @if (confirmPassword?.value) {
+            <button mat-icon-button matSuffix type="button" (click)="clearConfirmPasswordField()">
+              <mat-icon>Cancel</mat-icon>
+            </button>
+            }
+            @if (confirmPassword?.touched && confirmPassword?.hasError('required') && password?.valid) {
+            <mat-error>Confirm Password is required!</mat-error>
+            }
+            @if (
+            confirmPassword?.hasError('passwordsDontMatch') && confirmPassword?.dirty && confirmPassword?.value &&
+            password?.valid
+            ) {
+            <mat-error>Passwords do not match!</mat-error>
+            }
+            @if (!confirmPassword?.hasError('passwordsDontMatch') && confirmPassword?.value && password?.valid) {
+            <mat-hint class="green-message">Passwords match <mat-icon>check</mat-icon></mat-hint>
+            } -->
+          </mat-form-field>
+
+          <div style="display:flex; justify-content:end;">
+            <button mat-flat-button color="primary" type="submit" [disabled]="!passwordForm.valid">Change
+              Password</button>
+          </div>
+        </form>
+      </mat-expansion-panel>
+    </div>
+
+  </mat-card>
+
+</div>
 }

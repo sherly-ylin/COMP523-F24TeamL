@@ -10,11 +10,7 @@ import * as jobDevController from '../controllers/jobDevController.js'
 import * as personLevelController from '../controllers/personLevelController.js'
 import * as staffingController from '../controllers/staffingController.js'
 import { TeamController } from '../controllers/teamController.js'
-import {
-  adminBoard,
-  allAccess,
-  userBoard,
-} from '../controllers/userController.js'
+import * as userController from '../controllers/userController.js'
 
 import * as authJwt from '../middlewares/authJwt.js'
 import { getCurrentUser } from './getCurrentUserRoutes.js'
@@ -50,6 +46,10 @@ router.patch('/person_level/:id', personLevelController.updateRecord)
 router.delete('/person_level/:id', personLevelController.deleteRecord)
 router.delete('/person_level', personLevelController.deleteAllRecords)
 
+// All reviews
+router.get('/review/counts', allLogsController.getRecordsCounts)
+router.get('/reviews/pending', allLogsController.getPendingRecordsCounts)
+
 /* Closed Routes */
 router.get('/closed', closedController.getAllRecords)
 router.get('/closed/:id', closedController.getRecord)
@@ -64,6 +64,7 @@ router.delete('/closed', closedController.deleteAllRecords)
 router.get('/staffing', staffingController.getAllRecords)
 router.get('/staffing/:id', staffingController.getMyRecords)
 router.get('/staffing/admin/:admin_id', staffingController.getRecordByAdmin_ID)
+router.get('/staffing/team/:team_id', staffingController.getRecordByTeam_ID)
 router.get('/staffing/team/:team_id', staffingController.getRecordByTeam_ID)
 router.post('/staffing', staffingController.addRecord)
 router.patch('/staffing/:id', staffingController.updateRecord)
@@ -111,6 +112,8 @@ router.use(function (req, res, next) {
 
 router.get('/api/auth/invite/:token', authController.getInvite)
 
+router.get('/api/auth/invite/:token', authController.getInvite)
+
 router.post(
   '/api/auth/signup',
   [verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted],
@@ -136,14 +139,18 @@ router.post(
 )
 
 // user routes
-router.use('/api/test', verifyMiddleware)
-router.get('/api/test/all', allAccess)
-router.get('/api/test/user', [authJwt.verifyToken], userBoard)
-router.get(
-  '/api/test/admin',
-  [authJwt.verifyToken, authJwt.isAdmin],
-  adminBoard,
-)
+// router.use('/api/test', verifyMiddleware)
+// router.get('/api/test/all', allAccess)
+// router.get('/api/test/user', [authJwt.authVerifyToken], userBoard)
+// router.get(
+//   '/api/test/admin',
+//   [authJwt.verifyToken, authJwt.isAdmin],
+//   adminBoard,
+// )
+
+// User 
+router.get('/user/profile', [authJwt.authVerifyToken], userController.getUserById)
+router.patch('/user/profile', [authJwt.authVerifyToken],  userController.updateUser)
 
 // verify email routes
 router.use('/verify', verifyMiddleware)
@@ -155,3 +162,4 @@ router.use('/user-setting', setUserInfo)
 router.use('/current-user', getCurrentUser)
 
 export default router
+
