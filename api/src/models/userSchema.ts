@@ -27,15 +27,16 @@ export const UserSchema: Schema<IUser> = new Schema({
 // Hash password before saving
 UserSchema.pre('save', async function (next) {
   const user = this as IUser;
-  if (!user.isModified('password')) return next();
   const salt = await bcrypt.genSalt(10);
-  user.password = await bcrypt.hash(user.password, salt);
+  const hashedPassword = await bcrypt.hash(user.password, salt);
+  user.password = hashedPassword;
   next();
 });
 
 // Method to compare passwords
 UserSchema.methods.comparePassword = async function (inputPassword: string) {
-  return bcrypt.compare(inputPassword, this.password);
+  const valid = await bcrypt.compare(inputPassword, this.password);
+  return valid
 };
 
 

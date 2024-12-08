@@ -70,67 +70,46 @@ export const signUp = async (req: Request, res: Response) => {
   }
 }
 
-export const signIn = (req: Request, res: Response) => {
-  if (!req.body.username || !req.body.password) {
-    return res.status(400).send({ message: 'Username or password is null.' })
-  }
 
-  environment.currentUsername = req.body.username
+export const signIn = async (req: Request, res: Response) => {
+    try {
+        // Check for missing username or password
+        const { username, password } = req.body;
+        if (!username || !password) {
+            return res.status(400).send({ message: 'Username or password is null.' });
+        }
 
-  User.findOne({
-    username: environment.currentUsername,
-  }).exec((err, user) => {
-    if (err) {
-      res.status(500).send({ message: err })
-      return
-    } else if (!user) {
-      return res.status(404).send({ message: 'User Not found.' })
+        // Fetch user from the database
+        const user = await User.findOne({ username }).select('+password');
+        if (!user) {
+            return res.status(404).send({ message: 'User not found.' });
+        }
+
+        // Compare passwords
+        const isMatchCorrect = await user.comparePassword(password);
+        if (!isMatchCorrect) {
+            return res.status(401).send({ message: 'Invalid password.' });
+        }
+
+        const token = jwt.sign({ id: user.id }, config.secret, {
+          expiresIn: 86400, // 24 hours
+        })
+        const responseData: any = {
+          id: user._id,
+          username: user.username,
+          email: user.email,
+          role: user.role,
+          accessToken: token,
+          first_name: user.first_name,
+          last_name: user.last_name,
+        }
+        
+        return res.status(200).send(responseData);
+    } catch (error) {
+        console.error('Error during sign-in:', error);
+        return res.status(500).send({ message: 'Internal server error.' });
     }
-
-    const passwordIsValid = user.comparePassword(req.body.password)
-    console.log('passwordIsValid:', passwordIsValid)
-    if (!passwordIsValid) {
-      return res.status(401).send({
-        accessToken: null,
-        message: 'Invalid Password!',
-      })
-    }
-
-    environment.currentUserRole = user.role
-    console.log('current username:', environment.currentUsername)
-    console.log('current user role:', environment.currentUserRole)
-
-    const token = jwt.sign({ id: user.id }, config.secret, {
-      expiresIn: 86400, // 24 hours
-    })
-    // TODO: based on the user's role, if provider, sent team_id and team_name as well
-    const responseData: any = {
-      id: user._id,
-      username: environment.currentUsername,
-      email: user.email,
-      role: environment.currentUserRole,
-      accessToken: token,
-      first_name: user.first_name,
-      last_name: user.last_name,
-    }
-
-    environment.currentId = responseData.id
-    environment.currentUsername = responseData.username
-    environment.currentEmail = responseData.email
-    environment.currentUserRole = responseData.role
-    environment.currentAccessToken = responseData.accessToken
-    environment.currentFirstName = responseData.first_name
-    environment.currentLastName = responseData.last_name
-
-    // Add team_name if the user is a provider
-    if (environment.currentUserRole === 'provider') {
-      responseData.team_name = user.team_name || null
-    }
-
-    res.status(200).send(responseData)
-
-  })
-}
+};
 
 function generateSecureRandomString(length: number): string {
   return crypto.randomBytes(length).toString('hex').slice(0, length)

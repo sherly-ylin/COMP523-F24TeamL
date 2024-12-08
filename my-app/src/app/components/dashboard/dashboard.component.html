@@ -44,20 +44,28 @@
           <mat-icon>work</mat-icon> Job Development Log
         </span>
       </a>
-      <!-- @if (userRole === 'admin') { -->
+      @if (userRole !== 'provider') {
       <mat-divider></mat-divider>
       <a mat-list-item routerLink="set-up-review">
         <span class="logo-item">
           <mat-icon>email</mat-icon> Set Up Review
         </span>
       </a>
+    }
+      @if (userRole === 'superadmin') {
       <a mat-list-item routerLink="invite-user">
         <span class="logo-item">
           <mat-icon>email</mat-icon>
-          @if (userRole === 'superadmin') { Invite User }
-          @else { Invite Provider}
+          Invite User
         </span>
       </a>
+      }@else if(userRole === 'admin'){ 
+        <a mat-list-item routerLink="invite-user">
+        <span class="logo-item">
+          <mat-icon>email</mat-icon>
+          Invite Provider
+        </span>
+      </a>}
 
     </mat-nav-list>
     <!-- <mat-divider></mat-divider> -->
