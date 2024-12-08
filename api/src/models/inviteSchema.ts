@@ -2,9 +2,9 @@ import mongoose, { Document, Schema } from 'mongoose'
 
 export interface IInvite extends Document {
   email: string
-  role: string
+  role: 'provider' | 'admin' | 'superadmin'
   token: string
-  timespan: { value: number; unit: 'day' | 'week' | 'month' | 'year ' } // Flexible duration
+  timespan: { value: number; unit: 'day' | 'week' | 'month' | 'year' } // Flexible duration
   expiresAt: Date
   inviter: mongoose.Schema.Types.ObjectId
 }
@@ -13,7 +13,7 @@ export interface IInvite extends Document {
 const InviteSchema: Schema<IInvite> = new Schema(
   {
     email: { type: String, required: true },
-    role: { type: String, required: true },
+    role: { type: String, enum: ['provider', 'admin', 'superadmin'], required: true },
     token: { type: String, required: true },
     timespan: {
       value: { type: Number, required: true }, // Duration (e.g., 1, 7, 30)

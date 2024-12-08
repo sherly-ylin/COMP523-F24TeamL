@@ -26,6 +26,7 @@ export const UserSchema: Schema<IUser> = new Schema({
 
 // Hash password before saving
 UserSchema.pre('save', async function (next) {
+  console.log("Inside save middleware")
   const user = this as IUser;
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(user.password, salt);

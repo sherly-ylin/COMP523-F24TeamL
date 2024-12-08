@@ -38,7 +38,7 @@ export class InviteUserComponent {
     private teamService: TeamService
   ) {
     this.email = '';
-    this.role = 'Provider';
+    this.role = 'provider';
     this.timespanString = '3 day';
     this.timespan = { value: 3, unit: 'day' };
     this.submitted = false;

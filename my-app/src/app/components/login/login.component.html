@@ -1,32 +1,192 @@
-<div class="login-page">
-  <img
-    src="https://www.med.unc.edu/psych/wp-content/uploads/sites/839/2020/03/psychiatry.png"
-    style="width: 100%; padding: 30px; max-width: 400px"
-  />
+@if (!forgotPassword) {
+  <div class="login-page">
+    <img
+      src="https://www.med.unc.edu/psych/wp-content/uploads/sites/839/2020/03/psychiatry.png"
+      style="width: 100%; padding: 30px; max-width: 400px"
+    />
 
-  <h1>Sign In</h1>
-  <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
-    <mat-form-field class="form-field">
-      <mat-label>Username</mat-label>
-      <input matInput formControlName="username" required />
-      @if (
-        username?.touched && username?.invalid && username?.hasError("required")
-      ) {
-        <mat-error>Username is required.</mat-error>
-      }
-    </mat-form-field>
+    <h1>Sign In</h1>
+    <form [formGroup]="signInForm" (ngSubmit)="onSignIn()">
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" required />
+        @if (
+          username?.touched && username?.invalid && username?.hasError("required")
+        ) {
+          <mat-error>Username is required.</mat-error>
+        }
+      </mat-form-field>
 
-    <mat-form-field class="form-field">
-      <mat-label>Password</mat-label>
-      <input matInput type="password" formControlName="password" required />
-      @if (
-        password?.touched && password?.invalid && password?.hasError("required")
-      ) {
-        <mat-error>Password is required.</mat-error>
-      }
-    </mat-form-field>
-    <button mat-flat-button type="submit" [disabled]="!signInForm.valid">
-      Sign In
-    </button>
-  </form>
-</div>
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" required />
+        @if (
+          this.signInForm.get('password')?.touched && this.signInForm.get('password')?.invalid && this.signInForm.get('password')?.hasError("required")
+        ) {
+          <mat-error>Password is required.</mat-error>
+        }
+      </mat-form-field>
+      <button mat-button type="button" (click)="onForgotPasswordClick()">Forgot Password?</button>
+
+      <button mat-flat-button type="submit" [disabled]="!signInForm.valid">
+        Sign In
+      </button>
+    </form>
+  </div>
+}
+@if (forgotPassword && !emailVerified) {
+  <div class="reset-password-page">
+    <h1>Reset Password</h1>
+    <form [formGroup]="verifyEmailForm" (ngSubmit)="onVerifyEmail()">
+      <div>
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>Username or Email</mat-label>
+          <input matInput formControlName="username" required />
+          @if (
+            username?.touched && username?.invalid && username?.hasError("required")
+          ) {
+            <mat-error>Username is required.</mat-error>
+          }
+        </mat-form-field>
+  
+        <button mat-flat-button type="button" (click)="sendVerificationCode()" [disabled]="!username">send verification code</button>
+      </div>
+
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Verification Code</mat-label>
+        <input matInput type="text" formControlName="verificationCode" required />
+        @if (
+          verificationCode?.touched && verificationCode?.invalid && verificationCode?.hasError("required")
+        ) {
+          <mat-error>Verification code is required.</mat-error>
+        }
+      </mat-form-field>
+      <button mat-button type="button" (click)="onRememberPasswordClick()">I remember my password!</button>
+
+      <button mat-flat-button type="submit" [disabled]="!verifyEmailForm.valid">
+        Verify
+      </button>
+    </form>
+  </div>
+}
+@if (forgotPassword && emailVerified) {
+  <div class="reset-password-page">
+    <h1>Reset Password</h1>
+    <form [formGroup]="resetPasswordForm" (ngSubmit)="onResetPassword()">
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          [type]="isPasswordVisible() ? 'text' : 'password'"
+          formControlName="password"
+          (input)="resetConfirmPasswordField()"
+          (focus)="markConfirmPasswordUntouched()"
+        />
+        @if (password?.value) {
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="clearPasswordField()"
+          >
+            <mat-icon>cancel</mat-icon>
+          </button>
+        }
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="togglePasswordVisibility($event)"
+        >
+          <mat-icon>{{
+            isPasswordVisible() ? "visibility" : "visibility_off"
+          }}</mat-icon>
+        </button>
+        @if (password?.touched && password?.hasError("required")) {
+          <mat-error>A valid password is required!</mat-error>
+        }
+        @if (password?.dirty && password?.value) {
+          <mat-error>
+            <span>Password must be </span>
+            <span
+              [class]="password?.hasError('notLongEnough') ? '' : 'green-message'"
+              >at least {{ PASSWORD_MIN_LENGTH }} characters,
+            </span>
+            <span>and include </span>
+            <br />
+            <span
+              [class]="password?.hasError('noLowercase') ? '' : 'green-message'"
+              >{{ PASSWORD_MIN_LOWER }} lowercase letter,
+            </span>
+            <span
+              [class]="password?.hasError('noUppercase') ? '' : 'green-message'"
+              >{{ PASSWORD_MIN_UPPER }} uppercase letter,
+            </span>
+            <span [class]="password?.hasError('noNumber') ? '' : 'green-message'"
+              >{{ PASSWORD_MIN_NUMBER }} number,
+            </span>
+            <span [class]="password?.hasError('noSymbol') ? '' : 'green-message'"
+              >and {{ PASSWORD_MIN_SYMBOL }} symbol.</span
+            >
+          </mat-error>
+        }
+      </mat-form-field>
+  
+      <mat-form-field class="form-field" appearance="outline">
+        <mat-label>Confirm Password</mat-label>
+        <input
+          matInput
+          [type]="isConfirmPasswordVisible() ? 'text' : 'password'"
+          formControlName="confirmPassword"
+          (blur)="markConfirmPasswordUntouchedIfPasswordInvalid()"
+        />
+        @if (confirmPassword?.value) {
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="clearConfirmPasswordField()"
+          >
+            <mat-icon>cancel</mat-icon>
+          </button>
+        }
+        <button
+          mat-icon-button
+          matSuffix
+          type="button"
+          (click)="toggleConfirmPasswordVisibility($event)"
+        >
+          <mat-icon>{{
+            isConfirmPasswordVisible() ? "visibility" : "visibility_off"
+          }}</mat-icon>
+        </button>
+        @if (
+          confirmPassword?.touched &&
+          confirmPassword?.hasError("required") &&
+          password?.valid
+        ) {
+          <mat-error>Confirm Password is required!</mat-error>
+        }
+        @if (
+          confirmPassword?.hasError("passwordsDontMatch") &&
+          confirmPassword?.dirty &&
+          confirmPassword?.value &&
+          password?.valid
+        ) {
+          <mat-error>Passwords do not match!</mat-error>
+        }
+        @if (
+          !confirmPassword?.hasError("passwordsDontMatch") &&
+          confirmPassword?.value &&
+          password?.valid
+        ) {
+          <mat-hint class="green-message"
+            >Passwords match <mat-icon>check</mat-icon></mat-hint
+          >
+        }
+      </mat-form-field>
+      <button mat-flat-button type="submit" [disabled]="!resetPasswordForm.valid">Reset Password</button>
+    </form>
+    
+  </div>
+}

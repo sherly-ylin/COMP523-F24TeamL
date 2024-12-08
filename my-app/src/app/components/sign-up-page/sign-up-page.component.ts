@@ -160,16 +160,17 @@ export class SignUpPageComponent implements OnInit {
 
   public onSubmit() {
     console.log("token:", this.token)
+    console.log("username: ", this.username)
+    console.log("password: ", this.password)
     this.http
       .post('http://localhost:3000/api/auth/signup', {
         token: this.token,
-        username: this.username,
-        password: this.password,
+        username: this.username?.value,
+        password: this.password?.value,
       })
       .subscribe({
         next: (response) => {
           console.log(response);
-          alert('Verification email sent. Please check your inbox.');
           this.router.navigate(['/login']);
         },
         error: (error) => {

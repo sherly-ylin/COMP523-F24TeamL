@@ -6,6 +6,7 @@ import { Error, Types } from 'mongoose'
 import crypto from 'crypto'
 import { environment } from '../../environment.js'
 import config from '../config.js'
+import { EmailVerification } from '../models/emailVerificationSchema.js'
 import { Invite } from '../models/inviteSchema.js'
 import { User } from '../models/userSchema.js'
 import * as verify from './emailVerifyController.js'
@@ -43,29 +44,31 @@ export const signUp = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Invite token is invalid.' })
     }
 
+    let user;
     if (invite.role == 'provider') {
-      const user = new User({
+      user = new User({
         email: invite.email,
         role: invite.role,
-        team_id: Types.ObjectId,
-        team_name: String,
+        // team_id: Types.ObjectId,
+        username: req.body.username ?? invite.email,
+        password: bcrypt.hashSync(req.body.password, 8),
+      })
+    } else {
+      user = new User({
+        email: invite.email,
+        role: invite.role,
         username: req.body.username ?? invite.email,
         password: bcrypt.hashSync(req.body.password, 8),
       })
     }
-    // Save the new user
-    const user = new User({
-      email: invite.email,
-      role: invite.role,
-      username: req.body.username ?? invite.email,
-      password: bcrypt.hashSync(req.body.password, 8),
-    })
-    await user.save()
+    console.log("User: ", user)
+    await user!.save()
 
     // Return success response
     res.status(200).send({ message: 'User was registered successfully!' })
   } catch (err) {
     console.log('Error saving user.')
+    console.log(err)
     res.status(500).send({ message: 'Error saving user.', error: err })
   }
 }
@@ -216,48 +219,87 @@ export const invite = async (req: Request, res: Response) => {
       .send({ message: 'Error during sending invite email.' })
   }
 }
-export const changePassword = async (req: Request, res: Response) => {
-  if (!req.body.current_password || !req.body.new_password) {
-    return res.status(400).send({
-      message: 'Current password or new password is null.',
-    })
-  }
 
+function generateRandomEmailVerificationCode(): string {
+  return Math.floor(Math.random() * 1000000).toString().padStart(6, "0");
+}
+
+async function generateUniqueEmailVerificationCode() {
+  let verificationCode, existingDoc
+
+  // Keep generating a new code until it is unique
+  do {
+    verificationCode = generateRandomEmailVerificationCode()
+    existingDoc = await EmailVerification.findOne({ verificationCode })
+  } while (existingDoc)
+
+  return verificationCode
+}
+
+export const sendVerificationCode = async (req: Request, res: Response) => {
   try {
-    const user = await User.findOne({
-      username: environment.currentUsername,
+    const expiresAt = new Date()
+    expiresAt.setTime(expiresAt.getTime() + 1000 * 60 * 15) // Expires in 15 minutes
+
+    // Create and store the new Email Verification
+    const emailVerification = new EmailVerification({
+      email: req.body.email,
+      verificationCode: await generateUniqueEmailVerificationCode(),
+      status: 'pending',
+      expiresAt: expiresAt,
     })
+    await emailVerification.save()
 
-    if (!user) {
-      return res.status(404).send({
-        message: 'User Not found.',
-      })
-    }
+    // Send the email verification code
+    await verify.sendEmailVerificationCode(emailVerification)
 
-    const passwordIsValid = bcrypt.compareSync(
-      req.body.current_password,
-      user.password,
-    )
-
-    if (!passwordIsValid) {
-      return res.status(401).send({
-        message: 'Current password is incorrect!',
-      })
-    }
-
-    const hashedNewPassword = bcrypt.hashSync(req.body.new_password, 8)
-
-    user.password = hashedNewPassword
-    await user.save()
-
-    res.status(200).send({
-      message: 'Password changed successfully!',
+    // Send a success response
+    return res.status(200).send({
+      message: 'Successfully sent email verification code.',
     })
   } catch (err) {
-    console.error('Error during password change:', err)
-    res.status(500).send({
-      message: 'Error during password change.',
-      error: err,
-    })
+    // Handle error
+    console.error('Error during sending email verification code:', err)
+    return res
+      .status(500)
+      .send({ message: 'Error during sending email verification code.' })
+  }
+}
+
+export const verifyEmail = async (req: Request, res: Response) => {
+  const verificationRecord = await EmailVerification.findOne({ email: req.body.email })
+  if (!verificationRecord) {
+    return res.status(404).send({ message: 'Verification record not found.' })
+  }
+
+  return res
+    .status(200)
+    .json(
+      req.body.verificationCode.toString() ==
+        verificationRecord.verificationCode,
+    )
+}
+
+export const resetPassword = async (req: Request, res: Response) => {
+  if (!req.body.email || !req.body.password) {
+    console.log("Invite email or password is null.")
+    return res.status(400).json({ error: 'Email or password is null.' })
+  }
+  try {
+    const user = await User.findOne({ email: req.body.email })
+    if (!user) {
+      console.log("User not found.")
+      return res.status(400).json({ error: 'User not found.' })
+    }
+
+    user.password = req.body.password
+    await user!.save()
+
+    // Return success response
+    res.status(200).send({ message: 'Password reset successfully!' })
+  } catch (err) {
+    console.log('Error saving user.')
+    console.log(err)
+    res.status(500).send({ message: 'Error saving user.', error: err })
   }
 }

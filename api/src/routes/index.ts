@@ -65,6 +65,7 @@ router.get('/staffing', staffingController.getAllRecords)
 router.get('/staffing/:id', staffingController.getMyRecords)
 router.get('/staffing/admin/:admin_id', staffingController.getRecordByAdmin_ID)
 router.get('/staffing/team/:team_id', staffingController.getRecordByTeam_ID)
+router.get('/staffing/team/:team_id', staffingController.getRecordByTeam_ID)
 router.post('/staffing', staffingController.addRecord)
 router.patch('/staffing/:id', staffingController.updateRecord)
 router.delete('/staffing/:id', staffingController.deleteRecord)
@@ -110,6 +111,8 @@ router.use(function (req, res, next) {
 
 router.get('/api/auth/invite/:token', authController.getInvite)
 
+router.get('/api/auth/invite/:token', authController.getInvite)
+
 router.post(
   '/api/auth/signup',
   [verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted],
@@ -117,6 +120,21 @@ router.post(
 )
 
 router.post('/api/auth/signin', authController.signIn)
+router.post(
+  '/api/auth/sendVerificationCode',
+  [verifySignUp.transformUsernameToEmail],
+  authController.sendVerificationCode,
+)
+router.post(
+  '/api/auth/verifyEmail',
+  [verifySignUp.transformUsernameToEmail],
+  authController.verifyEmail,
+)
+router.post(
+  '/api/auth/resetPassword',
+  [verifySignUp.transformUsernameToEmail],
+  authController.resetPassword,
+)
 
 router.post(
   '/api/auth/invite',
@@ -148,3 +166,4 @@ router.use('/user-setting', setUserInfo)
 router.use('/current-user', getCurrentUser)
 
 export default router
+
