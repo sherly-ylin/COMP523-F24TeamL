@@ -10,42 +10,7 @@ import { EmailVerification } from '../models/emailVerificationSchema.js'
 import { Invite } from '../models/inviteSchema.js'
 import { User } from '../models/userSchema.js'
 import * as verify from './emailVerifyController.js'
-
-// Setting up the initial Superadmin account (username: henry passwrod: 1)
-User.findOne({ email: 'liuheng1@unc.edu' })
-  .then((user) => {
-    if (user) {
-      console.log('You can log in using this account:')
-      console.log('username: "' + user.username + '"')
-      user.password = '1'
-      // user.password = bcrypt.hashSync('1', 8)
-      user.role = "superadmin"
-      user.save()
-      console.log('password: "1"')
-      console.log('role: "' + user.role + '"')
-      console.log()
-    
-    } else {
-      new User({
-        email: 'liuheng1@unc.edu',
-        role: 'superadmin',
-        username: 'henry',
-        password: '1',
-        // password: bcrypt.hashSync('1', 8),
-        first_name: 'Henry',
-        last_name: 'Liu',
-      }).save()
-
-      console.log()
-      console.log('You can log in using this superadmin account:')
-      console.log('username: "henry"')
-      console.log('password: "1"')
-      console.log()
-    }
-  })
-  .catch((error) => {
-    console.error('Error occurred while finding user henry:', error)
-  })
+import * as userService from '../services/userService.js'
 
 export async function getInvite(req: Request, res: Response) {
   try {
@@ -122,7 +87,8 @@ export const signIn = (req: Request, res: Response) => {
       return res.status(404).send({ message: 'User Not found.' })
     }
 
-    const passwordIsValid = bcrypt.compareSync(req.body.password, user.password)
+    const passwordIsValid = user.comparePassword(req.body.password)
+    console.log('passwordIsValid:', passwordIsValid)
     if (!passwordIsValid) {
       return res.status(401).send({
         accessToken: null,
@@ -155,76 +121,7 @@ export const signIn = (req: Request, res: Response) => {
 
     res.status(200).send(responseData)
 
-    // res.status(200).send({
-    //   id: user._id,
-    //   username: environment.currentUsername,
-    //   email: user.email,
-    //   role: environment.currentUserRole,
-    //   accessToken: token,
-    //   first_name: user.first_name,
-    //   last_name: user.last_name,
-    // })
   })
-}
-
-function generateRandomEmailVerificationCode(): string {
-  return Math.floor(Math.random() * 1000000).toString().padStart(6, "0");
-}
-
-async function generateUniqueEmailVerificationCode() {
-  let verificationCode, existingDoc
-
-  // Keep generating a new code until it is unique
-  do {
-    verificationCode = generateRandomEmailVerificationCode()
-    existingDoc = await EmailVerification.findOne({ verificationCode })
-  } while (existingDoc)
-
-  return verificationCode
-}
-
-export const sendVerificationCode = async (req: Request, res: Response) => {
-  try {
-    const expiresAt = new Date()
-    expiresAt.setTime(expiresAt.getTime() + 1000 * 60 * 15) // Expires in 15 minutes
-
-    // Create and store the new Email Verification
-    const emailVerification = new EmailVerification({
-      email: req.body.email,
-      verificationCode: await generateUniqueEmailVerificationCode(),
-      status: 'pending',
-      expiresAt: expiresAt,
-    })
-    await emailVerification.save()
-
-    // Send the email verification code
-    await verify.sendEmailVerificationCode(emailVerification)
-
-    // Send a success response
-    return res.status(200).send({
-      message: 'Successfully sent email verification code.',
-    })
-  } catch (err) {
-    // Handle error
-    console.error('Error during sending email verification code:', err)
-    return res
-      .status(500)
-      .send({ message: 'Error during sending email verification code.' })
-  }
-}
-
-export const verifyEmail = async (req: Request, res: Response) => {
-  const verificationRecord = await EmailVerification.findOne({ email: req.body.email })
-  if (!verificationRecord) {
-    return res.status(404).send({ message: 'Verification record not found.' })
-  }
-
-  return res
-    .status(200)
-    .json(
-      req.body.verificationCode.toString() ==
-        verificationRecord.verificationCode,
-    )
 }
 
 function generateSecureRandomString(length: number): string {
@@ -332,6 +229,67 @@ export const invite = async (req: Request, res: Response) => {
       .send({ message: 'Error during sending invite email.' })
   }
 }
+
+function generateRandomEmailVerificationCode(): string {
+  return Math.floor(Math.random() * 1000000).toString().padStart(6, "0");
+}
+
+async function generateUniqueEmailVerificationCode() {
+  let verificationCode, existingDoc
+
+  // Keep generating a new code until it is unique
+  do {
+    verificationCode = generateRandomEmailVerificationCode()
+    existingDoc = await EmailVerification.findOne({ verificationCode })
+  } while (existingDoc)
+
+  return verificationCode
+}
+
+export const sendVerificationCode = async (req: Request, res: Response) => {
+  try {
+    const expiresAt = new Date()
+    expiresAt.setTime(expiresAt.getTime() + 1000 * 60 * 15) // Expires in 15 minutes
+
+    // Create and store the new Email Verification
+    const emailVerification = new EmailVerification({
+      email: req.body.email,
+      verificationCode: await generateUniqueEmailVerificationCode(),
+      status: 'pending',
+      expiresAt: expiresAt,
+    })
+    await emailVerification.save()
+
+    // Send the email verification code
+    await verify.sendEmailVerificationCode(emailVerification)
+
+    // Send a success response
+    return res.status(200).send({
+      message: 'Successfully sent email verification code.',
+    })
+  } catch (err) {
+    // Handle error
+    console.error('Error during sending email verification code:', err)
+    return res
+      .status(500)
+      .send({ message: 'Error during sending email verification code.' })
+  }
+}
+
+export const verifyEmail = async (req: Request, res: Response) => {
+  const verificationRecord = await EmailVerification.findOne({ email: req.body.email })
+  if (!verificationRecord) {
+    return res.status(404).send({ message: 'Verification record not found.' })
+  }
+
+  return res
+    .status(200)
+    .json(
+      req.body.verificationCode.toString() ==
+        verificationRecord.verificationCode,
+    )
+}
+
 export const changePassword = async (req: Request, res: Response) => {
   if (!req.body.current_password || !req.body.new_password) {
     return res.status(400).send({
