@@ -45,8 +45,9 @@ export const sendEmailVerificationCode = async (emailVerification: IEmailVerific
   const mailOptions = {
     from: '"UNC Department of Psychiatry" <hello@psychiatry.unc.edu>',
     to: emailVerification.email,
-    subject: `Code: ${emailVerification.verificationCode} - eIPS Reset Password`,
+    subject: `eIPS Reset Password`,
     html: `
+      <p>Code: ${emailVerification.verificationCode}</p>
       <p>Don't share this code with anyone. Your verification code for resetting eIPS password is ${emailVerification.verificationCode}.</p>
       <p>This code expires in 15 minutes.<\p>
       <p>If you didn't request this code, then someone has entered your username or email on eIPS reset password page at ${emailVerification.createdAt}.</p>
@@ -55,7 +56,8 @@ export const sendEmailVerificationCode = async (emailVerification: IEmailVerific
   }
 
   try {
-    await transporter.sendMail(mailOptions)
+    const info = await transporter.sendMail(mailOptions)
+    console.log('Message sent: %s', info.messageId)
     console.log("Success");
   } catch (error) {
     throw new Error('Failed to send verification email')

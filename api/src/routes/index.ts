@@ -131,6 +131,11 @@ router.post(
   [verifySignUp.transformUsernameToEmail],
   authController.verifyEmail,
 )
+router.post(
+  '/api/auth/resetPassword',
+  [verifySignUp.transformUsernameToEmail],
+  authController.resetPassword,
+)
 
 router.post(
   '/api/auth/invite',

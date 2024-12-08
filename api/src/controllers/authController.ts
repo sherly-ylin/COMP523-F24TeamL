@@ -44,28 +44,31 @@ export const signUp = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Invite token is invalid.' })
     }
 
+    let user;
     if (invite.role == 'provider') {
-      const user = new User({
+      user = new User({
         email: invite.email,
         role: invite.role,
-        team_id: Types.ObjectId,
+        // team_id: Types.ObjectId,
+        username: req.body.username ?? invite.email,
+        password: bcrypt.hashSync(req.body.password, 8),
+      })
+    } else {
+      user = new User({
+        email: invite.email,
+        role: invite.role,
         username: req.body.username ?? invite.email,
         password: bcrypt.hashSync(req.body.password, 8),
       })
     }
-    // Save the new user
-    const user = new User({
-      email: invite.email,
-      role: invite.role,
-      username: req.body.username ?? invite.email,
-      password: bcrypt.hashSync(req.body.password, 8),
-    })
-    await user.save()
+    console.log("User: ", user)
+    await user!.save()
 
     // Return success response
     res.status(200).send({ message: 'User was registered successfully!' })
   } catch (err) {
     console.log('Error saving user.')
+    console.log(err)
     res.status(500).send({ message: 'Error saving user.', error: err })
   }
 }
@@ -88,7 +91,7 @@ export const signIn = (req: Request, res: Response) => {
     }
 
     const passwordIsValid = user.comparePassword(req.body.password)
-    console.log('passwordIsValid:', passwordIsValid)
+
     if (!passwordIsValid) {
       return res.status(401).send({
         accessToken: null,
@@ -290,48 +293,6 @@ export const verifyEmail = async (req: Request, res: Response) => {
     )
 }
 
-export const changePassword = async (req: Request, res: Response) => {
-  if (!req.body.current_password || !req.body.new_password) {
-    return res.status(400).send({
-      message: 'Current password or new password is null.',
-    })
-  }
+export const resetPassword = async () => {
 
-  try {
-    const user = await User.findOne({
-      username: environment.currentUsername,
-    })
-
-    if (!user) {
-      return res.status(404).send({
-        message: 'User Not found.',
-      })
-    }
-
-    const passwordIsValid = bcrypt.compareSync(
-      req.body.current_password,
-      user.password,
-    )
-
-    if (!passwordIsValid) {
-      return res.status(401).send({
-        message: 'Current password is incorrect!',
-      })
-    }
-
-    const hashedNewPassword = bcrypt.hashSync(req.body.new_password, 8)
-
-    user.password = hashedNewPassword
-    await user.save()
-
-    res.status(200).send({
-      message: 'Password changed successfully!',
-    })
-  } catch (err) {
-    console.error('Error during password change:', err)
-    res.status(500).send({
-      message: 'Error during password change.',
-      error: err,
-    })
-  }
 }
