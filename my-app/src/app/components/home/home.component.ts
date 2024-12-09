@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
   totalReviewCount!: number;
   completedReviewCount!: number;
   incompleteReviewCount!: number;
-
+  role: string;
   pendingReviews = [
     { type: 'closed', title: 'Review 1' },
     { type: 'closed', title: 'Review 2' },
@@ -34,12 +34,13 @@ export class HomeComponent implements OnInit {
     private reviewService: ReviewService
   ) {
     this.displayName = 'User'; // Replace with actual user data
-
+    this.role = ''
     this.authService.profile$.subscribe((profile: Profile | null) => {
       if (profile) {
         console.log(profile);
-        this.displayName =
-          profile.role === 'provider' ? profile.team_name : profile.username;
+        this.displayName = profile.username;
+          // profile.role === 'provider' ? profile.team_name : profile.username;
+        this.role = profile.role;
       } else {
         this.displayName = null;
       }

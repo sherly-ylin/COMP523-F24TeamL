@@ -209,7 +209,7 @@ export class ProfileEditorComponent {
       this.authService.requestEmailChange(email).subscribe({
         next: () => {
           this.verificationSent = true;
-          alert('Verification code sent to your email.');
+          // alert('Verification code sent to your email.');
         },
         error: () => alert('Failed to send verification code.'),
       });

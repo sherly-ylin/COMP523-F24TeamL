@@ -17,7 +17,7 @@
         <h5>{{ totalReviewCount }}</h5>
       </mat-card>
     </div>
-
+  @if(role === 'provider'){
     <mat-card class="reviews-list-card">
       <h2>Pending Reviews</h2>
       <mat-list>
@@ -31,5 +31,6 @@
         }
       </mat-list>
     </mat-card>
+  }
   </div>
 </div>
