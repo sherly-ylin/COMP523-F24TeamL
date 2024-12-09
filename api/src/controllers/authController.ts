@@ -80,7 +80,7 @@ export const signIn = async (req: Request, res: Response) => {
             return res.status(400).send({ message: 'Username or password is null.' });
         }
 
-        // Fetch user from the database
+        // Find user from the database
         const userByUsername = await User.findOne({ username: username }).select('+password');  
         const userByEmail = await User.findOne({ email: username }).select('+password');
         const user = userByUsername ?? userByEmail;
@@ -277,11 +277,13 @@ export const resetPassword = async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Email or password is null.' })
   }
   try {
-    const user = await User.findOne({ email: req.body.email })
+    const userByUsername = await User.findOne({ username: req.body.email }).select('+password');  
+    const userByEmail = await User.findOne({ email: req.body.email }).select('+password');
+    const user = userByUsername ?? userByEmail;
     if (!user) {
-      console.log("User not found.")
-      return res.status(400).json({ error: 'User not found.' })
+        return res.status(404).send({ message: 'User not found.' });
     }
+
 
     user.password = req.body.password
     await user!.save()
