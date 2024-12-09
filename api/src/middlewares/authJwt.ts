@@ -9,7 +9,6 @@ export const authVerifyToken = async (
   next: NextFunction,
 ) => {
   const token = req.headers['authorization']?.split(' ')[1]
-  console.log('token:', token)
   if (!token) {
     return res.status(403).json({ message: 'No token provided' })
   }
@@ -18,7 +17,6 @@ export const authVerifyToken = async (
     const decoded = jwt.verify(token, config.secret)
     req.params.userId =
       typeof decoded === 'string' ? JSON.parse(decoded).id : decoded?.id
-    console.log('req.params.userid: ', req.params.userId)
     next()
   } catch (err) {
     console.error(err)

@@ -85,3 +85,24 @@ export const deleteUser = async (
   delete userInfo.password // Don't return password
   return userInfo
 }
+
+export const changePassword = async (userId: string, oldPassword: string, newPassword: string): Promise<string> => {
+  if (!userId || !oldPassword || !newPassword) {
+      throw new Error('User ID, old password, and new password are required.');
+  }
+
+  const user = await User.findById(userId).select('+password'); // Ensure the password field is fetched
+  if (!user) {
+      throw new Error('User not found.');
+  }
+
+  const isMatch = await user?.comparePassword(oldPassword);
+  if (!isMatch) {
+      throw new Error('Old password is incorrect.');
+  }
+  user.password = newPassword;
+
+  await user.save();
+
+  return 'Password changed successfully.';
+};

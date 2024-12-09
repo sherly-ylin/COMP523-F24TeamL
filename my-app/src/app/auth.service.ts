@@ -86,6 +86,7 @@ export class AuthService {
       }),
     )
     .subscribe((response: any) => {
+      alert("Verification code sent! Check your email inbox.");
       console.log('Response:', response);
     });
   }
@@ -174,9 +175,9 @@ export class AuthService {
     // });
   }
   updatePassword(data: {
-    currentPassword: string;
+    oldPassword: string;
     newPassword: string;
   }): Observable<any> {
-    return this.http.put<Profile>(`${this.baseUrl}/password`, data);
+    return this.http.post<Profile>(`${this.baseUrl}/user/change-password`, data);
   }
 }

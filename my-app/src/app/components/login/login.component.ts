@@ -197,6 +197,7 @@ export class LoginComponent implements OnInit {
                 [Validators.required, this.passwordsMatchValidator],
               ],
             });
+            alert("Email verified");
           } else if (response == false){
             console.log("response", response)
             alert('Invalid verification code.');
