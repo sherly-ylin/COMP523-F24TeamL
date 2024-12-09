@@ -81,7 +81,9 @@ export const signIn = async (req: Request, res: Response) => {
         }
 
         // Fetch user from the database
-        const user = await User.findOne({ username }).select('+password');
+        const userByUsername = await User.findOne({ username: username }).select('+password');  
+        const userByEmail = await User.findOne({ email: username }).select('+password');
+        const user = userByUsername ?? userByEmail;
         if (!user) {
             return res.status(404).send({ message: 'User not found.' });
         }

@@ -8,7 +8,7 @@
     <h1>Sign In</h1>
     <form [formGroup]="signInForm" (ngSubmit)="onSignIn()">
       <mat-form-field class="form-field" appearance="outline">
-        <mat-label>Username</mat-label>
+        <mat-label>Username or email</mat-label>
         <input matInput formControlName="username" required />
         @if (
           username?.touched && username?.invalid && username?.hasError("required")
@@ -40,7 +40,7 @@
     <form [formGroup]="verifyEmailForm" (ngSubmit)="onVerifyEmail()">
       <div>
         <mat-form-field class="form-field" appearance="outline">
-          <mat-label>Username or Email</mat-label>
+          <mat-label>Email</mat-label>
           <input matInput formControlName="username" required />
           @if (
             username?.touched && username?.invalid && username?.hasError("required")
