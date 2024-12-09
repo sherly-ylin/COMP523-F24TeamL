@@ -19,7 +19,14 @@
   align-items: center;
   padding: 20px;
 }
-
+.verify-container{
+  display: flex;
+  flex-direction: row;
+}
+.verify-box{
+  display: flex;
+  flex-direction: column;
+}
 /* Logo image styling */
 .login-page img {
   max-width: 100%;
@@ -46,4 +53,8 @@ form {
 
 .green-message {
   color: green !important;
+}
+
+button{
+  margin: 4px;
 }
