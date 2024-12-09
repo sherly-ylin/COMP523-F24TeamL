@@ -88,7 +88,7 @@ export class InviteUserComponent implements OnInit {
     this.loadTeams();
 
     this.inviteForm = this.formBuilder.group({
-      email: ['', Validators.required, Validators.email],
+      email: ['', [Validators.required, Validators.email]],
       role: [this.role, Validators.required],
       selectedTeam: [null],
       timespanString: ['3 day', Validators.required],
@@ -116,12 +116,23 @@ export class InviteUserComponent implements OnInit {
     }
   }
   public onSubmit() {
-    this.submitted = true;
+    // this.submitted = true;
+
+
+    let formval = {
+      email: this.inviteForm.value.email,
+      role: this.inviteForm.value.role,
+      team_id: this.inviteForm.value.selectedTeam,
+      timespan: this.getTimespan(this.inviteForm.value.timespanString),
+    }
+
+    console.log('form', formval);
     if (this.inviteForm.valid) {
       this.http
         .post('http://localhost:3000/api/auth/invite', {
           email: this.inviteForm.value.email,
           role: this.inviteForm.value.role,
+          team_id: this.inviteForm.value.selectedTeam,
           timespan: this.getTimespan(this.inviteForm.value.timespanString),
         })
         .subscribe({

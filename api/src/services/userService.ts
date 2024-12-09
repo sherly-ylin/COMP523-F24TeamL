@@ -1,5 +1,5 @@
 import { IUser, User } from '../models/userSchema'
-
+import { Team } from '../models/teamSchema'
 export const createUser = async (
   userData: Partial<IUser>,
 ): Promise<Record<string, any>> => {
@@ -11,7 +11,11 @@ export const createUser = async (
     userData.team_id = null
     userData.team_name = null
   } else {
-    //TODO: find team_names
+    const team = await Team.findOne({team_id: userData.team_id})
+    if(!team){
+      throw new Error("Team associated with user's team_id not found.")
+    }
+    userData.team_name = team.team_name
   }
   await user.save()
   const userInfo = user.toObject()
@@ -41,8 +45,7 @@ export const getUserProfileById = async (
   delete userInfo.password // Don't return password
 
   //To be replace with team_neam found in db
-  userInfo.team_name = userInfo.team_id
-  delete userInfo.team_id
+  userInfo.team_name = userInfo.team_name
   return userInfo
 }
 export const getAllUsers = async (): Promise<Record<string, any>[]> => {

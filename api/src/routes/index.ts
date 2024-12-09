@@ -111,8 +111,6 @@ router.use(function (req, res, next) {
 
 router.get('/api/auth/invite/:token', authController.getInvite)
 
-router.get('/api/auth/invite/:token', authController.getInvite)
-
 router.post(
   '/api/auth/signup',
   [verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted],
@@ -138,7 +136,7 @@ router.post(
 
 router.post(
   '/api/auth/invite',
-  [verifySignUp.checkDuplicateUsernameOrEmail],
+  [authJwt.authVerifyToken, verifySignUp.checkDuplicateUsernameOrEmail],
   authController.invite,
 )
 
