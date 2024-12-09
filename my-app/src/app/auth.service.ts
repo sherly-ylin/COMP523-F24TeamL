@@ -163,17 +163,15 @@ export class AuthService {
   }
 
   requestEmailChange(email: string): Observable<any> | any {
-    return true;
+    this.sendVerificationCode(email)
+    return of(true);
     // return this.http.post<Profile>(`${this.baseUrl}/user/email`, { email });
   }
 
   verifyAndUpdateEmail(email: string, code: string): Observable<any> | any {
-    return true;
-    // return this.http.post<Profile>(`${this.baseUrl}/user/email/verify`, {
-    //   email,
-    //   code,
-    // });
+    return this.verifyEmail(email, code)
   }
+
   updatePassword(data: {
     oldPassword: string;
     newPassword: string;

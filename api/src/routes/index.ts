@@ -111,6 +111,8 @@ router.use(function (req, res, next) {
 
 router.get('/api/auth/invite/:token', authController.getInvite)
 
+router.get('/api/auth/invite/:token', authController.getInvite)
+
 router.post(
   '/api/auth/signup',
   [verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted],

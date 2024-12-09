@@ -258,16 +258,15 @@ export const sendVerificationCode = async (req: Request, res: Response) => {
 }
 
 export const verifyEmail = async (req: Request, res: Response) => {
-  const verificationRecord = await EmailVerification.findOne({ email: req.body.email })
-  if (!verificationRecord) {
+  const verificationRecords = await EmailVerification.find({ email: req.body.email })
+  if (!verificationRecords) {
     return res.status(404).send({ message: 'Verification record not found.' })
   }
 
   return res
     .status(200)
     .json(
-      req.body.verificationCode.toString() ==
-        verificationRecord.verificationCode,
+        verificationRecords.some((record)=>req.body.verificationCode.toString() == record.verificationCode)
     )
 }
 
@@ -277,13 +276,11 @@ export const resetPassword = async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Email or password is null.' })
   }
   try {
-    const userByUsername = await User.findOne({ username: req.body.email }).select('+password');  
-    const userByEmail = await User.findOne({ email: req.body.email }).select('+password');
-    const user = userByUsername ?? userByEmail;
+    const user = await User.findOne({ email: req.body.email })
     if (!user) {
-        return res.status(404).send({ message: 'User not found.' });
+      console.log("User not found.")
+      return res.status(400).json({ error: 'User not found.' })
     }
-
 
     user.password = req.body.password
     await user!.save()
