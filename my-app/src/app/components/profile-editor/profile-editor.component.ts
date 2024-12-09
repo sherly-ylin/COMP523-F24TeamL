@@ -69,7 +69,7 @@ export class ProfileEditorComponent {
       email: ['', [Validators.required, Validators.email]],
     });
     this.verificationForm = this.formBuilder.group({
-      code: ['', [Validators.required, Validators.minLength(8)]],
+      code: ['', [Validators.required, Validators.minLength(6)]],
     });
     this.passwordForm = this.formBuilder.group({
       currentPassword: ['', Validators.required],
@@ -205,6 +205,7 @@ export class ProfileEditorComponent {
       });
     }
   }
+
   requestEmailChange(): void {
     if (this.emailForm.valid) {
       const email = this.emailForm.value.email;
@@ -226,7 +227,17 @@ export class ProfileEditorComponent {
           this.verificationForm.value.code
         )
         .subscribe({
-          next: () => alert('Email update complete.'),
+          next: (response: boolean | null) => {
+            if (response) {
+              this.authService.updateProfile({email: this.emailForm.value.email}).subscribe({
+                next: (response: any) => console.log(response)
+              });
+              alert('Email update complete.')
+            } else if (response == false){
+              console.log("response", response)
+              alert('Invalid verification code.');
+            }
+          },
           error: () => alert('Failed to update email'),
         });
     }

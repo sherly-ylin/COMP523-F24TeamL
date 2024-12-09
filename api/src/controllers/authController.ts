@@ -267,16 +267,15 @@ export const sendVerificationCode = async (req: Request, res: Response) => {
 }
 
 export const verifyEmail = async (req: Request, res: Response) => {
-  const verificationRecord = await EmailVerification.findOne({ email: req.body.email })
-  if (!verificationRecord) {
+  const verificationRecords = await EmailVerification.find({ email: req.body.email })
+  if (!verificationRecords) {
     return res.status(404).send({ message: 'Verification record not found.' })
   }
 
   return res
     .status(200)
     .json(
-      req.body.verificationCode.toString() ==
-        verificationRecord.verificationCode,
+        verificationRecords.some((record)=>req.body.verificationCode.toString() == record.verificationCode)
     )
 }
 
