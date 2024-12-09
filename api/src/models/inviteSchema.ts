@@ -7,6 +7,7 @@ export interface IInvite extends Document {
   timespan: { value: number; unit: 'day' | 'week' | 'month' | 'year' } // Flexible duration
   expiresAt: Date
   inviter: mongoose.Schema.Types.ObjectId
+  team_id?: string
 }
 
 // Create a schema
@@ -29,6 +30,7 @@ const InviteSchema: Schema<IInvite> = new Schema(
       ref: 'User', // Reference to the User model
       required: true,
     },
+    team_id: { type: String, ref: 'Team' },
   },
   { timestamps: true },
 ) // Automatically add createdAt and updatedAt fields

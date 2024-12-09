@@ -21,7 +21,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
-
 @Component({
   selector: 'app-profile-editor',
   imports: [
@@ -197,8 +196,6 @@ export class ProfileEditorComponent {
 
   public updateProfile() {
     if (this.profileForm.valid) {
-      console.log("profileForm:");
-      console.log(this.profileForm.value)
       this.authService.updateProfile(this.profileForm.value).subscribe({
         next: () => alert('Profile updated successfully!'),
         error: () => alert('Failed to update profile. Please try again.'),
@@ -259,10 +256,16 @@ export class ProfileEditorComponent {
 
   updatePassword(): void {
     if (this.passwordForm.valid) {
-      this.authService.updatePassword(this.passwordForm.value).subscribe({
-        next: () => alert('Password updated successfully'),
-        error: () => alert('Failed to update password'),
-      });
+      this.authService
+        .updatePassword({
+          oldPassword: this.passwordForm.value.currentPassword,
+          newPassword: this.passwordForm.value.newPassword
+        }
+        )
+        .subscribe({
+          next: () => alert('Password updated successfully'),
+          error: () => alert('Failed to update password'),
+        });
     }
   }
 

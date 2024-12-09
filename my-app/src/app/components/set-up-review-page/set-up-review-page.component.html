@@ -21,7 +21,6 @@
           <mat-form-field class="form-field" appearance="fill">
             <mat-label>Select a team</mat-label>
             <mat-select formControlName="selectedTeam">
-              <!-- Dynamic options from the `teams` array -->
               <mat-option *ngFor="let team of teams" [value]="team.team_id">
                 {{ team.team_name }}
               </mat-option>

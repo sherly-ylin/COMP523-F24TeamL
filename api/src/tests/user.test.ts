@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import mongoose from 'mongoose';
-import { createUserFromDB, getUserByIdFromDB, getAllUsersFromDB, updateUserFromDB, deleteUserFromDB } from '../services/userService';
+import * as UserService from '../services/userService';
 import {User} from '../models/userSchema';
 
 
@@ -20,7 +20,7 @@ describe('User Service Tests', () => {
     let userId: string;
 
     it('should create a new user with a hashed password', async () => {
-        const user = await createUserFromDB({
+        const user = await UserService.createUser({
             username: 'testuser',
             first_name: 'Test',
             last_name: 'User',
@@ -40,28 +40,28 @@ describe('User Service Tests', () => {
     });
 
     it('should fetch a user by ID', async () => {
-        const user = await getUserByIdFromDB(userId);
+        const user = await UserService.getUserById(userId);
         expect(user?.id).toBe(userId);
     });
 
     it('should fetch all users', async () => {
-        const users = await getAllUsersFromDB();
+        const users = await UserService.getAllUsers();
         expect(users.length).toBeGreaterThan(0);
     });
 
     it('should update a user', async () => {
-        const updatedUser = await updateUserFromDB(userId, { first_name: 'Updated' });
+        const updatedUser = await UserService.updateUser(userId, { first_name: 'Updated' });
         expect(updatedUser?.first_name).toBe('Updated');
     });
 
     it('should delete a user', async () => {
-        const deletedUser = await deleteUserFromDB(userId);
+        const deletedUser = await UserService.deleteUser(userId);
         expect(deletedUser?.id).toBe(userId);
     });
 
     it('should throw an error for missing team_id in provider role', async () => {
         await expect(
-            createUserFromDB({
+            UserService.createUser({
                 username: 'invaliduser',
                 first_name: 'Invalid',
                 last_name: 'User',

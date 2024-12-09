@@ -14,12 +14,19 @@
   height: 100%;
   background-color: #e9ecef;
   font-family: "Manrope", sans-serif;
-
-  display: flex; /* Enable flexbox */
-  flex-direction: column; /* Arrange children in a column (vertically) */
-  align-items: center; /* Center the children horizontally */
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
 }
-
+.verify-container{
+  display: flex;
+  flex-direction: row;
+}
+.verify-box{
+  display: flex;
+  flex-direction: column;
+}
 /* Logo image styling */
 .login-page img {
   max-width: 100%;
@@ -46,4 +53,8 @@ form {
 
 .green-message {
   color: green !important;
+}
+
+button{
+  margin: 4px;
 }

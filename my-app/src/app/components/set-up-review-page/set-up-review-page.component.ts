@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule, NgFor } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,7 +12,6 @@ import {
 } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { Team, TeamService } from 'src/app/services/team.service';
-import { CommonModule, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-set-up-review-page',
@@ -29,20 +29,14 @@ import { CommonModule, NgFor } from '@angular/common';
   styleUrl: './set-up-review-page.component.css',
 })
 export class SetUpReviewPageComponent implements OnInit {
-  // review = '';
-  // team = '';
-  // email = '';
   teams: Team[] = [];
   selectedTeam: string | null = null;
   reviewForm!: FormGroup;
 
-  constructor(private teamService: TeamService, private formBuilder: FormBuilder) {
-    // this.teams = this.teamService.currentTeams ?? [];
-    // console.log('teams:', this.teams);
-    // // this.teamService.teams$.subscribe((teams)=>{
-    // //   this.teams = teams;
-    // // })
-  }
+  constructor(
+    private teamService: TeamService,
+    private formBuilder: FormBuilder
+  ) {}
   ngOnInit() {
     this.reviewForm = this.formBuilder.group({
       review: [null, Validators.required],

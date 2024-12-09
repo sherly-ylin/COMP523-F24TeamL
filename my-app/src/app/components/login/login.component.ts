@@ -149,7 +149,6 @@ export class LoginComponent implements OnInit {
 
   sendVerificationCode(): void {
     this.authService.sendVerificationCode(this.verifyEmailForm.get('username')?.value);
-    alert('Verification email sent. Please check your inbox.');
   }
 
   // Mark all controls as touched to show validation errors on submit
@@ -198,6 +197,7 @@ export class LoginComponent implements OnInit {
                 [Validators.required, this.passwordsMatchValidator],
               ],
             });
+            alert("Email verified");
           } else if (response == false){
             console.log("response", response)
             alert('Invalid verification code.');

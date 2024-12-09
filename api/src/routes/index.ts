@@ -138,7 +138,7 @@ router.post(
 
 router.post(
   '/api/auth/invite',
-  [verifySignUp.checkDuplicateUsernameOrEmail],
+  [authJwt.authVerifyToken, verifySignUp.checkDuplicateUsernameOrEmail],
   authController.invite,
 )
 
@@ -155,7 +155,7 @@ router.post(
 // User 
 router.get('/user/profile', [authJwt.authVerifyToken], userController.getUserById)
 router.patch('/user/profile', [authJwt.authVerifyToken],  userController.updateUser)
-
+router.post('/user/change-password',[authJwt.authVerifyToken], userController.changePassword)
 // verify email routes
 // router.use('/verify', verifyMiddleware)
 // router.get('/verify/:uniqueString', getUniqueString)

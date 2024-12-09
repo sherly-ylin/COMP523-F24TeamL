@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { User } from '../models/userSchema.js'
 import * as UserService from '../services/userService'
 
 export const createUser = async (req: Request, res: Response) => {
@@ -55,5 +54,25 @@ export const deleteUser = async (req: Request, res: Response) => {
     res.status(200).json({ message: 'User deleted successfully' })
   } catch (error: any) {
     res.status(400).json({ message: error.message })
+  }
+}
+
+export const changePassword = async (req: Request, res: Response) => {
+  try {
+    const { oldPassword, newPassword } = req.body
+    // `req.params.userId` is set by authentication middleware
+    const userId = req.params.userId 
+    if (!userId) {
+      return res.status(401).send({ message: 'Unauthorized' })
+    }
+
+    const message = await UserService.changePassword(
+      userId,
+      oldPassword,
+      newPassword,
+    )
+    res.status(200).send({ message })
+  } catch (error: any) {
+    res.status(400).send({ message: error.message })
   }
 }

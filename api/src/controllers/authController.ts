@@ -14,11 +14,9 @@ import * as userService from '../services/userService.js'
 
 export async function getInvite(req: Request, res: Response) {
   try {
-    // Search for a document with the specified token
     const invite = await Invite.findOne({ token: req.params.token })
 
     if (!invite) {
-      // If no invite is found, send a 404 error
       return res.status(404).json({ message: 'Invite not found' })
     }
 
@@ -49,16 +47,16 @@ export const signUp = async (req: Request, res: Response) => {
       user = new User({
         email: invite.email,
         role: invite.role,
-        // team_id: Types.ObjectId,
+        team_id: invite.team_id,
         username: req.body.username ?? invite.email,
-        password: bcrypt.hashSync(req.body.password, 8),
+        password: req.body.password,
       })
     } else {
       user = new User({
         email: invite.email,
         role: invite.role,
         username: req.body.username ?? invite.email,
-        password: bcrypt.hashSync(req.body.password, 8),
+        password: req.body.password,
       })
     }
     console.log("User: ", user)
@@ -82,12 +80,14 @@ export const signIn = async (req: Request, res: Response) => {
             return res.status(400).send({ message: 'Username or password is null.' });
         }
 
-        // Fetch user from the database
-        const user = await User.findOne({ username }).select('+password');
+        // Find user from the database
+        const userByUsername = await User.findOne({ username: username }).select('+password');  
+        const userByEmail = await User.findOne({ email: username }).select('+password');
+        const user = userByUsername ?? userByEmail;
         if (!user) {
             return res.status(404).send({ message: 'User not found.' });
         }
-
+        console.log('signin user', user);
         // Compare passwords
         const isMatchCorrect = await user.comparePassword(password);
         if (!isMatchCorrect) {
@@ -143,30 +143,20 @@ export const invite = async (req: Request, res: Response) => {
     })
   }
   try {
-    // Fetch the current user based on username
-    const token = req.headers['authorization']?.split(' ')[1]
-    if (!token) {
-      return res.status(403).json({ message: 'No user token provided' })
-    }
-    const decoded = jwt.verify(token, config.secret) as { id: string }
-
-    console.log('The person sending invite:', decoded)
-    const sender = await User.findById(decoded.id)
+    const sender = await User.findById(req.params.userId);
     
-
-    // Check if the signed-in user exists and has the correct role (superadmin)
     if (!sender) {
       console.log(
         'The invite sender is not logged in. Userid:',
-        decoded.id,
+        req.params.userId,
       )
       return res
         .status(404)
         .send({ message: 'The invite sender is not logged in.' })
     }
-    if (sender.role !== 'superadmin') {
+    if (sender.role !== 'superadmin' && req.body.role !== 'provider') {
       return res.status(403).send({
-        message: `You are a ${sender.role}, not a superadmin, so you can't invite other users.`,
+        message: `You are a ${sender.role}, not a superadmin, so you can't invite other admins.`,
       })
     }
 
@@ -201,6 +191,7 @@ export const invite = async (req: Request, res: Response) => {
       timespan: req.body.timespan,
       expiresAt: expiresAt,
       inviter: sender._id,
+      team_id: req.body.team_id ?? undefined
     })
     await invite.save()
 
