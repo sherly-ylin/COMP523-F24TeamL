@@ -23,11 +23,11 @@
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label>First Name</mat-label>
-            <input matInput placeholder="First Name" formControlName="first_name" name="first_name" required />
+            <input matInput placeholder="First Name" formControlName="first_name" name="first_name" />
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label>Last Name</mat-label>
-            <input matInput placeholder="Last Name" formControlName="last_name" name="last_name" required />
+            <input matInput placeholder="Last Name" formControlName="last_name" name="last_name" />
           </mat-form-field>
         </mat-card-content>
         <mat-card-actions>
@@ -40,7 +40,10 @@
       <!-- Section 2: Email Update -->
       <mat-expansion-panel>
         <mat-expansion-panel-header>
-          <mat-panel-title> Change Email </mat-panel-title>
+          <mat-panel-title> Change Email 
+            <div style="color:#555;"> &nbsp;({{ this.profile.email }})</div>
+          </mat-panel-title>
+          
         </mat-expansion-panel-header>
         <form [formGroup]="emailForm" (ngSubmit)="requestEmailChange()">
           <div>

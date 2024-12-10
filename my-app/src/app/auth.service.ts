@@ -61,12 +61,9 @@ export class AuthService {
       .subscribe({
         next: (response) => {
           if (response && response.accessToken) {
-            console.log('access token:', response.accessToken);
             localStorage.setItem('accessToken', response.accessToken);
             this.authenticated = true;
             this.router.navigate(['./dashboard']);
-          } else {
-            alert('Invalid response or missing access token.');
           }
         },
         error: (error)=>{
@@ -82,7 +79,7 @@ export class AuthService {
     .pipe(
       catchError((error) => {
         alert(error?.error?.message || 'An error occurred during sending verification code.');
-        return of(null); // Return a null observable to prevent breaking the stream
+        return of(null); 
       }),
     )
     .subscribe((response: any) => {
@@ -99,7 +96,7 @@ export class AuthService {
     .pipe(
       catchError((error) => {
         alert(error?.error?.message || 'An error occurred during verify email.');
-        return of(null); // Return a null observable to prevent breaking the stream
+        return of(null);
       }),
     )
   }
@@ -112,7 +109,7 @@ export class AuthService {
     .pipe(
       catchError((error) => {
         alert(error?.error?.message || 'An error occurred during reset password.');
-        return of(null); // Return a null observable to prevent breaking the stream
+        return of(null); 
       }),
     )
   }
@@ -165,7 +162,6 @@ export class AuthService {
   requestEmailChange(email: string): Observable<any> | any {
     this.sendVerificationCode(email)
     return of(true);
-    // return this.http.post<Profile>(`${this.baseUrl}/user/email`, { email });
   }
 
   verifyAndUpdateEmail(email: string, code: string): Observable<any> | any {

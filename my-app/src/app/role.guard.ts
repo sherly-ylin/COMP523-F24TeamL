@@ -19,7 +19,7 @@ export class RoleGuard implements CanActivate {
       } else {
         if (
           confirm(
-            'You do not have access to this page. Redirecting to dashboard.',
+            'You do not have access to this page.',
           )
         ) {
           this.router.navigate(['/dashboard']);

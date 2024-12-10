@@ -60,10 +60,11 @@ export class ClosedListComponent implements OnInit {
     this.ClosedService.getAll().subscribe({
       next: (data) => {
         this.dataSource = data;
-        console.log(data);
+        console.log('data:', data);
       },
       error: (e) => console.error(e),
     });
+
   }
 
   deleteAll(): void {

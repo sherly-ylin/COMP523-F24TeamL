@@ -56,13 +56,13 @@ export const routes: Routes = [
       },
       {
         path: 'set-up-review',
-        canActivate: [authGuard],
+        canActivate: [authGuard, RoleGuard],
         component: SetUpReviewPageComponent,
       },
       {
         path: 'invite-user',
         component: InviteUserComponent,
-        canActivate: [authGuard],
+        canActivate: [authGuard, RoleGuard],
       },
       {
         path: 'closed',

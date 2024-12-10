@@ -37,7 +37,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './profile-editor.component.css',
 })
 export class ProfileEditorComponent {
-  profile$: Observable<Profile | null>;
+  profile!: Profile;
   profileForm: FormGroup;
   emailForm: FormGroup;
   passwordForm: FormGroup;
@@ -45,8 +45,6 @@ export class ProfileEditorComponent {
   verificationSent: boolean = false;
   loading = false;
   error: string | null = null;
-  // public token: string;
-  // public showToken: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -55,13 +53,23 @@ export class ProfileEditorComponent {
     protected formBuilder: FormBuilder,
     protected authService: AuthService,
     protected snackBar: MatSnackBar,
-    protected dialog: MatDialog,
+    protected dialog: MatDialog
   ) {
-    this.profile$ = this.authService.profile$;
+    this.authService.getProfile().subscribe({
+      next: (profile: Profile) => {
+        this.profile = profile;
+        this.profileForm.patchValue(profile);
+        this.loading = false;
+      },
+      error: (err) => {
+        this.error = 'Failed to load profile. Please try again.';
+        this.loading = false;
+      },
+    });
     this.profileForm = this.formBuilder.group({
       username: ['', [Validators.required]],
-      first_name: ['', [Validators.required]],
-      last_name: ['', [Validators.required]],
+      first_name: [''],
+      last_name: [''],
     });
 
     this.emailForm = this.formBuilder.group({
@@ -127,21 +135,10 @@ export class ProfileEditorComponent {
 
   ngOnInit(): void {
     const profileData = this.route.snapshot.data['profile'];
-    console.log(profileData);
-
     if (profileData) {
       this.profileForm.patchValue(profileData);
+      this.profile = profileData;
     }
-    // this.authService.getProfile().subscribe({
-    //   next: (profile: Profile) => {
-    //     this.profileForm.patchValue(profile);
-    //     this.loading = false;
-    //   },
-    //   error: (err) => {
-    //     this.error = 'Failed to load profile. Please try again.';
-    //     this.loading = false;
-    //   },
-    // });
   }
 
   // Getters for easy access in template
@@ -209,7 +206,6 @@ export class ProfileEditorComponent {
       this.authService.requestEmailChange(email).subscribe({
         next: () => {
           this.verificationSent = true;
-          // alert('Verification code sent to your email.');
         },
         error: () => alert('Failed to send verification code.'),
       });
@@ -226,12 +222,14 @@ export class ProfileEditorComponent {
         .subscribe({
           next: (response: boolean | null) => {
             if (response) {
-              this.authService.updateProfile({email: this.emailForm.value.email}).subscribe({
-                next: (response: any) => console.log(response)
-              });
-              alert('Email update complete.')
-            } else if (response == false){
-              console.log("response", response)
+              this.authService
+                .updateProfile({ email: this.emailForm.value.email })
+                .subscribe({
+                  next: (response: any) => console.log(response),
+                });
+              alert('Email update complete.');
+            } else if (response == false) {
+              console.log('response', response);
               alert('Invalid verification code.');
             }
           },
@@ -239,29 +237,14 @@ export class ProfileEditorComponent {
         });
     }
   }
-  // public onVerifyEmail(): void {
-  //   if (this.emailForm.valid) {
-  //     const { username, verificationCode } = this.emailForm.value;
-  //     this.authService.verifyEmail(username, verificationCode).subscribe({
-  //       next: (response: boolean | null) => {
-  //         if (response) {
-  //           this.emailVerified = true;
-  //         } else if (response == false){
-  //           console.log("response", response)
-  //           alert('Invalid verification code.');
-  //         }
-  //       },
-  //     });
-  // }
 
   updatePassword(): void {
     if (this.passwordForm.valid) {
       this.authService
         .updatePassword({
           oldPassword: this.passwordForm.value.currentPassword,
-          newPassword: this.passwordForm.value.newPassword
-        }
-        )
+          newPassword: this.passwordForm.value.newPassword,
+        })
         .subscribe({
           next: () => alert('Password updated successfully'),
           error: () => alert('Failed to update password'),
