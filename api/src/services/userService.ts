@@ -7,17 +7,24 @@ export const createUser = async (
     throw new Error('Provider role requires a team_id.')
   }
   const user = new User(userData)
-  if (userData.role !== 'provider') {
-    userData.team_id = null
-    userData.team_name = null
+  if (user.role !== 'provider') {
+    user.team_id = null
+    user.team_name = null
+    await user.save()
+
   } else {
-    const team = await Team.findOne({team_id: userData.team_id})
+    const team = await Team.findOne({_id: userData.team_id})
     if(!team){
       throw new Error("Team associated with user's team_id not found.")
     }
-    userData.team_name = team.team_name
+    user.team_name = team.team_name
+    await user.save()
+    
+    team.user_ids.push(user._id);
+    team.save()
+    console.log('added user to team:', team)
   }
-  await user.save()
+  console.log('saved user,', user);
   const userInfo = user.toObject()
   delete userInfo.password // Don't return password
   return userInfo
@@ -44,8 +51,6 @@ export const getUserProfileById = async (
 
   delete userInfo.password // Don't return password
 
-  //To be replace with team_neam found in db
-  userInfo.team_name = userInfo.team_name
   return userInfo
 }
 export const getAllUsers = async (): Promise<Record<string, any>[]> => {
@@ -63,7 +68,7 @@ export const updateUser = async (
 ): Promise<Record<string, any> | null> => {
   if (!id) throw new Error('User ID is required.')
   if (userData.role === 'provider' && !userData.team_id) {
-    throw new Error('Provider role requires a team_id.')
+    throw new Error('Provider-level user requires a team_id.')
   }
   if (userData.role !== 'provider' && userData.team_id) {
     delete userData.team_id

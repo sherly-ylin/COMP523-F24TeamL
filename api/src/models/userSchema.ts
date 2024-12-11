@@ -6,7 +6,7 @@ export interface IUser extends Document {
   first_name: string
   last_name: string
   email: string
-  role: 'provider' | 'admin' | 'superadmin';
+  role: string
   password: string
   team_id?: string | null
   team_name?: string | null
@@ -20,13 +20,12 @@ export const UserSchema: Schema<IUser> = new Schema({
   email: { type: String, required: true, unique: true, match: /.+\@.+\..+/ },
   role: { type: String, required: true, enum: ['provider', 'admin', 'superadmin'] },
   password: { type: String, required: true },
-  team_id: { type: String, ref: 'Team' },
+  team_id: { type: Number, ref: 'Team' },
   team_name: {type: String, ref: 'Team'},
 })
 
 // Hash password before saving
 UserSchema.pre('save', async function (next) {
-  console.log("Inside save middleware")
   const user = this as IUser;
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(user.password, salt);

@@ -97,7 +97,7 @@ router.get('/alllog', allLogsController.getAllRecordsFromAllServices)
 router.get('/team/', TeamController.getAllTeams)
 router.get('/team/:id', TeamController.getTeamById)
 router.post('/team', TeamController.createTeam)
-router.put('/team/:id', TeamController.updateTeam)
+router.patch('/team/:id', TeamController.updateTeam)
 router.delete('/team/:id', TeamController.deleteTeam)
 
 // auth routes

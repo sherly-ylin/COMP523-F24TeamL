@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { AuthService } from '../auth.service';
+import { AuthService } from './auth.service';
 import { BehaviorSubject, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 export interface Team {
-  team_id: number;
+  _id: number;
   team_name: string;
   user_ids: string[];
 }
@@ -38,11 +38,11 @@ export class TeamService {
     return this.http.get<any>(`${this.baseUrl}/${team_id}`);
   }
   createTeam(team_name: string) {
-    return this.http.post<any>(`${this.baseUrl}`, team_name);
+    return this.http.post<any>(`${this.baseUrl}`, {team_name: team_name});
   }
 
   updateTeamName(team_id: number, team_name: string) {
-    return this.http.patch<any>(`${this.baseUrl}/${team_id}`, team_name);
+    return this.http.patch<any>(`${this.baseUrl}/${team_id}`, {team_name: team_name});
   }
 
   deleteTeam(team_id: number) {

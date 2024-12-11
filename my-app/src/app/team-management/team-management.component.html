@@ -7,7 +7,7 @@
   <table mat-table [dataSource]="teams" class="mat-elevation-z8">
     <ng-container matColumnDef="team_id">
       <th mat-header-cell *matHeaderCellDef> ID </th>
-      <td mat-cell *matCellDef="let team"> {{ team.team_id }} </td>
+      <td mat-cell *matCellDef="let team"> {{ team._id }} </td>
     </ng-container>
 
     <ng-container matColumnDef="team_name">
@@ -21,7 +21,7 @@
         <button mat-icon-button color="primary" (click)="openDialog(team)">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button color="warn" (click)="deleteTeam(team.team_id)">
+        <button mat-icon-button color="warn" (click)="deleteTeam(team._id)">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
@@ -35,7 +35,8 @@
 <!-- Inline dialog for create/edit -->
 <div id="team-dialog" class="dialog-overlay">
   <div class="dialog-content">
-    <h2>{{ editingTeam ? 'Edit Team' : 'Add Team' }}</h2>
+    <h3>{{ editingTeam ? 'Edit Team' : 'Add Team' }}</h3>
+    <mat-divider></mat-divider>
     <mat-form-field appearance="fill">
       <mat-label>Team Name</mat-label>
       <input matInput [formControl]="teamNameControl" />

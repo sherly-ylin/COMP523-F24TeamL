@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { Profile, AuthService } from 'src/app/auth.service';
+import { Profile, AuthService } from 'src/app/services/auth.service';
 import {
   MatSidenavContainer,
   MatSidenav,

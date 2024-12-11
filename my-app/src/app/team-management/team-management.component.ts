@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-
+import { MatDivider } from '@angular/material/divider';
 @Component({
   selector: 'app-team-management',
   standalone: true,
@@ -25,6 +25,7 @@ import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angu
     MatCardModule,
     FormsModule,
     ReactiveFormsModule,
+    MatDivider
   ],
   templateUrl: './team-management.component.html',
   styleUrls: ['./team-management.component.css'],
@@ -56,16 +57,14 @@ export class TeamManagementComponent implements OnInit {
     dialog.style.display = 'none';
   }
   saveTeam(): void {
-
     if (this.editingTeam && this.teamNameControl.valid) {
       this.teamService
-        .updateTeamName(this.editingTeam.team_id, this.teamNameControl.value!)
+        .updateTeamName(this.editingTeam._id, this.teamNameControl.value!)
         .subscribe(() => {
           this.loadTeams();
           this.closeDialog();
         });
     } else {
-      // Create new team
       this.teamService.createTeam(this.teamNameControl.value!).subscribe(() => {
         this.loadTeams();
         this.closeDialog();

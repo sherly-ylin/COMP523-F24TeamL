@@ -1,6 +1,9 @@
 <div class="containter">
   <div class="welcome">
     <h2>Welcome, {{ displayName }}!</h2>
+    @if(role === 'provider'){
+      <h4>Team: {{providerTeam}}</h4>
+    }
   </div>
   <mat-divider></mat-divider>
   <div class="content">

@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { ResolveFn, Router } from '@angular/router';
-import { Profile, AuthService } from '../auth.service';
+import { Profile, AuthService } from '../services/auth.service';
 import { tap, catchError, of } from 'rxjs';
 
 export const profileResolver: ResolveFn<Profile | null> = (route, state) => {

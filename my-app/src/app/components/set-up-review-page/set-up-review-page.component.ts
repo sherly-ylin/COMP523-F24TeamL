@@ -30,7 +30,7 @@ import { Team, TeamService } from 'src/app/services/team.service';
 })
 export class SetUpReviewPageComponent implements OnInit {
   teams: Team[] = [];
-  selectedTeam: string | null = null;
+  selectedTeam: number | null = null;
   reviewForm!: FormGroup;
 
   constructor(

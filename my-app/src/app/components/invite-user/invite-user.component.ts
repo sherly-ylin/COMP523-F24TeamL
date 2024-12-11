@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { AuthService, Profile } from 'src/app/auth.service';
+import { AuthService, Profile } from 'src/app/services/auth.service';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -33,12 +33,9 @@ import { Team, TeamService } from 'src/app/services/team.service';
 })
 export class InviteUserComponent implements OnInit {
   user_role: string;
-  // email: string;
   role: string;
   teams: Team[];
-  teamSelected: string;
-  // timespanString: string;
-  // timespan: { value: number; unit: string };
+  teamSelected: number | null = null;
   submitted: boolean;
   
   inviteForm!: FormGroup;
@@ -52,9 +49,6 @@ export class InviteUserComponent implements OnInit {
   ) {
     // this.email = '';
     this.role = 'provider';
-    this.teamSelected = '';
-    // this.timespanString = '3 day';
-    // this.timespan = { value: 3, unit: 'day' };
     this.submitted = false;
 
     this.user_role = this.authService.currentUser?.role ?? '';
@@ -116,8 +110,6 @@ export class InviteUserComponent implements OnInit {
     }
   }
   public onSubmit() {
-    // this.submitted = true;
-
 
     let formval = {
       email: this.inviteForm.value.email,

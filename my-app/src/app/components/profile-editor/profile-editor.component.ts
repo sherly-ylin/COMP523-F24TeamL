@@ -1,8 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { Profile, AuthService } from 'src/app/auth.service';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Profile, AuthService } from 'src/app/services/auth.service';
 import {
   FormsModule,
   ReactiveFormsModule,
@@ -48,8 +46,6 @@ export class ProfileEditorComponent {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
-    private http: HttpClient,
     protected formBuilder: FormBuilder,
     protected authService: AuthService,
     protected snackBar: MatSnackBar,

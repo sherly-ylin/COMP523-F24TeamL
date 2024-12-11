@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Profile, AuthService } from 'src/app/auth.service';
+import { Profile, AuthService } from 'src/app/services/auth.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,6 +19,7 @@ import {
 })
 export class HomeComponent implements OnInit {
   displayName: string | null | undefined = '';
+  providerTeam: string| null = null;
   totalReviewCount!: number;
   completedReviewCount!: number;
   incompleteReviewCount!: number;
@@ -33,14 +34,14 @@ export class HomeComponent implements OnInit {
     private authService: AuthService,
     private reviewService: ReviewService
   ) {
-    this.displayName = 'User'; // Replace with actual user data
     this.role = ''
     this.authService.profile$.subscribe((profile: Profile | null) => {
       if (profile) {
         console.log(profile);
         this.displayName = profile.username;
-          // profile.role === 'provider' ? profile.team_name : profile.username;
         this.role = profile.role;
+        this.providerTeam = profile.team_name ?? null;
+
       } else {
         this.displayName = null;
       }

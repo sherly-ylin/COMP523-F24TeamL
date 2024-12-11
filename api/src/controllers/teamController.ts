@@ -16,7 +16,6 @@ export const getAllTeams = async (req: Request, res: Response) => {
     if (!teams) {
       return res.status(404).json({ error: 'No team found' })
     }
-    console.log('teams:', teams)
     res.json(teams)
   } catch (error) {
     res.status(400).json({ error: (error as Error).message })

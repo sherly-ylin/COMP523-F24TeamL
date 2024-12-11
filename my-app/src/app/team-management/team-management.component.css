@@ -9,15 +9,23 @@ mat-card {
   margin: 16px;
 }
 
+mat-form-field{
+  padding-top: 16px;
+}
+
+
+table{
+  background-color:inherit;
+}
 /* Dialog overlay styles */
 .dialog-overlay {
   display: none;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
   z-index: 10000;
 }
 

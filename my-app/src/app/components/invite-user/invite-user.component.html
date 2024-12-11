@@ -37,7 +37,7 @@
           <mat-form-field class="form-field" appearance="fill">
             <mat-label>Assign user to a team</mat-label>
             <mat-select formControlName="selectedTeam">
-              <mat-option *ngFor="let team of teams" [value]="team.team_id">
+              <mat-option *ngFor="let team of teams" [value]="team._id">
                 {{ team.team_name }}
               </mat-option>
             </mat-select>

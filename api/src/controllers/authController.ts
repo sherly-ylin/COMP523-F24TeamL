@@ -11,6 +11,7 @@ import { Invite } from '../models/inviteSchema.js'
 import { User } from '../models/userSchema.js'
 import * as verify from './emailVerifyController.js'
 import * as userService from '../services/userService.js'
+import { createUser } from '../services/userService.js'
 
 export async function getInvite(req: Request, res: Response) {
   try {
@@ -44,7 +45,7 @@ export const signUp = async (req: Request, res: Response) => {
 
     let user;
     if (invite.role == 'provider') {
-      user = new User({
+      user = createUser({
         email: invite.email,
         role: invite.role,
         team_id: invite.team_id,
@@ -52,15 +53,15 @@ export const signUp = async (req: Request, res: Response) => {
         password: req.body.password,
       })
     } else {
-      user = new User({
+      user = createUser({
         email: invite.email,
         role: invite.role,
         username: req.body.username ?? invite.email,
         password: req.body.password,
       })
     }
-    console.log("User: ", user)
-    await user!.save()
+    console.log("User signed up: ", user)
+
 
     // Return success response
     res.status(200).send({ message: 'User was registered successfully!' })

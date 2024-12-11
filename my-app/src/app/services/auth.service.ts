@@ -11,7 +11,7 @@ interface LoginResponse {
   last_name: string | null;
   email: string | null;
   role: 'provider' | 'admin' | 'superadmin';
-  team_id: string | null;
+  team_id: number | null;
   team_name: string | null;
   accessToken: string;
 }
@@ -23,7 +23,7 @@ export interface Profile {
   last_name: string | null;
   email: string | null;
   role: 'provider' | 'admin' | 'superadmin';
-  team_id: string | null;
+  team_id: number | null;
   team_name: string | null;
 }
 

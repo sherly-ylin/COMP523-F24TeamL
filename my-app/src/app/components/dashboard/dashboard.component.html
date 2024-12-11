@@ -67,7 +67,7 @@
         </span>
       </a>
     }
-    @if (userRole === 'superadmin') {
+    @if (userRole !== 'provider') {
     <a mat-list-item routerLink="teams">
       <span class="logo-item">
         <mat-icon>group_add</mat-icon>
