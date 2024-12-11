@@ -48,14 +48,14 @@
       <mat-divider></mat-divider>
       <a mat-list-item routerLink="set-up-review">
         <span class="logo-item">
-          <mat-icon>email</mat-icon> Set Up Review
+          <mat-icon>assignment_ind</mat-icon> Set Up Review
         </span>
       </a>
     }
       @if (userRole === 'superadmin') {
       <a mat-list-item routerLink="invite-user">
         <span class="logo-item">
-          <mat-icon>email</mat-icon>
+          <mat-icon>contact_mail</mat-icon>
           Invite User
         </span>
       </a>
@@ -65,7 +65,16 @@
           <mat-icon>email</mat-icon>
           Invite Provider
         </span>
-      </a>}
+      </a>
+    }
+    @if (userRole === 'superadmin') {
+    <a mat-list-item routerLink="teams">
+      <span class="logo-item">
+        <mat-icon>group_add</mat-icon>
+        Team Management
+      </span>
+    </a>
+    }
 
     </mat-nav-list>
     <!-- <mat-divider></mat-divider> -->

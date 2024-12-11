@@ -27,6 +27,7 @@ import { ProfileEditorComponent } from './components/profile-editor/profile-edit
 import { RoleGuard } from './role.guard';
 import { inviteResolver } from './resolvers/invite.resolver';
 import { profileResolver } from './resolvers/profile.resolver';
+import { TeamManagementComponent } from './team-management/team-management.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard/home', pathMatch: 'full' },
@@ -63,6 +64,11 @@ export const routes: Routes = [
         path: 'invite-user',
         component: InviteUserComponent,
         canActivate: [authGuard, RoleGuard],
+      },
+      {
+        path: 'teams',
+        component: TeamManagementComponent,
+        canActivate: [authGuard],
       },
       {
         path: 'closed',

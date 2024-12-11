@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>{{ data ? 'Edit Team' : 'Add Team' }}</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Team Name</mat-label>
+    <input matInput [(ngModel)]="team_name" />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="save()">
+    {{ data ? 'Update' : 'Create' }}
+  </button>
+</div>

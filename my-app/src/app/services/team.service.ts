@@ -5,8 +5,8 @@ import { HttpClient } from '@angular/common/http';
 
 export interface Team {
   team_id: number;
-  team_name: String;
-  user_ids: String[];
+  team_name: string;
+  user_ids: string[];
 }
 
 @Injectable({
@@ -37,7 +37,7 @@ export class TeamService {
   getTeamById(team_id: number) {
     return this.http.get<any>(`${this.baseUrl}/${team_id}`);
   }
-  createTeam(team_name: String) {
+  createTeam(team_name: string) {
     return this.http.post<any>(`${this.baseUrl}`, team_name);
   }
 

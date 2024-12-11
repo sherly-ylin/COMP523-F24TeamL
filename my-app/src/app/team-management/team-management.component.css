@@ -1,0 +1,36 @@
+/* Toolbar and card styles */
+mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+mat-card {
+  margin: 16px;
+}
+
+/* Dialog overlay styles */
+.dialog-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+}
+
+.dialog-content {
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 400px;
+  margin: 100px auto;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
